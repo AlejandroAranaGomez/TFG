@@ -1,0 +1,96 @@
+@startuml
+
+enum Musculos  {
+CUELLO
+HOMBRO
+PECHO
+BICEPS
+TRICEPS
+ANTEBRAZO
+ESPALDA
+ABDOMINALES
+GLUTEO
+CUADRICEPS
+FEMORAL
+GEMELO 
+}
+
+class Usuario {
+- idUsuario : int
+- nombre : String
+- apellido1 : String
+- apellido2 : String
+- fechaNacimiento : int
+- genero: String
+- peso : float
+- altura : float
+- email : String
+- contraseña : String
++ registrarse()
++ iniciarSesion()
++ actualizarPerfil()
+}
+
+class Dieta {
+- idDieta : int
+- nombre : String
+- descripcion : String
+- caloriasTotales : float
+- proteinas : float
+- carbohidratos : float
+- grasas : float
++ calculaCalorias()
+}
+
+class Comida {
+- idComida : int
+- nombre : String
+- caloriasTotales : float
+- proteinas : float
+- carbohidratos : float
+- grasas : float
++ calculaCalorias()
+}
+
+class Alimento {
+- idAlimento : int
+- nombre : String
+- caloriasTotales : float
+- proteinas : float
+- carbohidratos : float
+- grasas : float
+}
+
+class Rutina {
+- idRutina : int
+- nombre : String
+- duracion : int
+- caloriasQuemadas : float
++ calcularCaloriasQuemadas()
+}
+
+class Ejercicio {
+- idEjercicio : int
+- nombre : String
+- musculoEnfocado : Musculos
+}
+
+class Serie {
+- idSerie : int
+- repeticiones : int
+- peso : int
+}
+
+Usuario "1"  --> "0..*" Dieta
+
+Usuario "1"  --> "0..*" Rutina
+
+Dieta "1"  --> "1..*" Comida
+
+Comida "1"  --> "1..*" Alimento
+
+Rutina "1"  --> "1..*" Ejercicio
+
+Ejercicio "1"  --> "1..*" Serie
+
+@enduml
