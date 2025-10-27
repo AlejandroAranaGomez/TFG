@@ -1,0 +1,54 @@
+@startuml
+
+node "Servidor Backend (API REST)" {
+
+    package "Controllers" {
+
+    [UsuarioController]
+    [RutinaController]
+    [EjercicioController]
+    [SerieController]
+    [DietaController]
+    [ComidaController]
+    [AlimentoController]
+
+    }
+
+    package "Services" {
+
+    [UsuarioService]
+    [RutinaService]
+    [EjercicioService]
+    [SerieService]
+    [DietaService]
+    [ComidaService]
+    [AlimentoService]
+
+    }
+
+    package "Repository" {
+
+    [UsuarioRepository]
+    [RutinaRepository]
+    [EjercicioRepository]
+    [SerieRepository]
+    [DietaRepository]
+    [ComidaRepository]
+    [AlimentoRepository]
+
+    }
+
+}
+
+database "Base de Datos SQL" {
+    [Usuario]
+    [Rutina]
+    [Ejercicio]
+    [Serie]
+    [Dieta]
+    [Comida]
+    [Alimento]
+}
+
+"Servidor Backend (API REST)" --> "Base de Datos SQL" : Consultas SQL
+@enduml
