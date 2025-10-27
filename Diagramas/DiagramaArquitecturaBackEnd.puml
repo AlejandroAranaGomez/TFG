@@ -1,5 +1,7 @@
 @startuml
 
+scale 2
+
 node "Servidor Backend (API REST)" {
 
     package "Controllers" {
