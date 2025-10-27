@@ -1,0 +1,35 @@
+@startuml
+
+node "App Móvil Android" {
+
+    package "Capa de Presentacion" {
+        [RegistroActivity]
+        [LoginActivity]
+        [PerfilActivity]
+        [RutinasActivity]
+        [DietasActivity]
+    }
+
+    package "Capa de Lógica" {
+        [UsuarioViewModel]
+        [RutinaViewModel]
+        [DietaViewModel]
+    }
+
+    package "Capa de Datos" {
+        [UsuarioRepository]
+        [RutinaRepository]
+        [DietaRepository]
+    }
+}
+
+node "Backend (API REST)" {
+    
+}
+
+[Capa de Presentacion] --> [Capa de Lógica]
+[Capa de Lógica] --> [Capa de Datos]
+[Capa de Datos] --> [Backend (API REST)]
+
+
+@enduml
