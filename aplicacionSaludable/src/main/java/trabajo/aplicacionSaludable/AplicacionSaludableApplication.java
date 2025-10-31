@@ -8,9 +8,6 @@ public class AplicacionSaludableApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AplicacionSaludableApplication.class, args);
-
-		System.out.println("Iniciando Spring Boot Application");
-
 	}
 
 }

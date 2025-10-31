@@ -1,5 +1,9 @@
 @startuml
 
+' ========================
+' ====== ENUMERADOS ======
+' ========================
+
 enum Musculos  {
 CUELLO
 HOMBRO
@@ -15,82 +19,134 @@ FEMORAL
 GEMELO 
 }
 
+enum DiaDeLaSemana  {
+LUNES
+MARTES
+MIERCOLES
+JUEVES
+VIERNES
+SABADO
+DOMINGO
+}
+
+' ========================
+' ======== CLASES ========
+' ========================
+
 class Usuario {
-- idUsuario : int
+- idUsuario : Long
 - nombre : String
 - apellido1 : String
 - apellido2 : String
-- fechaNacimiento : int
+- fechaNacimiento : LocalDate
 - genero: String
 - peso : float
 - altura : float
 - email : String
 - contrasenha : String
-+ registrarse()
-+ iniciarSesion()
-+ actualizarPerfil()
 }
 
-class Dieta {
-- idDieta : int
+class DietaCompleta {
+- idDieta : Long
 - nombre : String
 - descripcion : String
 - caloriasTotales : float
 - proteinas : float
-- carboHidratos : float
+- carbohidratos : float
 - grasas : float
-+ calculaCalorias()
+}
+
+class DiaEnDieta {
+- idDiaEnDieta : Long
+- nombre : String
+- caloriasTotales : float
+- proteinas : float
+- carbohidratos : float
+- grasas : float
+- diaDeLaSemana : DiaDeLaSemana
+}
+
+class PlanificacionDeDieta {
+- idPlanificacionDeDieta : Long
+- fechaInicio : LocalDate
+- fechaFin : LocalDate
 }
 
 class Comida {
-- idComida : int
+- idComida : Long
 - nombre : String
 - caloriasTotales : float
 - proteinas : float
 - carbohidratos : float
 - grasas : float
-+ calculaCalorias()
+}
+
+class Ingrediente {
+- idIngrediente : Long
+- cantidadGramos : float
 }
 
 class Alimento {
-- idAlimento : int
+- idAlimento : Long
 - nombre : String
-- caloriasTotales : float
+- calorias : float
 - proteinas : float
 - carbohidratos : float
 - grasas : float
 }
 
-class Rutina {
-- idRutina : int
+class RutinaCompleta {
+- idRutina : Long
 - nombre : String
-- duracion : int
+- resumen : String
+}
+
+class DiaEnRutina {
+- idDiaEnDieta : Long
+- nombre : String
+- resumen : String 
 - caloriasQuemadas : float
-+ calcularCaloriasQuemadas()
+- diaDeLaSemana : DiaDeLaSemana
 }
 
 class Ejercicio {
-- idEjercicio : int
+- idEjercicio : Long
 - nombre : String
+- explicacion : String 
 - musculoEnfocado : Musculos
 }
 
 class Serie {
-- idSerie : int
+- idSerie : Long
+- serieAnterior : String
 - repeticiones : int
 - peso : int
 }
 
-Usuario "1"  --> "0..*" Dieta
+' ========================
+' ====== RELACIONES ======
+' ========================
 
-Usuario "1"  --> "0..*" Rutina
+Usuario "1"  -- "0..*" DietaCompleta
 
-Dieta "1"  --> "1..*" Comida
+Usuario "1" -- "0..*" PlanificacionDeDieta
 
-Comida "1"  --> "1..*" Alimento
+DietaCompleta "1" -- "1..*" DiaEnDieta
 
-Rutina "1"  --> "1..*" Ejercicio
+DietaCompleta "1" -- "0..*" PlanificacionDeDieta
 
-Ejercicio "1"  --> "1..*" Serie
+Usuario "1"  -- "0..*" RutinaCompleta
+
+DiaEnDieta "1"  -- "1..*" Comida
+
+Comida "1"  -- "1..*" Ingrediente
+
+Ingrediente "1..*" -- "1" Alimento
+
+RutinaCompleta "1"  -- "1..*" DiaEnRutina
+
+DiaEnRutina "1..*" -- "1..*" Ejercicio
+
+Ejercicio "1"  -- "1..*" Serie
 
 @enduml
