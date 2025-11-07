@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/mainRegister"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".RegisterActivity"> <!-- Importante: el contexto es RegisterActivity -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Crear Nueva Cuenta"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
+
+            <!-- Campos del formulario -->
+            <EditText
+                android:id="@+id/editNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre"
+                android:layout_marginTop="16dp"
+                android:inputType="textPersonName"/>
+
+            <EditText
+                android:id="@+id/editApellido1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Primer Apellido"
+                android:layout_marginTop="8dp"
+                android:inputType="textPersonName"/>
+            <EditText
+                android:id="@+id/editApellido2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Segundo Apellido"
+                android:layout_marginTop="8dp"
+                android:inputType="textPersonName"/>
+
+            <EditText
+                android:id="@+id/editEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:layout_marginTop="8dp"
+                android:inputType="textEmailAddress"/>
+
+            <EditText
+                android:id="@+id/editContrasenha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Contraseña"
+                android:layout_marginTop="8dp"
+                android:inputType="textPassword"/>
+
+            <EditText
+                android:id="@+id/editTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Teléfono"
+                android:layout_marginTop="8dp"
+                android:inputType="phone"/>
+
+            <EditText
+                android:id="@+id/editFechaNacimiento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Fecha Nacimiento (YYYY-MM-DD)"
+                android:layout_marginTop="8dp"
+                android:inputType="date"/>
+
+            <EditText
+                android:id="@+id/editGenero"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Género (HOMBRE, MUJER, OTRO)"
+                android:layout_marginTop="8dp"
+                android:inputType="textCapCharacters"/>
+
+            <EditText
+                android:id="@+id/editPeso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Peso (ej. 70.5)"
+                android:layout_marginTop="8dp"
+                android:inputType="numberDecimal"/>
+
+            <EditText
+                android:id="@+id/editAltura"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Altura (ej. 1.75)"
+                android:layout_marginTop="8dp"
+                android:inputType="numberDecimal"/>
+
+            <Button
+                android:id="@+id/botonRegistrar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Confirmar Registro"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

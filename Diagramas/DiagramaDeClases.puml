@@ -29,6 +29,12 @@ SABADO
 DOMINGO
 }
 
+enum Generos {
+HOMBRE
+MUJER
+OTRO
+}
+
 ' ========================
 ' ======== CLASES ========
 ' ========================
@@ -39,10 +45,11 @@ class Usuario {
 - apellido1 : String
 - apellido2 : String
 - fechaNacimiento : LocalDate
-- genero: String
+- genero: Generos
 - peso : float
 - altura : float
 - email : String
+- telefono : String
 - contrasenha : String
 }
 

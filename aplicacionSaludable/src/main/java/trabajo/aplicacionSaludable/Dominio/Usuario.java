@@ -1,5 +1,6 @@
 package trabajo.aplicacionSaludable.Dominio;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,23 +11,43 @@ import java.util.Set;
 @Getter
 @Setter
 
+@Entity
+@Table(name = "usuario")
 public class Usuario {
 
     // Clave Primaria BBDD
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idUsuario")
     private Long idUsuario;
 
+    @Column(nullable = false)
     private String nombre;
+    @Column(nullable = false)
     private String apellido1;
+
     private String apellido2;
+    @Column(nullable = false)
     private LocalDate fechaNacimiento;
-    private String genero;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Generos genero;
+    @Column(nullable = false)
     private float peso;
+    @Column(nullable = false)
     private float altura;
+    @Column(nullable = false, unique = true)
     private String email;
+    @Column(nullable = false)
+    private String telefono;
+    @Column(nullable = false)
     private String contrasenha;
 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,  orphanRemoval = true)
     private Set<DietaCompleta> dietas = new HashSet<>();
-    private Set<PlanificacionDeDieta> planificaciones = new HashSet<>();
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,  orphanRemoval = true)
+    private Set<PlanificacionDeDieta> planificacionesDieta = new HashSet<>();
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,  orphanRemoval = true)
     private Set<RutinaCompleta> rutinas = new HashSet<>();
 
 
@@ -36,7 +57,7 @@ public class Usuario {
     }
 
     public Usuario(String nombre, String apellido1, String apellido2, LocalDate fechaNacimiento,
-                   String genero, float peso, float altura, String email, String contrasenha) {
+                   Generos genero, float peso, float altura, String email, String telefono, String contrasenha) {
         this.nombre = nombre;
         this.apellido1 = apellido1;
         this.apellido2 = apellido2;
@@ -45,9 +66,8 @@ public class Usuario {
         this.peso = peso;
         this.altura = altura;
         this.email = email;
+        this.telefono = telefono;
         this.contrasenha = contrasenha;
     }
-
-
 
 }

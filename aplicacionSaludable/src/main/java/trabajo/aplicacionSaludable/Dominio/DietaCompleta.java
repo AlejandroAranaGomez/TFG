@@ -1,5 +1,6 @@
 package trabajo.aplicacionSaludable.Dominio;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,21 +10,36 @@ import java.util.List;
 @Getter
 @Setter
 
+@Entity
+@Table(name = "dietaCompleta")
 public class DietaCompleta {
 
     // Clave Primaria BBDD
-    private Long idDieta;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idDietaCompleta")
+    private Long idDietaCompleta;
 
+    @Column(nullable = false)
     private String nombre;
+
     private String descripcion;
+    @Column(nullable = false)
     private float caloriasTotales;
+    @Column(nullable = false)
     private float proteinas;
+    @Column(nullable = false)
     private float carbohidratos;
+    @Column(nullable = false)
     private float grasas;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idUsuario", nullable = false)
     private Usuario usuario;
 
-    private List<DietaCompleta> diasDeDieta = new ArrayList<>();
+    @OneToMany(mappedBy = "dietaCompleta", cascade = CascadeType.ALL,  orphanRemoval = true)
+    private List<DiaEnDieta> diasDeDieta = new ArrayList<>();
+    @OneToMany(mappedBy = "dietaCompleta", cascade = CascadeType.ALL,  orphanRemoval = true)
     private List<PlanificacionDeDieta> planificacionesDeDieta = new ArrayList<>();
 
     // Necesario para JPA
