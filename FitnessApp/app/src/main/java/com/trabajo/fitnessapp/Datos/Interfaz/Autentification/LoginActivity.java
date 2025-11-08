@@ -3,8 +3,10 @@ package com.trabajo.fitnessapp.Datos.Interfaz.Autentification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -30,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private Button botonIniciarSesion;
 
+    private ImageButton botonVolverInicio;
+
     private AutorizacionService autorizacionService;
 
     @Override
@@ -37,6 +41,17 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
+
+        botonVolverInicio = findViewById(R.id.botonVolverInicio);
+
+        botonVolverInicio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
+                startActivity(intent);
+            }
+        });
 
         autorizacionService = RetrofitClient.getClient().create(AutorizacionService.class);
 

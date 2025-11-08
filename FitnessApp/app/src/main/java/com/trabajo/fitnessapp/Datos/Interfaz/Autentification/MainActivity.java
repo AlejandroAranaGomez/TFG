@@ -49,11 +49,8 @@ public class MainActivity extends AppCompatActivity {
         getBotonIrALogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 4. Crear la "intención" de ir de esta pantalla (MainActivity.this)
-                //    a la pantalla de destino (RegisterActivity.class)
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 
-                // 5. Ejecuta la intención (abre la nueva pantalla)
                 startActivity(intent);
             }
         });

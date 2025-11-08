@@ -1,9 +1,18 @@
 package com.trabajo.fitnessapp.Datos.Interfaz.Autentification;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log; // Para ver logs de error
+import android.util.Patterns;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast; // Para mostrar mensajes al usuario
 
 import androidx.activity.EdgeToEdge;
@@ -21,6 +30,8 @@ import com.trabajo.fitnessapp.Datos.Model.UsuarioDTO;
 import com.trabajo.fitnessapp.Datos.Model.Generos;
 
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,9 +42,11 @@ public class RegisterActivity extends AppCompatActivity {
     // --- 1. Declarar todos los campos de la UI ---
     // (Asegúrate que los IDs de activity_register.xml coinciden)
     private EditText editNombre, editApellido1, editApellido2,  editEmail, editContrasenha,
-            editTelefono, editFechaNacimiento, editGenero,
-            editPeso, editAltura;
+            editTelefono, editFechaNacimiento, editPeso, editAltura;
+
+    private Spinner spinnerGenero;
     private Button botonRegistrar;
+    private ImageButton botonVolverInicio;
 
     // El servicio de tu API (usando el nombre de tu clase)
     private AutorizacionService autorizacionService;
@@ -44,6 +57,19 @@ public class RegisterActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         // Carga el layout del formulario
         setContentView(R.layout.activity_register);
+
+        // Boton para volver atras
+
+        botonVolverInicio = findViewById(R.id.botonVolverInicio);
+
+        botonVolverInicio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+
+                startActivity(intent);
+            }
+        });
 
         // Inicializar el servicio de la API (Retrofit)
         autorizacionService = RetrofitClient.getClient().create(AutorizacionService.class);
@@ -77,10 +103,44 @@ public class RegisterActivity extends AppCompatActivity {
         editContrasenha = findViewById(R.id.editContrasenha);
         editTelefono = findViewById(R.id.editTelefono);
         editFechaNacimiento = findViewById(R.id.editFechaNacimiento);
-        editGenero = findViewById(R.id.editGenero);
+
+        spinnerGenero = findViewById(R.id.spinnerGenero);
+
+        List<String> opcinesGenero = new ArrayList<>();
+        opcinesGenero.add("Genero");
+        for (Generos generos : Generos.values()) {
+            opcinesGenero.add(generos.name());
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, opcinesGenero) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView tv = (TextView) view;
+
+                if (position == 0) {
+                    tv.setTextColor(Color.parseColor("#757474"));
+                }else {
+                    tv.setTextColor(Color.parseColor("#FFFFFF"));
+                }
+                return view;
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                view.setBackgroundColor(Color.parseColor("#1E1E1E"));
+                tv.setTextColor(Color.WHITE);
+
+                return view;
+            }
+        };
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerGenero.setAdapter(adapter);
+
         editPeso = findViewById(R.id.editPeso);
         editAltura = findViewById(R.id.editAltura);
-
         botonRegistrar = findViewById(R.id.botonRegistrar);
     }
 
@@ -97,18 +157,39 @@ public class RegisterActivity extends AppCompatActivity {
         String contrasenha = editContrasenha.getText().toString().trim();
         String telefono = editTelefono.getText().toString().trim();
         String fechaStr = editFechaNacimiento.getText().toString().trim();
-        String generoStr = editGenero.getText().toString().trim().toUpperCase(); // Convertir a MAYÚSCULAS
+        String generoSelecionado = (String) spinnerGenero.getSelectedItem();
         String pesoStr = editPeso.getText().toString().trim();
         String alturaStr = editAltura.getText().toString().trim();
 
         // --- 5. Validar los datos (simple) ---
         if (nombre.isEmpty() || apellido1.isEmpty() || email.isEmpty() || contrasenha.isEmpty() ||
-                telefono.isEmpty() || fechaStr.isEmpty() || generoStr.isEmpty() ||
+                telefono.isEmpty() || fechaStr.isEmpty() ||
                 pesoStr.isEmpty() || alturaStr.isEmpty()) {
 
             Toast.makeText(this, "Por favor, rellena todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        if (!fechaStr.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            Toast.makeText(this, "Formato de fecha incorrecto (YYYY-MM-DD)", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (generoSelecionado.equals("Genero")) {
+            Toast.makeText(this, "Por favor, seleccione un genero", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "Formato de email incorrecto.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!telefono.matches("\\d{9}")) {
+            Toast.makeText(this, "El telefono debe tener 9 digitos.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
 
         RegistroDTO dto = new RegistroDTO();
         try {
@@ -123,21 +204,12 @@ public class RegisterActivity extends AppCompatActivity {
             // Convertir String a LocalDate (requiere API 26+)
             dto.setFechaNacimiento(fechaStr);
 
-            // Convertir String a Enum
-            dto.setGenero(Generos.valueOf(generoStr));
+            dto.setGenero(Generos.valueOf(generoSelecionado));
 
             // Convertir String a float
             dto.setPeso(Float.parseFloat(pesoStr));
             dto.setAltura(Float.parseFloat(alturaStr));
-
-        } catch (DateTimeParseException e) {
-            Toast.makeText(this, "Formato de fecha incorrecto (YYYY-MM-DD)", Toast.LENGTH_SHORT).show();
-            return;
-        } catch (IllegalArgumentException e) {
-            Toast.makeText(this, "Formato de género incorrecto (HOMBRE, MUJER, OTRO)", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Log.e("REGISTRO_ERROR", "Error al crear DTO", e);
             Toast.makeText(this, "Error al preparar los datos", Toast.LENGTH_SHORT).show();
             return;
