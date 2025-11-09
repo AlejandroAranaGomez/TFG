@@ -1,4 +1,4 @@
-package com.trabajo.fitnessapp.Datos.Model;
+package com.trabajo.fitnessapp.datos.dto;
 
 import lombok.Getter;
 import lombok.Setter;

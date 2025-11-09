@@ -30,7 +30,6 @@
                 android:textSize="32sp"
                 android:textStyle="bold" />
 
-            <!-- Campos del formulario -->
             <EditText
                 android:id="@+id/editNombre"
                 android:layout_width="match_parent"

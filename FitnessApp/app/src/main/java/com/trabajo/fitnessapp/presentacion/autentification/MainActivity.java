@@ -1,4 +1,4 @@
-package com.trabajo.fitnessapp.Datos.Interfaz.Autentification;
+package com.trabajo.fitnessapp.presentacion.autentification;
 
 import android.content.Intent;
 import android.os.Bundle;

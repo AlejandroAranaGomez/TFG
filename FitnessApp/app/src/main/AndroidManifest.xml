@@ -16,16 +16,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31" >
         <activity
-            android:name=".Datos.Interfaz.Menu.MenuPrincipalActivity"
+            android:name=".presentacion.menu.MenuPrincipalActivity"
             android:exported="false" />
         <activity
-            android:name=".Datos.Interfaz.Autentification.LoginActivity"
+            android:name=".presentacion.autentification.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".Datos.Interfaz.Autentification.RegisterActivity"
+            android:name=".presentacion.autentification.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".Datos.Interfaz.Autentification.MainActivity"
+            android:name=".presentacion.autentification.MainActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

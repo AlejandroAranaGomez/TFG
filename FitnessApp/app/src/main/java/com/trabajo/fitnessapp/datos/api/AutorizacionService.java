@@ -1,8 +1,8 @@
-package com.trabajo.fitnessapp.Datos.Api;
+package com.trabajo.fitnessapp.datos.api;
 
-import com.trabajo.fitnessapp.Datos.DTO.InicioSesionDTO;
-import com.trabajo.fitnessapp.Datos.DTO.RegistroDTO;
-import com.trabajo.fitnessapp.Datos.Model.UsuarioDTO;
+import com.trabajo.fitnessapp.datos.dto.InicioSesionDTO;
+import com.trabajo.fitnessapp.datos.dto.RegistroDTO;
+import com.trabajo.fitnessapp.datos.dto.UsuarioDTO;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

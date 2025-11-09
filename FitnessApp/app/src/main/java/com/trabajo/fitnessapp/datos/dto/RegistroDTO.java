@@ -1,11 +1,9 @@
-package com.trabajo.fitnessapp.Datos.DTO;
+package com.trabajo.fitnessapp.datos.dto;
 
-import com.trabajo.fitnessapp.Datos.Model.Generos;
+import com.trabajo.fitnessapp.dominio.Generos;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDate;
 
 @Getter
 @Setter

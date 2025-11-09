@@ -1,4 +1,4 @@
-package com.trabajo.fitnessapp.Datos.Model;
+package com.trabajo.fitnessapp.dominio;
 
 public enum Generos {
     HOMBRE,
