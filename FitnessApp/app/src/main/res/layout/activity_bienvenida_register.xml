@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".presentacion.autentification.BienvenidaRegisterActivity">
+
+
+    <include
+        android:id="@+id/barraProgreso"
+        layout="@layout/barra_progreso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <ImageButton
+        android:id="@+id/botonVolverInicio"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_flecha_atras"
+        app:layout_constraintVertical_bias="0.039"
+        app:layout_constraintHorizontal_bias="0.07"/>
+
+    <TextView
+        android:id="@+id/tituloBienvenida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="! Bienvenido a Aplicacion Fitness !"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.11"/>
+
+    <TextView
+        android:id="@+id/explicacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="En primer lugar vamos a personalizar tu perfil para calcular como poder lograr tus objetivos."
+        android:textColor="@color/textosExplicacion"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tituloBienvenida"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.08"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"/>
+
+    <ImageView
+        android:id="@+id/imagenBienvenida"
+        android:layout_width="100dp"
+        android:layout_marginTop="15dp"
+        android:layout_height="100dp"
+        app:srcCompat="@drawable/ic_icono_bienvenida"
+        app:layout_constraintTop_toBottomOf="@+id/explicacion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.05"/>
+
+    <Button
+        android:id="@+id/botonComenzar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/BotonesImagenes"
+        android:text="Comenzar"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagenBienvenida"
+        app:layout_constraintVertical_bias="0.87"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

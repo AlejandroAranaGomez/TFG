@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".presentacion.autentification.ObjetivosActivity">
+
+    <include
+        android:id="@+id/barraProgreso"
+        layout="@layout/barra_progreso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <ImageButton
+        android:id="@+id/botonVolverBienvenida"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_flecha_atras"
+        app:layout_constraintVertical_bias="0.039"
+        app:layout_constraintHorizontal_bias="0.07"/>
+
+    <TextView
+        android:id="@+id/tituloObjetivos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿Cuál es tu objetivo personal?"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.11"/>
+
+    <TextView
+        android:id="@+id/explicacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Seleciona una de las tres opciones para fijar tu objetivo."
+        android:textColor="@color/textosExplicacion"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tituloObjetivos"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.08"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"/>
+
+    <ImageView
+        android:id="@+id/imagenObjetivo"
+        android:layout_width="100dp"
+        android:layout_marginTop="15dp"
+        android:layout_height="100dp"
+        app:srcCompat="@drawable/ic_objetivos"
+        app:layout_constraintTop_toBottomOf="@+id/explicacion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.05"/>
+    
+    <RadioGroup
+        android:id="@+id/grupoObjetivos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/imagenObjetivo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.1"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp">
+
+        <RadioButton
+            android:id="@+id/perderGrasa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Perder Grasa"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:drawableStart="@drawable/ic_perder_peso"
+            android:background="@drawable/ic_fondo_opciones"
+            android:layout_marginBottom="15dp"
+            android:button="@null"
+            />
+
+        <RadioButton
+            android:id="@+id/ganarMusculo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ganar Masa Mulcular"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:drawableStart="@drawable/ic_ganar_peso"
+            android:background="@drawable/ic_fondo_opciones"
+            android:layout_marginBottom="15dp"
+            android:button="@null"/>
+
+        <RadioButton
+            android:id="@+id/mantenerPeso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mantener Peso"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:drawableStart="@drawable/ic_mismo_peso"
+            android:background="@drawable/ic_fondo_opciones"
+            android:button="@null"/>
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/botonSiguiente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/BotonesImagenes"
+        android:text="Siguiente"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagenObjetivo"
+        app:layout_constraintVertical_bias="0.87"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

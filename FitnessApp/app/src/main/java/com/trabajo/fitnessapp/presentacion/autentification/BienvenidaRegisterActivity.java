@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,47 +15,53 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.trabajo.fitnessapp.R;
 
-public class MainActivity extends AppCompatActivity {
+public class BienvenidaRegisterActivity extends AppCompatActivity {
 
-    private Button botonIrARegistro;
-    private Button getBotonIrALogin;
+    private Button botonComenzar;
+    private ImageButton botonVolverInicio;
+    private ProgressBar barraProgresoActividad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
-
-        botonIrARegistro = findViewById(R.id.botonPruebaRegistro);
-        getBotonIrALogin = findViewById(R.id.botonPruebaLogin);
-
-        View mainView = findViewById(R.id.main);
-        ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
+        setContentView(R.layout.activity_bienvenida_register);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
+        enlazarVistas();
+
         configurarBotones();
+
+        barraProgresoActividad.setProgress(0);
+
+    }
+
+    private void enlazarVistas() {
+        botonComenzar = findViewById(R.id.botonComenzar);
+        botonVolverInicio = findViewById(R.id.botonVolverInicio);
+        View barraProgreso = findViewById(R.id.barraProgreso);
+        barraProgresoActividad = barraProgreso.findViewById(R.id.barraProgresoLayout);
 
     }
 
     private void configurarBotones() {
-        botonIrARegistro.setOnClickListener(new View.OnClickListener() {
+        botonComenzar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, BienvenidaRegisterActivity.class);
+                Intent intent = new Intent(BienvenidaRegisterActivity.this, ObjetivosActivity.class);
                 startActivity(intent);
             }
         });
 
-        getBotonIrALogin.setOnClickListener(new View.OnClickListener() {
+        botonVolverInicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
     }
-
 }

@@ -27,8 +27,6 @@ public class UsuarioService {
 
     public UsuarioDTO registrarUsuario(RegistroDTO registroDTO) throws Exception {
 
-        System.out.print("Este es mi correo" + registroDTO.getEmail());
-
         // Compruebo que no hay un usuario con ese email ya registrado.
 
         if (usuarioRepository.findByEmail(registroDTO.getEmail()).isPresent()) {
@@ -63,7 +61,9 @@ public class UsuarioService {
                 registroDTO.getAltura(),
                 registroDTO.getEmail(),
                 registroDTO.getContrasenha(),
-                contrasenhaHash
+                contrasenhaHash,
+                registroDTO.getObjetivos(),
+                registroDTO.getNivelDeActividad()
         );
     }
 

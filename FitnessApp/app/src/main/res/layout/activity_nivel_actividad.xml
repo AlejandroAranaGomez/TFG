@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".presentacion.autentification.NivelActividadActivity">
+
+    <include
+        android:id="@+id/barraProgreso"
+        layout="@layout/barra_progreso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <ImageButton
+        android:id="@+id/botonVolverObjetivo"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_flecha_atras"
+        app:layout_constraintVertical_bias="0.039"
+        app:layout_constraintHorizontal_bias="0.07"/>
+
+    <TextView
+        android:id="@+id/tituloActividad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿Con que frecuencia vas a entrenar?"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.11"/>
+
+    <ImageView
+        android:id="@+id/imagenObjetivo"
+        android:layout_width="100dp"
+        android:layout_marginTop="15dp"
+        android:layout_height="100dp"
+        app:srcCompat="@drawable/ic_frecuencia_actividad"
+        app:layout_constraintTop_toBottomOf="@+id/tituloActividad"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.05"/>
+
+    <RadioGroup
+        android:id="@+id/grupoActividad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/imagenObjetivo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.1"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp">
+
+        <RadioButton
+            android:id="@+id/botonSedentario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sedentario (1 dia a la semana)"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:drawableStart="@drawable/ic_actividad_sedentario"
+            android:background="@drawable/ic_fondo_opciones"
+            android:layout_marginBottom="15dp"
+            android:button="@null" />
+
+        <RadioButton
+            android:id="@+id/botonEjercicioLigero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ejercicio Ligero (2-3 dias a la semana)"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:drawableStart="@drawable/ic_actividad_ligera"
+            android:background="@drawable/ic_fondo_opciones"
+            android:layout_marginBottom="15dp"
+            android:button="@null"/>
+
+        <RadioButton
+            android:id="@+id/botonEjercicioModerado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ejercicio Moderado (3-4 dias a la semana)"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:drawableStart="@drawable/ic_actividad_moderado"
+            android:background="@drawable/ic_fondo_opciones"
+            android:layout_marginBottom="15dp"
+            android:button="@null"/>
+
+        <RadioButton
+            android:id="@+id/botonEjercicioIntenso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ejercicio Intenso (5-6 dias a la semana)"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:drawableStart="@drawable/ic_actividad_intensa"
+            android:background="@drawable/ic_fondo_opciones"
+            android:layout_marginBottom="15dp"
+            android:button="@null"/>
+
+        <RadioButton
+            android:id="@+id/botonAtleta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Atleta (7 dias a la semana)"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:drawableStart="@drawable/ic_actividad_atleta"
+            android:background="@drawable/ic_fondo_opciones"
+            android:button="@null"/>
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/botonSiguiente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/BotonesImagenes"
+        android:text="Siguiente"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagenObjetivo"
+        app:layout_constraintVertical_bias="0.87"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

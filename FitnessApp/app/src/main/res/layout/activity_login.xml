@@ -6,75 +6,85 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentacion.autentification.LoginActivity"
-    android:background="#050505">
+    android:background="@color/black">
 
-    <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/mainLogin"
+    <TextView
+        android:id="@+id/tituloSesion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Iniciar Sesion"
+        android:textSize="32sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.03"
+        app:layout_constraintHorizontal_bias="0.72"/>
+
+    <EditText
+        android:id="@+id/editEmailSesion"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".LoginActivity">
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:layout_marginTop="16dp"
+        android:textColorHint="@color/pistaEditables"
+        android:textColor="@color/white"
+        android:inputType="textEmailAddress"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tituloSesion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.1"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="24dp"
-            android:gravity="right">
+    <EditText
+        android:id="@+id/editContrasenhaSesion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Contrasenha"
+        android:layout_marginTop="8dp"
+        android:textColorHint="@color/pistaEditables"
+        android:textColor="@color/white"
+        android:inputType="textPassword"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editEmailSesion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.01"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Iniciar Sesion"
-            android:textSize="32sp"
-            android:textColor="#FAFBF8"
-            android:textStyle="bold"/>
-
-            <EditText
-                android:id="@+id/editEmailSesion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Email"
-                android:layout_marginTop="16dp"
-                android:textColorHint="#757474"
-                android:textColor="#FFFFFF"
-                android:inputType="textEmailAddress"/>
-
-            <EditText
-                android:id="@+id/editContrasenhaSesion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Contrasenha"
-                android:layout_marginTop="8dp"
-                android:textColorHint="#757474"
-                android:textColor="#FFFFFF"
-                android:inputType="textPassword"/>
-
-            <Button
-                android:id="@+id/botonIniciarSesion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:backgroundTint="#96EF2D"
-                android:textColor="#000000"
-                android:text="Iniciar Sesion"
-                android:textSize="18dp"/>
-
-        </LinearLayout>
-
-    </ScrollView>
+    <Button
+        android:id="@+id/botonIniciarSesion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/black"
+        android:text="Iniciar Sesion"
+        android:textSize="18dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editContrasenhaSesion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.752"/>
 
     <ImageButton
         android:id="@+id/botonVolverInicio"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        android:layout_marginStart="29dp"
-        android:layout_marginTop="19dp"
         android:background="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_flecha_atras"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_flecha_atras"
+        app:layout_constraintVertical_bias="0.039"
+        app:layout_constraintHorizontal_bias="0.07"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

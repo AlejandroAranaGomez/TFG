@@ -2,31 +2,21 @@ package com.trabajo.fitnessapp.presentacion.autentification;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-
-import com.trabajo.fitnessapp.datos.api.AutorizacionService;
-import com.trabajo.fitnessapp.datos.api.RetrofitClient;
-import com.trabajo.fitnessapp.datos.dto.InicioSesionDTO;
 import com.trabajo.fitnessapp.presentacion.menu.MenuPrincipalActivity;
-import com.trabajo.fitnessapp.datos.dto.UsuarioDTO;
 import com.trabajo.fitnessapp.R;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -37,39 +27,25 @@ public class LoginActivity extends AppCompatActivity {
 
     private ImageButton botonVolverInicio;
 
-    private AutorizacionService autorizacionService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
-
-        viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-
-        enlazarVistasLogin();
-
-        botonVolverInicio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        mensajeAlIniciarSesion();
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        botonIniciarSesion.setOnClickListener(v -> {
-            // Llama al método que hace el trabajo
-            iniciarSesionDesdeFormulario();
-        });
+        viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+
+        enlazarVistasLogin();
+
+        configurarBotones();
+
+        mensajeAlIniciarSesion();
 
     }
     private void enlazarVistasLogin() {
@@ -78,6 +54,20 @@ public class LoginActivity extends AppCompatActivity {
 
         botonIniciarSesion = findViewById(R.id.botonIniciarSesion);
         botonVolverInicio = findViewById(R.id.botonVolverInicio);
+    }
+
+    private void configurarBotones() {
+
+        botonVolverInicio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        botonIniciarSesion.setOnClickListener(v -> {
+            iniciarSesionDesdeFormulario();
+        });
     }
 
     private void iniciarSesionDesdeFormulario() {

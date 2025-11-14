@@ -12,6 +12,8 @@ import com.trabajo.fitnessapp.datos.api.AutorizacionService;
 import com.trabajo.fitnessapp.datos.dto.RegistroDTO;
 import com.trabajo.fitnessapp.datos.repository.AutentificationRepository;
 import com.trabajo.fitnessapp.dominio.Generos;
+import com.trabajo.fitnessapp.dominio.NivelDeActividad;
+import com.trabajo.fitnessapp.dominio.Objetivos;
 
 public class RegisterViewModel extends ViewModel {
 
@@ -37,7 +39,7 @@ public class RegisterViewModel extends ViewModel {
     }
 
     public void registrar(String nombre, String apellido1, String apellido2, String email, String contrasenha, String telefono, String fechaNacimiento,
-                          String genero, String peso, String altura) {
+                          String genero, String peso, String altura, Objetivos objetivo, NivelDeActividad nivelDeActividad) {
         if (nombre.isEmpty() || apellido1.isEmpty() || email.isEmpty() || contrasenha.isEmpty() ||
                 telefono.isEmpty() || fechaNacimiento.isEmpty() ||
                 peso.isEmpty() || altura.isEmpty()) {
@@ -80,6 +82,8 @@ public class RegisterViewModel extends ViewModel {
             dto.setGenero(Generos.valueOf(genero));
             dto.setPeso(Float.parseFloat(peso));
             dto.setAltura(Float.parseFloat(altura));
+            dto.setObjetivos(objetivo);
+            dto.setNivelDeActividad(nivelDeActividad);
         } catch (Exception e) {
             mensajeError.setValue("Error al procesar los datos");
         }

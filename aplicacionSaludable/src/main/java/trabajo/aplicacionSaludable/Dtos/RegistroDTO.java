@@ -3,6 +3,8 @@ package trabajo.aplicacionSaludable.Dtos;
 import lombok.Getter;
 import lombok.Setter;
 import trabajo.aplicacionSaludable.Dominio.Generos;
+import trabajo.aplicacionSaludable.Dominio.NivelDeActividad;
+import trabajo.aplicacionSaludable.Dominio.Objetivos;
 
 @Getter
 @Setter
@@ -19,6 +21,8 @@ public class RegistroDTO {
     private String email;
     private String telefono;
     private String contrasenha;
+    private Objetivos  objetivos;
+    private NivelDeActividad nivelDeActividad;
 
     public RegistroDTO() {
 

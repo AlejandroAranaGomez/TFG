@@ -1,6 +1,8 @@
 package com.trabajo.fitnessapp.datos.dto;
 
 import com.trabajo.fitnessapp.dominio.Generos;
+import com.trabajo.fitnessapp.dominio.NivelDeActividad;
+import com.trabajo.fitnessapp.dominio.Objetivos;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,5 +22,7 @@ public class RegistroDTO {
     private String email;
     private String telefono;
     private String contrasenha;
+    private Objetivos objetivos;
+    private NivelDeActividad nivelDeActividad;
 
 }

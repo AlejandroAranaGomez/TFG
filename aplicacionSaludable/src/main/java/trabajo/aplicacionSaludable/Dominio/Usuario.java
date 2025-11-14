@@ -42,6 +42,10 @@ public class Usuario {
     private String telefono;
     @Column(nullable = false)
     private String contrasenha;
+    @Enumerated(EnumType.STRING)
+    private Objetivos objetivo;
+    @Enumerated(EnumType.STRING)
+    private NivelDeActividad nivelDeActividad;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,  orphanRemoval = true)
     private Set<DietaCompleta> dietas = new HashSet<>();
@@ -57,7 +61,8 @@ public class Usuario {
     }
 
     public Usuario(String nombre, String apellido1, String apellido2, LocalDate fechaNacimiento,
-                   Generos genero, float peso, float altura, String email, String telefono, String contrasenha) {
+                   Generos genero, float peso, float altura, String email, String telefono, String contrasenha,
+                   Objetivos objetivo,  NivelDeActividad nivelDeActividad) {
         this.nombre = nombre;
         this.apellido1 = apellido1;
         this.apellido2 = apellido2;
@@ -68,6 +73,8 @@ public class Usuario {
         this.email = email;
         this.telefono = telefono;
         this.contrasenha = contrasenha;
+        this.objetivo = objetivo;
+        this.nivelDeActividad = nivelDeActividad;
     }
 
 }

@@ -63,7 +63,7 @@ public class AutentificationRepository {
                 if (response.isSuccessful() && response.body() != null) {
                     resultadoConsulta.setValue(new Result.Success<>(response.body()));
                 } else {
-                    String error = "Error en las credenciales..";
+                    String error = "Error en las credenciales.";
                     try {
                         if (response.errorBody() != null) {
                             error = response.errorBody().string();

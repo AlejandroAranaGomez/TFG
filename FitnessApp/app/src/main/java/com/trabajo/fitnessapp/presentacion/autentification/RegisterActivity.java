@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast; // Para mostrar mensajes al usuario
@@ -22,6 +23,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.trabajo.fitnessapp.R;
 import com.trabajo.fitnessapp.dominio.Generos;
+import com.trabajo.fitnessapp.dominio.NivelDeActividad;
+import com.trabajo.fitnessapp.dominio.Objetivos;
 import com.trabajo.fitnessapp.presentacion.menu.MenuPrincipalActivity;
 
 import java.util.ArrayList;
@@ -37,43 +40,41 @@ public class RegisterActivity extends AppCompatActivity {
 
     private Spinner spinnerGenero;
     private Button botonRegistrar;
-    private ImageButton botonVolverInicio;
+    private ImageButton botonVolverActividad;
+    private Objetivos objetivoSeleccionado;
+    private NivelDeActividad nivelDeActividadSeleccionado;
+    private ProgressBar barraProgresoActividad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_register);
-
-        viewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
-
-        enlazarVistas();
-        // Boton para volver atras
-        botonVolverInicio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        mensajeAlRegistrar();
-
-        // --- 2. Enlazar la UI ---
-
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.mainRegister), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // --- 3. Asignar la acción al botón ---
-        botonRegistrar.setOnClickListener(v -> {
-            // Llama al método que hace el trabajo
-            registrarUsuarioDesdeFormulario();
-        });
+        viewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
+
+        try {
+            String objetivo = getIntent().getStringExtra("Objetivo_seleccionado");
+            objetivoSeleccionado = Objetivos.valueOf(objetivo);
+            String nivelDeActividad = getIntent().getStringExtra("Actividad_seleccionada");
+            nivelDeActividadSeleccionado = NivelDeActividad.valueOf(nivelDeActividad);
+        } catch (Exception e) {
+            Toast.makeText(this, "Error al recibir los datos.", Toast.LENGTH_LONG).show();
+        }
+
+        enlazarVistas();
+
+        configurarBotones();
+
+        mensajeAlRegistrar();
+
+        barraProgresoActividad.setProgress(100);
+
     }
 
     /**
@@ -101,8 +102,26 @@ public class RegisterActivity extends AppCompatActivity {
         editPeso = findViewById(R.id.editPeso);
         editAltura = findViewById(R.id.editAltura);
         botonRegistrar = findViewById(R.id.botonRegistrar);
-        botonVolverInicio = findViewById(R.id.botonVolverInicio);
+        botonVolverActividad = findViewById(R.id.botonVolverActividad);
+
+        View barraProgreso = findViewById(R.id.barraProgreso);
+        barraProgresoActividad = barraProgreso.findViewById(R.id.barraProgresoLayout);
     }
+
+    private void configurarBotones() {
+        // Boton para volver atras
+        botonVolverActividad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        botonRegistrar.setOnClickListener(v -> {
+            registrarUsuarioDesdeFormulario();
+        });
+    }
+
     private ArrayAdapter<String> editDesplegableGenero(List<String> opcinesGenero) {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, opcinesGenero) {
             @Override
@@ -133,10 +152,6 @@ public class RegisterActivity extends AppCompatActivity {
         return adapter;
     }
 
-    /**
-     * Se ejecuta al pulsar el botón de Registrar.
-     * Lee, valida y envía los datos a la API.
-     */
     private void registrarUsuarioDesdeFormulario() {
 
         viewModel.registrar(editNombre.getText().toString().trim(),
@@ -148,10 +163,13 @@ public class RegisterActivity extends AppCompatActivity {
                 editFechaNacimiento.getText().toString().trim(),
                 (String) spinnerGenero.getSelectedItem(),
                 editPeso.getText().toString().trim(),
-                editAltura.getText().toString().trim()
+                editAltura.getText().toString().trim(),
+                objetivoSeleccionado,
+                nivelDeActividadSeleccionado
                 );
     }
 
+    // Mensaje que se muestra al registrarse dependiendo de los datos que escribas.
     private void mensajeAlRegistrar() {
         viewModel.getMensajeError().observe(this, mensaje -> {
             Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();

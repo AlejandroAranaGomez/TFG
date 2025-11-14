@@ -33,6 +33,7 @@ public class LoginViewModel extends ViewModel {
         }
 
         InicioSesionDTO dto = new InicioSesionDTO();
+
         try {
             dto.setEmail(email);
             dto.setContrasenha(contrasenha);
