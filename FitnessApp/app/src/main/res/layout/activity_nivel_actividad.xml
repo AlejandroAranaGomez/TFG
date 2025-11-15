@@ -49,7 +49,7 @@
         android:layout_width="100dp"
         android:layout_marginTop="15dp"
         android:layout_height="100dp"
-        app:srcCompat="@drawable/ic_frecuencia_actividad"
+        app:srcCompat="@drawable/ic_actvidad"
         app:layout_constraintTop_toBottomOf="@+id/tituloActividad"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,7 +77,7 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             android:drawableStart="@drawable/ic_actividad_sedentario"
-            android:background="@drawable/ic_fondo_opciones"
+            android:background="@drawable/fondo_opciones"
             android:layout_marginBottom="15dp"
             android:button="@null" />
 
@@ -90,7 +90,7 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             android:drawableStart="@drawable/ic_actividad_ligera"
-            android:background="@drawable/ic_fondo_opciones"
+            android:background="@drawable/fondo_opciones"
             android:layout_marginBottom="15dp"
             android:button="@null"/>
 
@@ -103,7 +103,7 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             android:drawableStart="@drawable/ic_actividad_moderado"
-            android:background="@drawable/ic_fondo_opciones"
+            android:background="@drawable/fondo_opciones"
             android:layout_marginBottom="15dp"
             android:button="@null"/>
 
@@ -116,7 +116,7 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             android:drawableStart="@drawable/ic_actividad_intensa"
-            android:background="@drawable/ic_fondo_opciones"
+            android:background="@drawable/fondo_opciones"
             android:layout_marginBottom="15dp"
             android:button="@null"/>
 
@@ -129,7 +129,7 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             android:drawableStart="@drawable/ic_actividad_atleta"
-            android:background="@drawable/ic_fondo_opciones"
+            android:background="@drawable/fondo_opciones"
             android:button="@null"/>
 
     </RadioGroup>

@@ -94,7 +94,7 @@
             android:textColor="@color/white"
             android:textSize="18sp"
             android:drawableStart="@drawable/ic_perder_peso"
-            android:background="@drawable/ic_fondo_opciones"
+            android:background="@drawable/fondo_opciones"
             android:layout_marginBottom="15dp"
             android:button="@null"
             />
@@ -108,7 +108,7 @@
             android:textColor="@color/white"
             android:textSize="18sp"
             android:drawableStart="@drawable/ic_ganar_peso"
-            android:background="@drawable/ic_fondo_opciones"
+            android:background="@drawable/fondo_opciones"
             android:layout_marginBottom="15dp"
             android:button="@null"/>
 
@@ -121,7 +121,7 @@
             android:textColor="@color/white"
             android:textSize="18sp"
             android:drawableStart="@drawable/ic_mismo_peso"
-            android:background="@drawable/ic_fondo_opciones"
+            android:background="@drawable/fondo_opciones"
             android:button="@null"/>
     </RadioGroup>
 
