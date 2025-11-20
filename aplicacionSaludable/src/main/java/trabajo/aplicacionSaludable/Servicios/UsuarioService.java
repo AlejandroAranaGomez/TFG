@@ -15,13 +15,11 @@ import java.time.LocalDate;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder PasswordEncoder;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder PasswordEncoder, PasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
-        this.PasswordEncoder = PasswordEncoder;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -34,7 +32,7 @@ public class UsuarioService {
         }
 
         // Hasheo la contraseña para no pasarla directamente
-        String contrasenhaHash = PasswordEncoder.encode(registroDTO.getContrasenha());
+        String contrasenhaHash = passwordEncoder.encode(registroDTO.getContrasenha());
 
         Usuario nuevoUsuario = getUsuario(registroDTO, contrasenhaHash);
 

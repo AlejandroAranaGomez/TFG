@@ -1,0 +1,60 @@
+
+@startuml
+allow_mixing
+left to right direction
+skinparam linetype polyline
+
+package "Arquitectura de Componentes" {
+    
+
+    component "AutentificationController" 
+    component "AlimentoController" 
+
+    component "UsuarioService" 
+    component "AlimentoService" 
+
+    component "UsuarioRepository" 
+    component "AlimentoRepository" 
+
+    
+    AutentificationController -(0- UsuarioService : IUsuarioService
+    UsuarioService -(0- UsuarioRepository : IUsuarioRepository
+
+    AlimentoController -(0- AlimentoService : IAlimentoService
+    AlimentoService -(0- AlimentoRepository : IAlimentoRepository
+
+    AlimentoService -(0- UsuarioRepository : IUsuarioRepository
+
+}
+
+
+package "Especificación de Interfaces" {
+    
+    interface "IUsuarioService" {
+        + registrarUsuario(RegistroDTO) : UsuarioDTO
+        + iniciarSesion(InicioSesionDTO) : UsuarioDTO
+    }
+
+    interface "IAlimentoService" {
+        + creaAlimento(AlimentoDTO, Long) : AlimentoDTO
+        + actualizaAlimento(Long, AlimentoDTO, Long) : AlimentoDTO
+        + listaAlimentosUsuario(Long idUsuario) : List<AlimentoDTO>
+        + listaAlimentosGlobales() : List<AlimentoDTO>
+        + borraAlimento(Long, Long) : void
+    }
+
+    interface "IUsuarioRepository" {
+        + findByEmail(String) : Usuario
+    }
+
+    interface "IAlimentoRepository" {
+        + findByNombreAndUsuarioIsNull(String) : Alimento
+        + findByNombreAndUsuario(String, Usuario) : Alimento
+        + findByIdAlimento(Long) : Alimento
+        + findByUsuarioOrUsuarioIsNull(Usuario) : List<Alimento>
+        + findByUsuarioIsNull() : List<Alimento>
+    }
+}
+
+
+@enduml

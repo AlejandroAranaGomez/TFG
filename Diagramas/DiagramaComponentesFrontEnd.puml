@@ -1,0 +1,44 @@
+@startuml
+skinparam linetype polyline
+allow_mixing
+left to right direction
+
+package "Arquitectura de Componentes" {
+
+    component "RegisterActivity" 
+    component "RegisterViewModel" 
+    component "AutentificationRepository" 
+
+    component "LoginActivity" 
+    component "LoginViewModel" 
+
+    RegisterActivity -(0- RegisterViewModel : IRegisterViewModel
+    RegisterViewModel -(0- AutentificationRepository : IAutentificationRepository
+
+    LoginActivity -(0- LoginViewModel : ILoginViewModel
+    LoginViewModel -(0- AutentificationRepository : IAutentificationRepository
+}
+
+package "Especificación de Interfaces" {
+
+
+    interface IRegisterViewModel {
+        + registar(String nombre, String apellido1, String apellido2, String email, 
+                    String contrasenha, String telefono, String fechaNacimiento,
+                    String genero, String peso, String altura, Objetivos objetivo, NivelDeActividad nivelDeActividad) : void
+    }
+
+    interface ILoginViewModel {
+        + login(String email, String contrasenha) : void
+    }
+
+
+    interface IAutentificationRepository {
+        + registarUsuario(RegistroDTO registroDTO) : UsuarioDTO
+        + iniciarSesion(InicioSesionDTO inicioSesionDTO) : UsuarioDTO
+    }
+
+}
+
+@enduml
+
