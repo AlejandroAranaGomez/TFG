@@ -12,6 +12,8 @@ import com.trabajo.fitnessapp.R;
 
 public class MenuPrincipalActivity extends AppCompatActivity {
 
+    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -12,11 +12,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.trabajo.fitnessapp.R;
+import com.trabajo.fitnessapp.presentacion.menu.MenuPrincipalActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button botonIrARegistro;
-    private Button getBotonIrALogin;
+    private Button botonIrALogin;
+
+    private Button botonMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +28,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         botonIrARegistro = findViewById(R.id.botonPruebaRegistro);
-        getBotonIrALogin = findViewById(R.id.botonPruebaLogin);
+        botonIrALogin = findViewById(R.id.botonPruebaLogin);
+
+        botonMenu = findViewById(R.id.botonMenu);
 
         View mainView = findViewById(R.id.main);
         ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
@@ -47,10 +52,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        getBotonIrALogin.setOnClickListener(new View.OnClickListener() {
+        botonIrALogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        botonMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MenuPrincipalActivity.class);
                 startActivity(intent);
             }
         });

@@ -16,13 +16,11 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder PasswordEncoder;
-    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder PasswordEncoder, PasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder PasswordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.PasswordEncoder = PasswordEncoder;
-        this.passwordEncoder = passwordEncoder;
     }
 
     public UsuarioDTO registrarUsuario(RegistroDTO registroDTO) throws Exception {
@@ -60,9 +58,9 @@ public class UsuarioService {
                 registroDTO.getPeso(),
                 registroDTO.getAltura(),
                 registroDTO.getEmail(),
-                registroDTO.getContrasenha(),
+                registroDTO.getTelefono(),
                 contrasenhaHash,
-                registroDTO.getObjetivos(),
+                registroDTO.getObjetivo(),
                 registroDTO.getNivelDeActividad()
         );
     }
@@ -75,7 +73,7 @@ public class UsuarioService {
                .orElseThrow(() -> new Exception("No existe un usuario con este email."));
 
         // Compruebo si la contrasenha coincide con la que hemos escrito.
-        if (!passwordEncoder.matches(inicioSesionDTO.getContrasenha(), usuario.getContrasenha())) {
+        if (!PasswordEncoder.matches(inicioSesionDTO.getContrasenha(), usuario.getContrasenha())) {
             throw new Exception("La contraseña no coincide.");
         }
 
