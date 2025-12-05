@@ -5,5 +5,6 @@
     <color name="BotonesImagenes">#5ABD19</color>
     <color name="textosExplicacion">#A0A49D</color>
     <color name="pistaEditables">#757474</color>
-    <color name="fondoBarraMenu">#0F0F0F</color>
+    <color name="fondoBarraMenu">#1D1D1D</color>
+    <color name="fondoPantalla">#181818</color>
 </resources>

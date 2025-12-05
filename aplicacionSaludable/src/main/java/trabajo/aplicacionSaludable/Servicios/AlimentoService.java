@@ -36,6 +36,7 @@ public class AlimentoService {
 
     private AlimentoDTO EntidadaDTO(Alimento alimento) {
         AlimentoDTO alimentoDTO = new AlimentoDTO();
+        alimentoDTO.setIdAlimento(alimento.getIdAlimento());
         alimentoDTO.setNombre(alimento.getNombre());
         alimentoDTO.setCalorias(alimento.getCalorias());
         alimentoDTO.setProteinas(alimento.getProteinas());

@@ -81,13 +81,12 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();
         });
 
-        viewModel.getRegistrarExito().observe(this, mensaje -> {
-            Toast.makeText(this, "¡Bienvnido de nuevo!", Toast.LENGTH_LONG).show();
+        viewModel.getRegistrarExito().observe(this, usuarioDTO -> {
+            Toast.makeText(this, "¡Bienvenido " + usuarioDTO.getNombre() + "!", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(LoginActivity.this, MenuPrincipalActivity.class);
+            intent.putExtra("ID_USUARIO",usuarioDTO.getIdUsuario());
             startActivity(intent);
             finish();
         });
     }
-
-
 }

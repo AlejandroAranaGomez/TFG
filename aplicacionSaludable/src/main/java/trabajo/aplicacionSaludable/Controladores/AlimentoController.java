@@ -16,7 +16,7 @@ public class AlimentoController {
     @Autowired
     private AlimentoService alimentoService;
 
-    @PostMapping("usuarios/{idUsuario}")
+    @PostMapping("/usuarios/{idUsuario}")
     public ResponseEntity<?> crearAlimento(@PathVariable Long idUsuario, @RequestBody AlimentoDTO alimentoDTO) throws Exception {
         try {
             AlimentoDTO nuevoAlimento = alimentoService.creaAlimento(alimentoDTO, idUsuario);
