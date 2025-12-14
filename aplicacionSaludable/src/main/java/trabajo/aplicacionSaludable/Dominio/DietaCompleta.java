@@ -32,6 +32,8 @@ public class DietaCompleta {
     private float carbohidratos;
     @Column(nullable = false)
     private float grasas;
+    @Column(nullable = false)
+    private boolean activa;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idUsuario", nullable = false)
@@ -39,15 +41,13 @@ public class DietaCompleta {
 
     @OneToMany(mappedBy = "dietaCompleta", cascade = CascadeType.ALL,  orphanRemoval = true)
     private List<DiaEnDieta> diasDeDieta = new ArrayList<>();
-    @OneToMany(mappedBy = "dietaCompleta", cascade = CascadeType.ALL,  orphanRemoval = true)
-    private List<PlanificacionDeDieta> planificacionesDeDieta = new ArrayList<>();
 
     // Necesario para JPA
     public DietaCompleta() {
 
     }
 
-    public DietaCompleta(String nombre, String descripcion, float caloriasTotales, float proteinas, float carbohidratos, float grasas, Usuario usuario) {
+    public DietaCompleta(String nombre, String descripcion, float caloriasTotales, float proteinas, float carbohidratos, float grasas, Usuario usuario, boolean activa) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.caloriasTotales = caloriasTotales;
@@ -55,6 +55,7 @@ public class DietaCompleta {
         this.carbohidratos = carbohidratos;
         this.grasas = grasas;
         this.usuario = usuario;
+        this.activa = activa;
     }
 
 }

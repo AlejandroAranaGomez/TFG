@@ -16,7 +16,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".presentacion.menu.MenuAlimentos"
+            android:name=".presentacion.menu.DetallesDietaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentacion.menu.MenuAlimentosActivity"
             android:exported="false" />
         <activity
             android:name=".presentacion.autentification.NivelActividadActivity"

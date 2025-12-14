@@ -50,8 +50,6 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,  orphanRemoval = true)
     private Set<DietaCompleta> dietas = new HashSet<>();
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,  orphanRemoval = true)
-    private Set<PlanificacionDeDieta> planificacionesDieta = new HashSet<>();
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,  orphanRemoval = true)
     private Set<RutinaCompleta> rutinas = new HashSet<>();
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,  orphanRemoval = true)
     private Set<Alimento> alimentosPersonales = new HashSet<>();

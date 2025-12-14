@@ -23,13 +23,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.trabajo.fitnessapp.R;
 import com.trabajo.fitnessapp.datos.dto.AlimentoDTO;
 import com.trabajo.fitnessapp.datos.dto.ApiAlimentosDTO;
+import com.trabajo.fitnessapp.datos.dto.DietaCompletaDTO;
 import com.trabajo.fitnessapp.presentacion.adaptador.AlimentosAdapter;
 import com.trabajo.fitnessapp.presentacion.adaptador.AlimentosPersonalizadosAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class MenuAlimentos extends AppCompatActivity {
+public class MenuAlimentosActivity extends AppCompatActivity {
     private AlimentosViewModel alimentosViewModel;
     private Button botonBuscar;
     private Button botondespliegaAlimentos;
@@ -42,6 +42,7 @@ public class MenuAlimentos extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView recyclerAlimentosPropios;
     private Long idUsuario;
+    private AlertDialog dialogoActual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,16 +79,7 @@ public class MenuAlimentos extends AppCompatActivity {
             }
 
             @Override
-            public void onBorrarClick(AlimentoDTO alimento) {
-                new AlertDialog.Builder(MenuAlimentos.this)
-                        .setTitle("Eliminar Alimento")
-                        .setMessage("¿Estás seguro de que quieres borrar " + alimento.getNombre() + "?")
-                        .setPositiveButton("Sí, borrar", (dialog, which) -> {
-                            borrarAlimentoConfirmado(alimento);
-                        })
-                        .setNegativeButton("Cancelar", null)
-                        .show();
-            }
+            public void onBorrarClick(AlimentoDTO alimento) { mostrarPopUpBorrar(alimento); }
         });
 
         botonCrearAlimento.setOnClickListener(v -> mostrarPopUpCrearAlimento());
@@ -95,6 +87,7 @@ public class MenuAlimentos extends AppCompatActivity {
         alimentosViewModel = new ViewModelProvider(this).get(AlimentosViewModel.class);
 
         cargarDatos();
+        observarAlimentos();
 
         configurarBotones();
     }
@@ -243,11 +236,11 @@ public class MenuAlimentos extends AppCompatActivity {
         editCarbos.setText(String.valueOf(alimento.getCarbohidratos()));
         editGrasas.setText(String.valueOf(alimento.getGrasas()));
 
-        AlertDialog dialog = builder.create();
-        if (dialog.getWindow() != null)
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogoActual = builder.create();
+        if (dialogoActual.getWindow() != null)
+            dialogoActual.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        botonCancelar.setOnClickListener(v -> dialog.dismiss());
+        botonCancelar.setOnClickListener(v -> dialogoActual.dismiss());
 
         botonGuardar.setOnClickListener(v -> {
             try {
@@ -259,7 +252,6 @@ public class MenuAlimentos extends AppCompatActivity {
                 float nuevasGrasas = Float.parseFloat(editGrasas.getText().toString());
 
                 AlimentoDTO alimentoEditado = new AlimentoDTO();
-
                 alimentoEditado.setIdAlimento(alimento.getIdAlimento());
                 alimentoEditado.setNombre(nuevoNombre);
                 alimentoEditado.setCalorias(nuevasCalorias);
@@ -267,12 +259,40 @@ public class MenuAlimentos extends AppCompatActivity {
                 alimentoEditado.setCarbohidratos(nuevosCarbos);
                 alimentoEditado.setGrasas(nuevasGrasas);
 
-                actualizarAlimentoConfirmado(alimentoEditado, dialog);
+                actualizarAlimentoConfirmado(alimentoEditado, dialogoActual);
 
             } catch (NumberFormatException e) {
                 Toast.makeText(this, "Por favor, introduce números válidos", Toast.LENGTH_SHORT).show();
             }
         });
+        dialogoActual.show();
+    }
+
+    public void mostrarPopUpBorrar(AlimentoDTO alimentoDTO) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.borrar_alimento, null);
+        builder.setView(view);
+
+        AlertDialog dialog = builder.create();
+
+        TextView pregunta = view.findViewById(R.id.preguntaBorrar);
+        pregunta.setText("¿Deseas borrar el alimento " + alimentoDTO.getNombre() + "?");
+
+        Button cancelar = view.findViewById(R.id.botonCancelarBorrar);
+        cancelar.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        Button confirmar = view.findViewById(R.id.botonConfirmarBorrar);
+        confirmar.setOnClickListener(v -> {
+            borrarAlimentoConfirmado(alimentoDTO);
+            dialog.dismiss();
+        });
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(0));
+        }
+
         dialog.show();
     }
 
@@ -281,13 +301,7 @@ public class MenuAlimentos extends AppCompatActivity {
             Toast.makeText(this, "Error: Usuario no encontrado", Toast.LENGTH_LONG).show();
         }
 
-        alimentosViewModel.obtenerLosAlimentos(idUsuario).observe(this, listaAlimentos -> {
-            if (listaAlimentos != null && !listaAlimentos.isEmpty()) {
-                misAlimentosAdapter.setLista(listaAlimentos);
-            } else {
-                Toast.makeText(this, "No hay alimentos en la lista.", Toast.LENGTH_LONG).show();
-            }
-        });
+        alimentosViewModel.obtenerLosAlimentos(idUsuario);
     }
 
     private void borrarAlimentoConfirmado(AlimentoDTO alimento) {
@@ -296,14 +310,7 @@ public class MenuAlimentos extends AppCompatActivity {
             return;
         }
 
-        alimentosViewModel.borrarAlimento(alimento.getIdAlimento(), idUsuario).observe(this, exito -> {
-            if (exito) {
-                Toast.makeText(this, "Alimento eliminado correctamente", Toast.LENGTH_SHORT).show();
-                cargarDatos();
-            } else {
-                Toast.makeText(this, "Error al eliminar.", Toast.LENGTH_LONG).show();
-            }
-        });
+        alimentosViewModel.borrarAlimento(alimento.getIdAlimento(), idUsuario);
     }
 
     private void actualizarAlimentoConfirmado(AlimentoDTO alimento, AlertDialog dialog) {
@@ -312,15 +319,7 @@ public class MenuAlimentos extends AppCompatActivity {
             return;
         }
 
-        alimentosViewModel.actualizarAlimento(alimento.getIdAlimento(), idUsuario, alimento).observe(this, exito -> {
-            if (exito) {
-                Toast.makeText(this, "Alimento actualizado", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-                cargarDatos();
-            } else {
-                Toast.makeText(this, "Error al actualizar.", Toast.LENGTH_LONG).show();
-            }
-        });
+        alimentosViewModel.actualizarAlimento(alimento.getIdAlimento(), idUsuario, alimento);
     }
 
     private void mostrarPopUpCrearAlimento() {
@@ -340,10 +339,10 @@ public class MenuAlimentos extends AppCompatActivity {
         titulo.setText("Crear Alimento");
         botonGuardar.setText("Crear");
 
-        AlertDialog dialog = builder.create();
-        if (dialog.getWindow() != null) dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogoActual = builder.create();
+        if (dialogoActual.getWindow() != null) dialogoActual.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        botonCancelar.setOnClickListener(v -> dialog.dismiss());
+        botonCancelar.setOnClickListener(v -> dialogoActual.dismiss());
 
         botonGuardar.setOnClickListener(v -> {
             try {
@@ -361,20 +360,44 @@ public class MenuAlimentos extends AppCompatActivity {
                 alimentoCreado.setCarbohidratos(carbohidratos);
                 alimentoCreado.setGrasas(grasas);
 
-                alimentosViewModel.crearAlimento(idUsuario, alimentoCreado).observe(this, exito -> {
-                    if (exito) {
-                        Toast.makeText(this, "Alimento creado", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                        cargarDatos();
-                    } else {
-                        Toast.makeText(this, "Error al crear el alimento.", Toast.LENGTH_LONG).show();
-                    }
-                });
+                alimentosViewModel.crearAlimento(idUsuario, alimentoCreado);
 
             } catch (NumberFormatException e) {
                 Toast.makeText(this, "Por favor, introduce números válidos", Toast.LENGTH_SHORT).show();
             }
         });
-        dialog.show();
+        dialogoActual.show();
+    }
+
+    private void observarAlimentos() {
+        alimentosViewModel.getAlimentos().observe(this, lista -> {
+            misAlimentosAdapter.setLista(lista != null ? lista : new ArrayList<>());
+        });
+
+        alimentosViewModel.getMensajeError().observe(this, mensaje -> {
+            if (mensaje != null && !mensaje.isEmpty()) {
+                Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        alimentosViewModel.getAlimentoCreado().observe(this, exito -> {
+            if (exito != null && exito) {
+                Toast.makeText(this, "Alimento creado correctamente", Toast.LENGTH_SHORT).show();
+                dialogoActual.dismiss();
+            }
+        });
+
+        alimentosViewModel.getAlimentoActualizado().observe(this, exito -> {
+            if (exito != null && exito) {
+                Toast.makeText(this, "Alimento actualizado correctamente", Toast.LENGTH_SHORT).show();
+                dialogoActual.dismiss();
+            }
+        });
+
+        alimentosViewModel.getAlimentoBorrado().observe(this, exito -> {
+            if (exito != null && exito) {
+                Toast.makeText(this, "Alimento eliminado correctamente", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

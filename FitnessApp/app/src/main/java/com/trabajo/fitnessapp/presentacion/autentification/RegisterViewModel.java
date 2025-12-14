@@ -1,16 +1,14 @@
 package com.trabajo.fitnessapp.presentacion.autentification;
 
 import android.util.Patterns;
-import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.trabajo.fitnessapp.datos.GestionErrores.Result;
 import com.trabajo.fitnessapp.datos.dto.UsuarioDTO;
-import com.trabajo.fitnessapp.datos.repository.AutentificationRepository.Result;
 
-import com.trabajo.fitnessapp.datos.api.AutorizacionService;
 import com.trabajo.fitnessapp.datos.dto.RegistroDTO;
 import com.trabajo.fitnessapp.datos.repository.AutentificationRepository;
 import com.trabajo.fitnessapp.dominio.Generos;

@@ -132,7 +132,4 @@ public class AlimentoService {
 
         alimentoRepository.deleteById(idAlimento);
     }
-
-
-
 }

@@ -20,7 +20,7 @@ public class Alimento {
     @Column(name = "idAlimento")
     private Long idAlimento;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String nombre;
     @Column(nullable = false)
     private float calorias;

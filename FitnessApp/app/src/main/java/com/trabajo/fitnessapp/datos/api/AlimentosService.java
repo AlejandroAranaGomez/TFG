@@ -35,5 +35,4 @@ public interface AlimentosService {
             @Path("idUsuario") Long idUsuario,
             @Body AlimentoDTO alimentoDTO
     );
-
 }
