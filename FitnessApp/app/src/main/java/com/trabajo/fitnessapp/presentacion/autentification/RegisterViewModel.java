@@ -1,14 +1,14 @@
 package com.trabajo.fitnessapp.presentacion.autentification;
 
 import android.util.Patterns;
-import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.trabajo.fitnessapp.datos.repository.AutentificationRepository.Result;
 
-import com.trabajo.fitnessapp.datos.api.AutorizacionService;
+import com.trabajo.fitnessapp.datos.GestionMensajes.Result;
+import com.trabajo.fitnessapp.datos.dto.UsuarioDTO;
+
 import com.trabajo.fitnessapp.datos.dto.RegistroDTO;
 import com.trabajo.fitnessapp.datos.repository.AutentificationRepository;
 import com.trabajo.fitnessapp.dominio.Generos;
@@ -23,7 +23,7 @@ public class RegisterViewModel extends ViewModel {
     private final MutableLiveData<String> mensajeError = new MutableLiveData<>();
 
     // Variable si la respuesta es buena.
-    private final MutableLiveData<Boolean> registrarExito = new MutableLiveData<>();
+    private final MutableLiveData<UsuarioDTO> registrarExito = new MutableLiveData<>();
 
 
     public RegisterViewModel() {
@@ -34,7 +34,7 @@ public class RegisterViewModel extends ViewModel {
         return mensajeError;
     }
 
-    public LiveData<Boolean> getRegistrarExito() {
+    public LiveData<UsuarioDTO> getRegistrarExito() {
         return registrarExito;
     }
 
@@ -92,7 +92,7 @@ public class RegisterViewModel extends ViewModel {
 
         autentificationRepository.registrarUsuario(dto).observeForever(result -> {
             if (result instanceof Result.Success) {
-                registrarExito.setValue(true);
+                registrarExito.setValue(((Result.Success<UsuarioDTO>) result).datos);
             } else if (result instanceof Result.Error) {
                 mensajeError.setValue(((Result.Error<?>) result).error);
             }

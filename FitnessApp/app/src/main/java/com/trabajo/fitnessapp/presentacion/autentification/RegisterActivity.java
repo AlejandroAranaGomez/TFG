@@ -122,8 +122,8 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private ArrayAdapter<String> editDesplegableGenero(List<String> opcinesGenero) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, opcinesGenero) {
+    private ArrayAdapter<String> editDesplegableGenero(List<String> opcionesGenero) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, opcionesGenero) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
@@ -175,9 +175,10 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();
         });
 
-        viewModel.getRegistrarExito().observe(this, mensaje -> {
+        viewModel.getRegistrarExito().observe(this, usuarioDTO -> {
             Toast.makeText(this, "Registro Exitoso", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(RegisterActivity.this, MenuPrincipalActivity.class);
+            intent.putExtra("ID_USUARIO",usuarioDTO.getIdUsuario());
             startActivity(intent);
             finish();
         });

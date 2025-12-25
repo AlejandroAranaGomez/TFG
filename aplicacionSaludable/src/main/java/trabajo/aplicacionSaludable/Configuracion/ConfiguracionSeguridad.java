@@ -30,8 +30,7 @@ public class ConfiguracionSeguridad {
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/autentification/registrar").permitAll()
-                        .requestMatchers("/api/autentification/login").permitAll()
+                        .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated()
                 );
 

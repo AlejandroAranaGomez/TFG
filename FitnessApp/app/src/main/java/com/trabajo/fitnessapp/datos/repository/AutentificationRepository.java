@@ -3,6 +3,7 @@ package com.trabajo.fitnessapp.datos.repository;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.trabajo.fitnessapp.datos.GestionMensajes.Result;
 import com.trabajo.fitnessapp.datos.api.AutorizacionService;
 import com.trabajo.fitnessapp.datos.api.RetrofitClient;
 import com.trabajo.fitnessapp.datos.dto.InicioSesionDTO;
@@ -82,26 +83,4 @@ public class AutentificationRepository {
         });
         return resultadoConsulta;
     }
-
-    // Metodo auxiliar que devuelve los datos.
-    // Si la llamada es exitosa o un string con el error si la llamada no sale bien.
-    public abstract static class Result<T> {
-        private Result() {
-
-        }
-        public static final class Success<T> extends Result<T> {
-            public T datos;
-            public Success(T datos) {
-                this.datos = datos;
-            }
-        }
-
-        public static final class Error<T> extends Result<T> {
-            public String error;
-            public Error(String error) {
-                this.error = error;
-            }
-        }
-    }
-
 }

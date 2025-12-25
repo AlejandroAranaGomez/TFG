@@ -31,19 +31,23 @@ public class Alimento {
     @Column(nullable = false)
     private float grasas;
 
-    @OneToMany(mappedBy = "alimento", cascade = CascadeType.ALL,  orphanRemoval = true)
-    private Set<Ingrediente> ingredientesEnComidas = new HashSet<>();
+    // Existen alientos globales que todo el mundo tiene y alimentos personales creado por usuarios que son unicamente suyos
+    // si un alimento tiene a null el usuario significa que es global no lo ha creado nadie.
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idUsuario", nullable = true)
+    private Usuario usuario;
 
     public Alimento() {
 
     }
 
-    public Alimento(String nombre, float calorias,float proteinas, float carbohidratos, float grasas) {
+    public Alimento(String nombre, float calorias,float proteinas, float carbohidratos, float grasas,  Usuario usuario) {
         this.nombre = nombre;
         this.calorias = calorias;
         this.proteinas = proteinas;
         this.carbohidratos = carbohidratos;
         this.grasas = grasas;
+        this.usuario = usuario;
     }
     
 }

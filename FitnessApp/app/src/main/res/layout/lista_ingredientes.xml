@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layoutPopup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/fondoPantalla">
+
+    <!-- Contenedor del título y botón -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tituloIngredientes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Ingredientes"
+            android:textColor="@color/textos"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/botonModificarComida"
+            android:paddingEnd="8dp"/>
+
+        <Button
+            android:id="@+id/botonModificarComida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Modificar Comida"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/BotonesImagenes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tituloIngredientes"
+            app:layout_constraintBottom_toBottomOf="@id/tituloIngredientes"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerIngredientes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/botonCerrarPopup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cerrar"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/BotonesImagenes"
+        android:layout_marginTop="10dp" />
+
+</LinearLayout>
