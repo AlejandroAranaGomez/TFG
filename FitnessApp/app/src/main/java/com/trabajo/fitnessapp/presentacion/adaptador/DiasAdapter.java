@@ -69,7 +69,7 @@ public class DiasAdapter extends RecyclerView.Adapter<DiasAdapter.DiaViewHolder>
             String diaSemana = dia.getDiaDeLaSemana().name();
             holder.nombre.setText(diaSemana.substring(0, 3).toUpperCase(Locale.getDefault()));
 
-            holder.calorias.setText(String.format(Locale.getDefault(), "%.0f", dia.getCaloriasTotales()));
+            holder.calorias.setText(String.format(Locale.getDefault(), "%.2f", dia.getCaloriasTotales()));
 
             if (position == posicionActual) {
                 holder.layout.setBackgroundColor(context.getResources().getColor(R.color.BotonesImagenes, context.getTheme()));

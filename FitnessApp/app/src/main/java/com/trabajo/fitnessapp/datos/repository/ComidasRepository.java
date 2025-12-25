@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.trabajo.fitnessapp.datos.GestionMensajes.Result;
-import com.trabajo.fitnessapp.datos.api.DietasService;
+import com.trabajo.fitnessapp.datos.api.ComidaService;
 import com.trabajo.fitnessapp.datos.api.RetrofitClient;
-import com.trabajo.fitnessapp.datos.dto.DietaCompletaDTO;
+import com.trabajo.fitnessapp.datos.dto.ComidaDTO;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,24 +15,26 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DietasRepository {
 
-    private final DietasService dietasService;
+public class ComidasRepository {
 
-    public DietasRepository() {
-        this.dietasService = RetrofitClient.getClient().create(DietasService.class);
+    private final ComidaService comidaService;
+
+    public ComidasRepository() {
+        this.comidaService = RetrofitClient.getClient().create(ComidaService.class);
     }
 
-    public LiveData<Result<List<DietaCompletaDTO>>> obtenerDietasUsuario(Long idUsuario) {
-        MutableLiveData<Result<List<DietaCompletaDTO>>> dietas = new MutableLiveData<>();
+    public LiveData<Result<List<ComidaDTO>>> obtenerComidas(Long idDiaEnDieta) {
+        MutableLiveData<Result<List<ComidaDTO>>> comidas = new MutableLiveData<>();
 
-        dietasService.obtenerDietaUsuario(idUsuario).enqueue(new Callback<List<DietaCompletaDTO>>() {
+        comidaService.obtenerComidas(idDiaEnDieta).enqueue(new Callback<List<ComidaDTO>>() {
+
             @Override
-            public void onResponse(Call<List<DietaCompletaDTO>> call, Response<List<DietaCompletaDTO>> response) {
+            public void onResponse(Call<List<ComidaDTO>> call, Response<List<ComidaDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    dietas.setValue(new Result.Success<>(response.body()));
+                    comidas.setValue(new Result.Success<>(response.body()));
                 } else {
-                    String error = "Error al obtener las dietas";
+                    String error = "Error al cargar las comidas";
                     try {
                         if (response.errorBody() != null) {
                             error = response.errorBody().string();
@@ -40,33 +42,34 @@ public class DietasRepository {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    dietas.setValue(new Result.Error<>(error));
+                    comidas.setValue(new Result.Error<>(error));
                 }
             }
 
             @Override
-            public void onFailure(Call<List<DietaCompletaDTO>> call, Throwable t) {
-                dietas.setValue(new Result.Error<>("Error de conexión: " + t.getMessage()));
+            public void onFailure(Call<List<ComidaDTO>> call, Throwable t) {
+                comidas.setValue(new Result.Error<>("Error de conexión: " + t.getMessage()));
             }
         });
-        return dietas;
+        return comidas;
     }
 
-    public LiveData<Result<DietaCompletaDTO>> crearDieta(Long idUsuario, DietaCompletaDTO dietaCompletaDTO) {
-        MutableLiveData<Result<DietaCompletaDTO>> resultado = new MutableLiveData<>();
+    public LiveData<Result<ComidaDTO>> crearComida(Long idDiaEnDieta, ComidaDTO comidaDTO) {
+        MutableLiveData<Result<ComidaDTO>> resultado = new MutableLiveData<>();
 
-        dietasService.crearDieta(idUsuario, dietaCompletaDTO).enqueue(new Callback<DietaCompletaDTO>() {
+        comidaService.crearComida(idDiaEnDieta, comidaDTO).enqueue(new Callback<ComidaDTO>() {
+
             @Override
-            public void onResponse(Call<DietaCompletaDTO> call, Response<DietaCompletaDTO> response) {
+            public void onResponse(Call<ComidaDTO> call, Response<ComidaDTO> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     resultado.setValue(new Result.Success<>(response.body()));
                 } else {
-                    String error = "Error al crear la dieta";
+                    String error = "Error al crear la comida";
                     try {
                         if (response.errorBody() != null) {
                             error = response.errorBody().string();
                         }
-                    } catch (Exception e) {
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                     resultado.setValue(new Result.Error<>(error));
@@ -74,28 +77,30 @@ public class DietasRepository {
             }
 
             @Override
-            public void onFailure(Call<DietaCompletaDTO> call, Throwable t) {
+            public void onFailure(Call<ComidaDTO> call, Throwable t) {
                 resultado.setValue(new Result.Error<>("Error de conexión: " + t.getMessage()));
             }
         });
         return resultado;
     }
 
-    public LiveData<Result<DietaCompletaDTO>> actualizarDieta(Long idUsuario, Long idDietaCompleta, DietaCompletaDTO dietaCompletaDTO) {
-        MutableLiveData<Result<DietaCompletaDTO>> resultado = new MutableLiveData<>();
+    public LiveData<Result<ComidaDTO>> editarComida(Long idComida, Long idDiaEnDieta, ComidaDTO comidaDTO) {
+        MutableLiveData<Result<ComidaDTO>> resultado = new MutableLiveData<>();
 
-        dietasService.editarDieta(idUsuario, idDietaCompleta, dietaCompletaDTO).enqueue(new Callback<DietaCompletaDTO>() {
+        comidaService.editarComida(idComida, idDiaEnDieta, comidaDTO).enqueue(new Callback<ComidaDTO>() {
+
+
             @Override
-            public void onResponse(Call<DietaCompletaDTO> call, Response<DietaCompletaDTO> response) {
+            public void onResponse(Call<ComidaDTO> call, Response<ComidaDTO> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     resultado.setValue(new Result.Success<>(response.body()));
                 } else {
-                    String error = "Error al actualizar la dieta";
+                    String error = "Error al edtar el dia";
                     try {
                         if (response.errorBody() != null) {
                             error = response.errorBody().string();
                         }
-                    } catch (Exception e) {
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                     resultado.setValue(new Result.Error<>(error));
@@ -103,28 +108,28 @@ public class DietasRepository {
             }
 
             @Override
-            public void onFailure(Call<DietaCompletaDTO> call, Throwable t) {
+            public void onFailure(Call<ComidaDTO> call, Throwable t) {
                 resultado.setValue(new Result.Error<>("Error de conexión: " + t.getMessage()));
             }
         });
         return resultado;
     }
 
-    public LiveData<Result<Boolean>> borrarDietaCompleta(Long idDietaCompleta, Long idUsuario) {
+    public LiveData<Result<Boolean>> borrarComida(Long idComida, Long idDiaEnDieta) {
         MutableLiveData<Result<Boolean>> resultado = new MutableLiveData<>();
 
-        dietasService.borrarDieta(idDietaCompleta, idUsuario).enqueue(new Callback<Void>() {
+        comidaService.borrarComida(idComida, idDiaEnDieta).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     resultado.setValue(new Result.Success<>(true));
                 } else {
-                    String error = "Error al borrar la dieta";
+                    String error = "Error al borrar la comida";
                     try {
                         if (response.errorBody() != null) {
                             error = response.errorBody().string();
                         }
-                    } catch (Exception e) {
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                     resultado.setValue(new Result.Error<>(error));
@@ -138,5 +143,8 @@ public class DietasRepository {
         });
         return resultado;
     }
+
+
+
 
 }

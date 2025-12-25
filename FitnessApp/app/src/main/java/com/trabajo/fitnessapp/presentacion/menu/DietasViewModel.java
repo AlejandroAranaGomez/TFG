@@ -1,12 +1,10 @@
 package com.trabajo.fitnessapp.presentacion.menu;
 
-import android.widget.Toast;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.trabajo.fitnessapp.datos.GestionErrores.Result;
+import com.trabajo.fitnessapp.datos.GestionMensajes.Result;
 import com.trabajo.fitnessapp.datos.dto.DietaCompletaDTO;
 import com.trabajo.fitnessapp.datos.repository.DietasRepository;
 

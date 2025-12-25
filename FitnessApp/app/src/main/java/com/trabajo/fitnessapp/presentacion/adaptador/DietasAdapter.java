@@ -48,11 +48,11 @@ public class DietasAdapter extends RecyclerView.Adapter<DietasAdapter.DietaViewH
         DietaCompletaDTO dieta = listaDietas.get(position);
 
         holder.textoNombre.setText(dieta.getNombre());
-        holder.textoCalorias.setText(String.format(Locale.getDefault(), "%.0f kcal", dieta.getCaloriasTotales()));
+        holder.textoCalorias.setText(String.format(Locale.getDefault(), "%.2f kcal", dieta.getCaloriasTotales()));
 
-        holder.textoProteinas.setText(String.format(Locale.getDefault(), "Prot: %.0fg", dieta.getProteinas()));
-        holder.textoCarbohidratos.setText(String.format(Locale.getDefault(), "Carb: %.0fg", dieta.getCarbohidratos()));
-        holder.textoGrasas.setText(String.format(Locale.getDefault(), "Grasas: %.0fg", dieta.getGrasas()));
+        holder.textoProteinas.setText(String.format(Locale.getDefault(), "Prot: %.2fg", dieta.getProteinas()));
+        holder.textoCarbohidratos.setText(String.format(Locale.getDefault(), "Carb: %.2fg", dieta.getCarbohidratos()));
+        holder.textoGrasas.setText(String.format(Locale.getDefault(), "Grasas: %.2fg", dieta.getGrasas()));
 
         holder.textoNombreAtras.setText(dieta.getNombre());
         holder.descripcion.setText(dieta.getDescripcion());

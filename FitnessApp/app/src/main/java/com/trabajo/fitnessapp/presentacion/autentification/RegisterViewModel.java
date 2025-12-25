@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.trabajo.fitnessapp.datos.GestionErrores.Result;
+import com.trabajo.fitnessapp.datos.GestionMensajes.Result;
 import com.trabajo.fitnessapp.datos.dto.UsuarioDTO;
 
 import com.trabajo.fitnessapp.datos.dto.RegistroDTO;

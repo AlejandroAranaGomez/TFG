@@ -1,15 +1,14 @@
 package com.trabajo.fitnessapp.presentacion.menu;
 
-import android.widget.Toast;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.trabajo.fitnessapp.datos.GestionErrores.Result;
+import com.trabajo.fitnessapp.datos.GestionMensajes.Result;
 import com.trabajo.fitnessapp.datos.dto.DiaEnDietaDTO;
 import com.trabajo.fitnessapp.datos.repository.DiasEnDietaRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DiasViewModel extends ViewModel {
@@ -52,7 +51,8 @@ public class DiasViewModel extends ViewModel {
 
         diasEnDietaRepository.obtenerDiasEnDieta(idDietaCompleta).observeForever(result -> {
             if (result instanceof Result.Success) {
-                dias.setValue(((Result.Success<List<DiaEnDietaDTO>>) result).datos);
+                List<DiaEnDietaDTO> nuevaLista = new ArrayList<>(((Result.Success<List<DiaEnDietaDTO>>) result).datos);
+                dias.setValue(nuevaLista);
             } else if (result instanceof Result.Error) {
                 mensajeError.setValue(((Result.Error<List<DiaEnDietaDTO>>) result).error);
             }
@@ -72,7 +72,7 @@ public class DiasViewModel extends ViewModel {
         diasEnDietaRepository.crearDia(idDietaCompleta, diaEnDietaDTO).observeForever(result -> {
             if (result instanceof Result.Success) {
                 diaCreadoExito.setValue(true);
-                obtenerLosDias(idDietaCompleta); // recarga días
+                obtenerLosDias(idDietaCompleta);
             } else if (result instanceof Result.Error) {
                 mensajeError.setValue(((Result.Error<DiaEnDietaDTO>) result).error);
                 diaCreadoExito.setValue(false);

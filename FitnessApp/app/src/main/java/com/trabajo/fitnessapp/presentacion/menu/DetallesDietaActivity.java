@@ -16,9 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.trabajo.fitnessapp.R;
-import com.trabajo.fitnessapp.datos.GestionErrores.Result;
 import com.trabajo.fitnessapp.datos.dto.DietaCompletaDTO;
-import com.trabajo.fitnessapp.datos.repository.AutentificationRepository;
 
 public class DetallesDietaActivity extends AppCompatActivity {
 

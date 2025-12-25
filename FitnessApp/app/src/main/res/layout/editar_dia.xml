@@ -26,6 +26,7 @@
             android:layout_marginBottom="20dp"/>
 
         <TextView
+            android:id="@+id/textoNombreEditarDia"
             android:text="Nombre"
             android:textColor="@color/BotonesImagenes"
             android:layout_width="wrap_content"

@@ -23,7 +23,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.trabajo.fitnessapp.R;
 import com.trabajo.fitnessapp.datos.dto.AlimentoDTO;
 import com.trabajo.fitnessapp.datos.dto.ApiAlimentosDTO;
-import com.trabajo.fitnessapp.datos.dto.DietaCompletaDTO;
 import com.trabajo.fitnessapp.presentacion.adaptador.AlimentosAdapter;
 import com.trabajo.fitnessapp.presentacion.adaptador.AlimentosPersonalizadosAdapter;
 
@@ -107,6 +106,8 @@ public class MenuAlimentosActivity extends AppCompatActivity {
             String query = buscadorAlimentos.getText().toString();
             if (!query.isEmpty()) {
                 buscarEnApi(query);
+            } else {
+                Toast.makeText(this, "Debes escribir un alimento para poder buscar.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -135,7 +136,7 @@ public class MenuAlimentosActivity extends AppCompatActivity {
             if (lista != null && !lista.isEmpty()) {
                 alimentosAdapter.setLista(lista);
             } else {
-                Toast.makeText(this, "No se encontraron los alimentos en la api", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "No se encontro el alimento que estas intentando buscar.", Toast.LENGTH_SHORT).show();
                 alimentosAdapter.setLista(new ArrayList<>());
             }
         });
@@ -160,10 +161,10 @@ public class MenuAlimentosActivity extends AppCompatActivity {
 
         // Usamos %.2f para mostrar solo 2 decimales
         String detalles = String.format(
-                "Calorías \uD83D\uDD25 : %.2f kcal\n" +
-                        "Proteínas \uD83E\uDD69 : %.2f g\n" +
-                        "Carbohidratos \uD83C\uDF5A : %.2f g\n" +
-                        "Grasas \uD83C\uDF6B : %.2f g",
+                "Calorías \uD83D\uDD25 : %.2f kcal/100g\n" +
+                        "Proteínas \uD83E\uDD69 : %.2f g/100g\n" +
+                        "Carbohidratos \uD83C\uDF5A : %.2f g/100g\n" +
+                        "Grasas \uD83C\uDF6B : %.2f g/100g",
                 cal, pro, car, gra
         );
 
@@ -197,10 +198,10 @@ public class MenuAlimentosActivity extends AppCompatActivity {
 
         // Usamos %.2f para mostrar solo 2 decimales
         String detalles = String.format(
-                "Calorías \uD83D\uDD25 : %.2f kcal\n" +
-                        "Proteínas \uD83E\uDD69 : %.2f g\n" +
-                        "Carbohidratos \uD83C\uDF5A : %.2f g\n" +
-                        "Grasas \uD83C\uDF6B : %.2f g",
+                "Calorías \uD83D\uDD25 : %.2f kcal/100g\n" +
+                        "Proteínas \uD83E\uDD69 : %.2f g/100g\n" +
+                        "Carbohidratos \uD83C\uDF5A : %.2f g/100g\n" +
+                        "Grasas \uD83C\uDF6B : %.2f g/100g",
                 cal, pro, car, gra
         );
 

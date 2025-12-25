@@ -37,9 +37,6 @@ public class Alimento {
     @JoinColumn(name = "idUsuario", nullable = true)
     private Usuario usuario;
 
-    @OneToMany(mappedBy = "alimento", cascade = CascadeType.ALL,  orphanRemoval = true)
-    private Set<Ingrediente> ingredientesEnComidas = new HashSet<>();
-
     public Alimento() {
 
     }

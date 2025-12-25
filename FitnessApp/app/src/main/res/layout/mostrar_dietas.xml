@@ -73,6 +73,7 @@
                 <TextView
                     android:id="@+id/proteinas"
                     android:text="Prote 180g"
+                    android:textSize="12dp"
                     android:textColor="@color/textos"
                     android:layout_columnWeight="1"
                     android:gravity="center"
@@ -81,6 +82,7 @@
                 <TextView
                     android:id="@+id/carbohidratos"
                     android:text="Carb 300g"
+                    android:textSize="12dp"
                     android:textColor="@color/textos"
                     android:layout_columnWeight="1"
                     android:gravity="center"
@@ -90,6 +92,7 @@
                     android:id="@+id/grasas"
                     android:text="Grasas 80g"
                     android:textColor="@color/textos"
+                    android:textSize="12dp"
                     android:layout_columnWeight="1"
                     android:gravity="center"
                     android:padding="4dp"/>

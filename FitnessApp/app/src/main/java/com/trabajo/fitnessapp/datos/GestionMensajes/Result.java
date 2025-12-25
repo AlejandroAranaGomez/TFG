@@ -1,4 +1,4 @@
-package com.trabajo.fitnessapp.datos.GestionErrores;
+package com.trabajo.fitnessapp.datos.GestionMensajes;
 
 public abstract class Result<T> {
     private Result() {}

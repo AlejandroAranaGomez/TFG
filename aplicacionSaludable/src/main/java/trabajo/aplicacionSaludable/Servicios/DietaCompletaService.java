@@ -86,6 +86,11 @@ public class DietaCompletaService {
             throw new Exception("Esta dieta pertenece a otro usuario.");
         }
 
+        Optional<DietaCompleta> otraDietaMismoNombre = dietaCompletaRepository.findByNombreAndUsuario(dietaCompletaDTO.getNombre(), dietaExistente.getUsuario());
+        if (otraDietaMismoNombre.isPresent() && !otraDietaMismoNombre.get().getIdDietaCompleta().equals(idDietaCompleta)) {
+            throw new Exception("Ya tienes otra dieta con ese nombre.");
+        }
+
         if (dietaCompletaDTO.isActiva() && !dietaExistente.isActiva()) {
             desactivarDieta(dietaExistente.getUsuario());
         }

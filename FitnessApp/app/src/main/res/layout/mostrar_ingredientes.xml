@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="6dp"
+    android:layout_marginHorizontal="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="6dp"
+    app:cardBackgroundColor="@color/fondoContenedor">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <ImageButton
+            android:id="@+id/botonBorrarIngrediente"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_cerrar_aspa"
+            android:contentDescription="Borrar comida"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageButton
+            android:id="@+id/botonEditarIngrediente"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_editar"
+            android:contentDescription="Editar comida"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/botonBorrarIngrediente"
+            android:layout_marginEnd="12dp" />
+
+        <LinearLayout
+            android:id="@+id/contenidoIngrediente"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/botonEditarIngrediente"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textoNombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jamon Iberico"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textoCantidad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cantidad: 250 g"
+                android:textColor="@color/textos"
+                android:textSize="14sp"
+                android:layout_marginTop="2dp" />
+
+            <TextView
+                android:id="@+id/textoCalorias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="300 kcal"
+                android:textColor="@color/textos"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textoProteinas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="P: 12g"
+                    android:textColor="@color/textos"
+                    android:textSize="12sp"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/textoCarbohidratos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="C: 45g"
+                    android:textColor="@color/textos"
+                    android:textSize="12sp"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/textoGrasas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="G: 6g"
+                    android:textColor="@color/textos"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

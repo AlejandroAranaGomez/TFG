@@ -50,6 +50,25 @@ public class DiaEnDietaService {
         return diaEnDietaDTO;
     }
 
+    private void recalcularTotales(DietaCompleta dieta) {
+        float calDieta = 0, pDieta = 0, cDieta = 0, gDieta = 0;
+
+        for (DiaEnDieta d : dieta.getDiasDeDieta()) {
+            calDieta += d.getCaloriasTotales();
+            pDieta += d.getProteinas();
+            cDieta += d.getCarbohidratos();
+            gDieta += d.getGrasas();
+        }
+
+        dieta.setCaloriasTotales(calDieta);
+        dieta.setProteinas(pDieta);
+        dieta.setCarbohidratos(cDieta);
+        dieta.setGrasas(gDieta);
+
+        dietaCompletaRepository.save(dieta);
+    }
+
+
     public List<DiaEnDietaDTO> listaDiaEnDieta(Long idDietaCompleta) throws Exception {
         DietaCompleta dietaCompleta = dietaCompletaRepository.findByIdDietaCompleta(idDietaCompleta)
                 .orElseThrow(() -> new Exception("No existe una dieta con este id."));
@@ -107,5 +126,7 @@ public class DiaEnDietaService {
         }
 
         diaEnDietaRepository.deleteById(idDiaEnDieta);
+
+        recalcularTotales(dietaExistente);
     }
 }

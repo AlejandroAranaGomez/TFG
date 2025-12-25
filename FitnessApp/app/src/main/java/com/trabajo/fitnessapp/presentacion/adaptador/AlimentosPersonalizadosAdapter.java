@@ -20,6 +20,11 @@ public class AlimentosPersonalizadosAdapter extends RecyclerView.Adapter<Aliment
 
     private List<AlimentoDTO> lista = new ArrayList<>();
     private AlimentosPersonalizadosAdapter.OnItemClickListener listener;
+    private boolean mostrarBotones = true;
+
+    public void setMostrarBotones(boolean mostrarBotones) {
+        this.mostrarBotones = mostrarBotones;
+    }
 
     public interface OnItemClickListener {
         void onItemClick(AlimentoDTO alimento);
@@ -48,21 +53,30 @@ public class AlimentosPersonalizadosAdapter extends RecyclerView.Adapter<Aliment
         AlimentoDTO alimento =  lista.get(position);
         holder.txtNombre.setText(alimento.getNombre());
 
+        if (mostrarBotones) {
+            holder.botonEditar.setVisibility(View.VISIBLE);
+            holder.botonBorrar.setVisibility(View.VISIBLE);
+
+            holder.botonEditar.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onEditarClick(alimento);
+                }
+            });
+
+            holder.botonBorrar.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onBorrarClick(alimento);
+                }
+            });
+
+        } else {
+            holder.botonEditar.setVisibility(View.GONE);
+            holder.botonBorrar.setVisibility(View.GONE);
+        }
+
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onItemClick(alimento);
-            }
-        });
-
-        holder.botonEditar.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onEditarClick(alimento);
-            }
-        });
-
-        holder.botonBorrar.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onBorrarClick(alimento);
             }
         });
     }
