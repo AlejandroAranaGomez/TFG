@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -14,18 +14,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FitnessApp"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31">
+        tools:targetApi="31" >
         <activity
-            android:name=".presentacion.menu.AnhadirIngredienteActivity"
+            android:name=".presentacion.menu.Rutinas.MenuEjercicios"
             android:exported="false" />
         <activity
-            android:name=".presentacion.menu.MenuIngredientesActivity"
+            android:name=".presentacion.menu.Dietas.AnhadirIngredienteActivity"
             android:exported="false" />
         <activity
-            android:name=".presentacion.menu.DetallesDietaActivity"
+            android:name=".presentacion.menu.Dietas.MenuIngredientesActivity"
             android:exported="false" />
         <activity
-            android:name=".presentacion.menu.MenuAlimentosActivity"
+            android:name=".presentacion.menu.Dietas.DetallesDietaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentacion.menu.Dietas.MenuAlimentosActivity"
             android:exported="false" />
         <activity
             android:name=".presentacion.autentification.NivelActividadActivity"
@@ -47,7 +50,7 @@
             android:exported="false" />
         <activity
             android:name=".presentacion.autentification.MainActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

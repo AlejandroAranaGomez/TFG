@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentacion.menu.MenuAlimentosActivity"
+    tools:context=".presentacion.menu.Dietas.MenuAlimentosActivity"
     android:background="@color/fondoPantalla">
 
     <TextView

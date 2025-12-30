@@ -142,7 +142,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/BotonesImagenes"
+        android:backgroundTint="@color/BotonesImagenesDietas"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"/>
 

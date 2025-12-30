@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Añadir ingrediente"
-        android:backgroundTint="@color/BotonesImagenes"
+        android:backgroundTint="@color/BotonesImagenesDietas"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

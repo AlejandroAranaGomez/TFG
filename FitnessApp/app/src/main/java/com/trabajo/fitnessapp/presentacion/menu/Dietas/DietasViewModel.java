@@ -1,4 +1,4 @@
-package com.trabajo.fitnessapp.presentacion.menu;
+package com.trabajo.fitnessapp.presentacion.menu.Dietas;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

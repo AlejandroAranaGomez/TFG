@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Cerrar"
-            android:backgroundTint="@color/BotonesImagenes"
+            android:backgroundTint="@color/BotonesImagenesDietas"
             android:textColor="@color/black"
             android:gravity="center"
             android:layout_marginTop="10dp"

@@ -2,7 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:autoMirrored="true"
     android:height="37dp"
-    android:tint="@color/BotonesImagenes"
+    android:tint="@color/colorImparcial"
     android:viewportHeight="23"
     android:viewportWidth="24"
     android:width="37dp">>

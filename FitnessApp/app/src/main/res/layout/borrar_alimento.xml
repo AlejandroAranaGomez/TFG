@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:text="Si, borrar"
                 android:textColor="@color/black"
-                android:backgroundTint="@color/BotonesImagenes"/>
+                android:backgroundTint="@color/BotonesImagenesDietas"/>
 
         </LinearLayout>
 

@@ -1,4 +1,4 @@
-package com.trabajo.fitnessapp.presentacion.menu;
+package com.trabajo.fitnessapp.presentacion.menu.Dietas;
 
 import android.os.Bundle;
 import android.view.View;

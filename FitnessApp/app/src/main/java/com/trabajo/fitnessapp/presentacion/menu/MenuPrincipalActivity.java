@@ -15,6 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.trabajo.fitnessapp.R;
 import com.trabajo.fitnessapp.presentacion.fragmentosMenu.FragmentoDietas;
 import com.trabajo.fitnessapp.presentacion.fragmentosMenu.FragmentoInicio;
+import com.trabajo.fitnessapp.presentacion.fragmentosMenu.FragmentoRutinas;
 
 public class MenuPrincipalActivity extends AppCompatActivity {
 
@@ -53,7 +54,12 @@ public class MenuPrincipalActivity extends AppCompatActivity {
                 Bundle argumentos = new Bundle();
                 argumentos.putLong("ID_USUARIO", usuarioRegistrado);
                 fragmentoSeleccionado.setArguments(argumentos);
+            } else if (id == R.id.btnMenuRutinas) {
+                fragmentoSeleccionado = new FragmentoRutinas();
 
+                Bundle argumentos = new Bundle();
+                argumentos.putLong("ID_USUARIO", usuarioRegistrado);
+                fragmentoSeleccionado.setArguments(argumentos);
             }
 
             if (fragmentoSeleccionado != null) {

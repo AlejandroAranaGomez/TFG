@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Selecciona el día de la semana:"
-            android:textColor="@color/BotonesImagenes"
+            android:textColor="@color/BotonesImagenesDietas"
             android:layout_marginTop="15dp"/>
 
         <Spinner
@@ -68,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Crear"
-                android:backgroundTint="@color/BotonesImagenes"
+                android:backgroundTint="@color/BotonesImagenesDietas"
                 android:textColor="@color/black"/>
         </LinearLayout>
     </LinearLayout>

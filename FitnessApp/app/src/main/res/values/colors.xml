@@ -2,7 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="BotonesImagenes">#456731</color>
+    <color name="BotonesImagenesDietas">#456731</color>
+    <color name="BotonesImagenesRutinas">#B45C0A</color>
     <color name="textosExplicacion">#A0A49D</color>
     <color name="pistaEditables">#757474</color>
     <color name="fondoBarraMenu">#191d16</color>
@@ -13,4 +14,6 @@
     <color name="textos">#c6eeaa</color>
     <color name="activa">#5ABD19</color>
     <color name="fondoContenedor">#3e4a35</color>
+
+    <color name="colorImparcial">#509F90</color>
 </resources>

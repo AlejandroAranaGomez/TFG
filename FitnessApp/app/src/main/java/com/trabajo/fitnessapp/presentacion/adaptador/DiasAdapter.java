@@ -72,7 +72,7 @@ public class DiasAdapter extends RecyclerView.Adapter<DiasAdapter.DiaViewHolder>
             holder.calorias.setText(String.format(Locale.getDefault(), "%.2f", dia.getCaloriasTotales()));
 
             if (position == posicionActual) {
-                holder.layout.setBackgroundColor(context.getResources().getColor(R.color.BotonesImagenes, context.getTheme()));
+                holder.layout.setBackgroundColor(context.getResources().getColor(R.color.BotonesImagenesDietas, context.getTheme()));
                 holder.nombre.setTextColor(Color.BLACK);
                 holder.calorias.setTextColor(Color.BLACK);
             } else {
