@@ -17,8 +17,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.trabajo.fitnessapp.R;
-import com.trabajo.fitnessapp.dominio.Objetivos;
-import com.trabajo.fitnessapp.presentacion.menu.MenuPrincipalActivity;
+import com.trabajo.fitnessapp.dominio.Objetivo;
 
 
 public class ObjetivosActivity extends AppCompatActivity {
@@ -81,14 +80,14 @@ public class ObjetivosActivity extends AppCompatActivity {
 
         int opcionElegida = radioGroup.getCheckedRadioButtonId();
 
-        Objetivos objetivoSeleccionado = null;
+        Objetivo objetivoSeleccionado = null;
 
         if (opcionElegida == R.id.perderGrasa) {
-            objetivoSeleccionado = Objetivos.PERDER_GRASA;
+            objetivoSeleccionado = Objetivo.PERDER_GRASA;
         } else if (opcionElegida == R.id.ganarMusculo) {
-            objetivoSeleccionado = Objetivos.GANAR_MASA_MUSCULAR;
+            objetivoSeleccionado = Objetivo.GANAR_MASA_MUSCULAR;
         } else if (opcionElegida == R.id.mantenerPeso) {
-            objetivoSeleccionado = Objetivos.MANTENER_PESO;
+            objetivoSeleccionado = Objetivo.MANTENER_PESO;
         }
 
         if (objetivoSeleccionado == null) {
@@ -98,7 +97,7 @@ public class ObjetivosActivity extends AppCompatActivity {
         }
     }
 
-    private void siguientePaso(Objetivos objetivo) {
+    private void siguientePaso(Objetivo objetivo) {
         Intent intent = new Intent(ObjetivosActivity.this, NivelActividadActivity.class);
         intent.putExtra("Objetivo_seleccionado", objetivo.name());
         startActivity(intent);

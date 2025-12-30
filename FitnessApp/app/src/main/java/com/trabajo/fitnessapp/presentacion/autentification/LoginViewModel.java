@@ -23,26 +23,17 @@ public class LoginViewModel extends ViewModel {
         return mensajeError;
     }
 
-    public LiveData<UsuarioDTO> getRegistrarExito() {
+    public LiveData<UsuarioDTO> getInicioSesionExito() {
         return inicioSesionExito;
     }
 
-    public void login(String email, String contrasenha) {
-        if (email.isEmpty() || contrasenha.isEmpty()) {
+    public void login(InicioSesionDTO inicioSesionDTO) {
+        if (inicioSesionDTO.getEmail().isEmpty() || inicioSesionDTO.getContrasenha().isEmpty()) {
             mensajeError.setValue("Por favor, rellena todos los campos");
             return;
         }
 
-        InicioSesionDTO dto = new InicioSesionDTO();
-
-        try {
-            dto.setEmail(email);
-            dto.setContrasenha(contrasenha);
-        } catch (Exception e) {
-            mensajeError.setValue("Error al procesar los datos");
-        }
-
-        autentificationRepository.iniciarSesion(dto).observeForever(result -> {
+        autentificationRepository.iniciarSesion(inicioSesionDTO).observeForever(result -> {
             if (result instanceof Result.Success) {
                 inicioSesionExito.setValue(((Result.Success<UsuarioDTO>) result).datos);
             } else if (result instanceof Result.Error) {

@@ -19,7 +19,7 @@
             android:name=".presentacion.menu.AnhadirIngredienteActivity"
             android:exported="false" />
         <activity
-            android:name=".presentacion.menu.IngredientesActivity"
+            android:name=".presentacion.menu.MenuIngredientesActivity"
             android:exported="false" />
         <activity
             android:name=".presentacion.menu.DetallesDietaActivity"

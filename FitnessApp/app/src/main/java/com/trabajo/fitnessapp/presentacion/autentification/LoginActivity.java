@@ -14,6 +14,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.trabajo.fitnessapp.datos.dto.InicioSesionDTO;
 import com.trabajo.fitnessapp.presentacion.menu.MenuPrincipalActivity;
 import com.trabajo.fitnessapp.R;
 
@@ -71,9 +73,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void iniciarSesionDesdeFormulario() {
-        viewModel.login(editEmailSesion.getText().toString().trim(),
-                editContrasenhaSesion.getText().toString().trim()
-        );
+
+        String email = editEmailSesion.getText().toString();
+        String contrasenha = editContrasenhaSesion.getText().toString();
+
+        InicioSesionDTO inicioSesionDTO = new InicioSesionDTO();
+        inicioSesionDTO.setEmail(email);
+        inicioSesionDTO.setContrasenha(contrasenha);
+
+        viewModel.login(inicioSesionDTO);
     }
 
     private void mensajeAlIniciarSesion() {
@@ -81,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();
         });
 
-        viewModel.getRegistrarExito().observe(this, usuarioDTO -> {
+        viewModel.getInicioSesionExito().observe(this, usuarioDTO -> {
             Toast.makeText(this, "¡Bienvenido " + usuarioDTO.getNombre() + "!", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(LoginActivity.this, MenuPrincipalActivity.class);
             intent.putExtra("ID_USUARIO",usuarioDTO.getIdUsuario());

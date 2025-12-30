@@ -14,7 +14,7 @@ import trabajo.aplicacionSaludable.Dtos.UsuarioDTO;
 import trabajo.aplicacionSaludable.Servicios.UsuarioService;
 
 @RestController
-@RequestMapping("/api/autentification")
+@RequestMapping("/api/usuarios")
 public class AutentificationController {
 
     @Autowired
@@ -22,26 +22,29 @@ public class AutentificationController {
 
     @PostMapping("/registrar")
     public ResponseEntity<?> registrarUsuario(@RequestBody RegistroDTO registroDTO) {
-        try {
-            UsuarioDTO usuarioDTO = usuarioService.registrarUsuario(registroDTO);
 
-            return new ResponseEntity<>(usuarioDTO, HttpStatus.CREATED);
+        UsuarioDTO usuarioDTO = usuarioService.registrarUsuario(registroDTO);
 
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        if (usuarioDTO == null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("El email ya está registrado");
         }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
+
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> iniciarSesion(@RequestBody InicioSesionDTO inicioSesionDTO) {
-        try {
-            UsuarioDTO usuarioDTO = usuarioService.iniciarSesion(inicioSesionDTO);
+        UsuarioDTO usuarioDTO = usuarioService.iniciarSesion(inicioSesionDTO);
 
-            return ResponseEntity.ok(usuarioDTO);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        if (usuarioDTO == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Credenciales incorrectas");
         }
+
+        return ResponseEntity.ok(usuarioDTO);
+
     }
 
 }
-    

@@ -8,6 +8,9 @@ import trabajo.aplicacionSaludable.Dominio.DiaEnDieta;
 import trabajo.aplicacionSaludable.Dominio.DietaCompleta;
 import trabajo.aplicacionSaludable.Dominio.Ingrediente;
 import trabajo.aplicacionSaludable.Dtos.IngredienteDTO;
+import trabajo.aplicacionSaludable.Excepciones.ExcepcionesIngredientes.CantidadNegativaException;
+import trabajo.aplicacionSaludable.Excepciones.ExcepcionesIngredientes.IngredienteDuplicadoException;
+import trabajo.aplicacionSaludable.Excepciones.ExcepcionesIngredientes.IngredienteNoPerteneceADietaException;
 import trabajo.aplicacionSaludable.Repositorios.ComidaRepository;
 import trabajo.aplicacionSaludable.Repositorios.IngredienteRepository;
 
@@ -102,17 +105,29 @@ public class IngredienteService {
         comidaRepository.save(comida);
     }
 
-    public List<IngredienteDTO> listaIngredientes(Long idComida) throws Exception {
-        Comida comida = comidaRepository.findById(idComida).orElseThrow(() -> new Exception("Comida no encontrada con este id"));
+    public List<IngredienteDTO> listaIngredientes(Long idComida) {
+        Comida comida = comidaRepository.findById(idComida).orElse(null);
+
+        if (comida == null) {
+            return null;
+        }
 
         return comida.getIngredientes().stream().map(this::EntidadaDTO).collect(Collectors.toList());
     }
 
-    public IngredienteDTO crearIngrediente(Long idComida, IngredienteDTO ingredienteDTO) throws Exception {
-        Comida comida = comidaRepository.findById(idComida).orElseThrow(() -> new Exception("Comida no encontrada con este id"));
+    public IngredienteDTO crearIngrediente(Long idComida, IngredienteDTO ingredienteDTO) {
+        Comida comida = comidaRepository.findById(idComida).orElse(null);
+
+        if (comida == null) {
+            return  null;
+        }
 
         if (ingredienteDTO.getCantidadEnGramos() <= 0) {
-            throw new Exception("La cantidad en gramos debe ser mayor que 0");
+            throw new CantidadNegativaException();
+        }
+
+        if (ingredienteRepository.findByNombreAndComida(ingredienteDTO.getNombre(), comida).isPresent()) {
+            throw new IngredienteDuplicadoException();
         }
 
         Ingrediente nuevoIngrediente = DTOaEntidad(ingredienteDTO, comida);
@@ -122,17 +137,16 @@ public class IngredienteService {
 
     }
 
-    public IngredienteDTO editarIngrediente(Long idComida, Long idIngrediente, IngredienteDTO ingredienteDTO) throws Exception {
-        Comida comida = comidaRepository.findById(idComida).orElseThrow(() -> new Exception("Comida no encontrada con este id"));
+    public IngredienteDTO editarIngrediente(Long idComida, Long idIngrediente, IngredienteDTO ingredienteDTO) {
 
-        Ingrediente ingrediente = ingredienteRepository.findById(idIngrediente).orElseThrow(() -> new Exception("Ingrediente no encontrado con este id"));
+        Ingrediente ingrediente = ingredienteRepository.findById(idIngrediente).orElse(null);
 
         if (!ingrediente.getComida().getIdComida().equals(idComida)) {
-            throw new Exception("Este ingrediente no pertenece a esta comida");
+            throw new IngredienteNoPerteneceADietaException();
         }
 
         if (ingredienteDTO.getCantidadEnGramos() <= 0) {
-            throw new Exception("La cantidad en gramos debe ser mayor que 0");
+            throw new CantidadNegativaException();
         }
 
         float factor = ingredienteDTO.getCantidadEnGramos() / ingrediente.getCantidadEnGramos();
@@ -144,27 +158,31 @@ public class IngredienteService {
         ingrediente.setGrasas(ingrediente.getGrasas() * factor);
 
         Ingrediente ingredienteActualizado = ingredienteRepository.save(ingrediente);
-        recalcularTotales(comida);
+        recalcularTotales(ingrediente.getComida());
         return EntidadaDTO(ingredienteActualizado);
     }
 
-    public  void borrarIngrediente(Long idIngrediente, Long idComida) throws Exception {
+    public boolean borrarIngrediente(Long idIngrediente, Long idComida) {
 
-        Comida comida = comidaRepository.findById(idComida).orElseThrow(() -> new Exception("Comida no encontrada con este id"));
+        Ingrediente ingrediente = ingredienteRepository.findById(idIngrediente).orElse(null);
 
-        Ingrediente ingrediente = ingredienteRepository.findById(idIngrediente).orElseThrow(() -> new Exception("Ingrediente no encontrado con este id"));
+        if  (ingrediente == null) {
+            return false;
+        }
 
         if (!ingrediente.getComida().getIdComida().equals(idComida)) {
-            throw new Exception("Este ingrediente no pertenece a esta comida");
+            throw new IngredienteNoPerteneceADietaException();
         }
 
         // Necesario para calcular las propiedades y que el alimentos se borre correctamente.
-        comida.getIngredientes().remove(ingrediente);
+        ingrediente.getComida().getIngredientes().remove(ingrediente);
 
         ingredienteRepository.delete(ingrediente);
         ingredienteRepository.flush();
 
-        recalcularTotales(comida);
+        recalcularTotales(ingrediente.getComida());
+
+        return true;
     }
 
 

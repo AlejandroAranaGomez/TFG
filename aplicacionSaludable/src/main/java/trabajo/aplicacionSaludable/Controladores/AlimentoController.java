@@ -5,6 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import trabajo.aplicacionSaludable.Dtos.AlimentoDTO;
+import trabajo.aplicacionSaludable.Excepciones.ExcepcionesAlimentos.AlimentoDeOtroUsuarioException;
+import trabajo.aplicacionSaludable.Excepciones.ExcepcionesAlimentos.AlimentoDuplicadoException;
+import trabajo.aplicacionSaludable.Excepciones.ExcepcionesAlimentos.PropiedadesNegativasException;
 import trabajo.aplicacionSaludable.Servicios.AlimentoService;
 
 import java.util.List;
@@ -17,53 +20,57 @@ public class AlimentoController {
     private AlimentoService alimentoService;
 
     @PostMapping("/usuarios/{idUsuario}")
-    public ResponseEntity<?> crearAlimento(@PathVariable Long idUsuario, @RequestBody AlimentoDTO alimentoDTO) throws Exception {
+    public ResponseEntity<?> crearAlimento(@PathVariable Long idUsuario, @RequestBody AlimentoDTO alimentoDTO) {
         try {
             AlimentoDTO nuevoAlimento = alimentoService.creaAlimento(alimentoDTO, idUsuario);
+            if(nuevoAlimento == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+            }
             return new ResponseEntity<>(nuevoAlimento, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (AlimentoDuplicadoException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (PropiedadesNegativasException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
     @PutMapping("/{idAlimento}/usuarios/{idUsuario}")
-    public ResponseEntity<?> actualizarAlimento(@PathVariable Long idAlimento, @PathVariable Long idUsuario, @RequestBody AlimentoDTO alimentoDTO) throws Exception {
+    public ResponseEntity<?> actualizarAlimento(@PathVariable Long idAlimento, @PathVariable Long idUsuario, @RequestBody AlimentoDTO alimentoDTO) {
         try {
             AlimentoDTO alimentoActualizado = alimentoService.actualizaAlimento(idAlimento, alimentoDTO, idUsuario);
+            if (alimentoActualizado == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Alimento no encontrado");
+            }
             return ResponseEntity.ok(alimentoActualizado);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (AlimentoDuplicadoException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (PropiedadesNegativasException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (AlimentoDeOtroUsuarioException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
     }
 
     @GetMapping("/usuarios/{idUsuario}")
-    public ResponseEntity<?> obtenerAlimentosUsuario(@PathVariable Long idUsuario) throws Exception {
-        try {
-            List<AlimentoDTO> listaAlimentos = alimentoService.listaAlimentosUsuario(idUsuario);
-            return ResponseEntity.ok(listaAlimentos);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
-    }
+    public ResponseEntity<?> obtenerAlimentosUsuario(@PathVariable Long idUsuario) {
 
-    @GetMapping("/globales")
-    public ResponseEntity<?> obtenerAlimentosGlobales() throws Exception {
-        try {
-            List<AlimentoDTO> listaAlimentos = alimentoService.listaAlimentosGlobales();
+            List<AlimentoDTO> listaAlimentos = alimentoService.listaAlimentosUsuario(idUsuario);
+            if (listaAlimentos == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+            }
             return ResponseEntity.ok(listaAlimentos);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
     }
 
     @DeleteMapping("/{idAlimento}/usuarios/{idUsuario}")
-    public ResponseEntity<?> borrarAlimento(@PathVariable Long idAlimento, @PathVariable Long idUsuario) throws Exception {
+    public ResponseEntity<?> borrarAlimento(@PathVariable Long idAlimento, @PathVariable Long idUsuario) {
         try {
-            alimentoService.borraAlimento(idAlimento, idUsuario);
-            return new ResponseEntity<>("Alimento borrado",HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            boolean eliminado = alimentoService.borraAlimento(idAlimento, idUsuario);
+            if (!eliminado) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Alimento no encontrado");
+            }
+            return ResponseEntity.ok("Alimento eliminado");
+        } catch (AlimentoDeOtroUsuarioException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
     }
-
 }

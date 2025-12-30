@@ -48,7 +48,7 @@ public class IngredienteRepository {
 
             @Override
             public void onFailure(Call<List<IngredienteDTO>> call, Throwable t) {
-                ingredientes.setValue(new Result.Error<>("Error de conexión: " + t.getMessage()));
+                ingredientes.setValue(new Result.Error<>("Error de conexión con la base de datos: " + t.getMessage()));
             }
         });
         return ingredientes;
@@ -78,7 +78,7 @@ public class IngredienteRepository {
 
             @Override
             public void onFailure(Call<IngredienteDTO> call, Throwable t) {
-                resultado.setValue(new Result.Error<>("Error de conexión: " + t.getMessage()));
+                resultado.setValue(new Result.Error<>("Error de conexión con la base de datos: " + t.getMessage()));
             }
         });
         return resultado;
@@ -109,7 +109,7 @@ public class IngredienteRepository {
 
             @Override
             public void onFailure(Call<IngredienteDTO> call, Throwable t) {
-                resultado.setValue(new Result.Error<>("Error de conexión: " + t.getMessage()));
+                resultado.setValue(new Result.Error<>("Error de conexión con la base de datos: " + t.getMessage()));
             }
         });
         return resultado;
@@ -138,7 +138,7 @@ public class IngredienteRepository {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                resultado.setValue(new Result.Error<>("Error de conexión: " + t.getMessage()));
+                resultado.setValue(new Result.Error<>("Error de conexión con la base de datos: " + t.getMessage()));
             }
         });
         return resultado;

@@ -4,7 +4,7 @@
 ' ====== ENUMERADOS ======
 ' ========================
 
-enum Musculos  {
+enum Musculo  {
 CUELLO
 HOMBRO
 PECHO
@@ -29,13 +29,13 @@ SABADO
 DOMINGO
 }
 
-enum Generos {
+enum Genero {
 HOMBRE
 MUJER
 OTRO
 }
 
-enum Objetivos {
+enum Objetivo {
     PERDER_GRASA
     GANAR_MASA_MUSCULAR
     MANTENER_PESO
@@ -59,12 +59,14 @@ class Usuario {
 - apellido1 : String
 - apellido2 : String
 - fechaNacimiento : LocalDate
-- genero: Generos
+- genero: Genero
 - peso : float
-- altura : float
+- altura : int
 - email : String
 - telefono : String
 - contrasenha : String
+- nivelDeActividad : NivelDeActividad
+- objetivo : Objetivo
 }
 
 class DietaCompleta {
@@ -75,6 +77,7 @@ class DietaCompleta {
 - proteinas : float
 - carbohidratos : float
 - grasas : float
+- activa : boolean
 }
 
 class DiaEnDieta {
@@ -87,11 +90,6 @@ class DiaEnDieta {
 - diaDeLaSemana : DiaDeLaSemana
 }
 
-class PlanificacionDeDieta {
-- idPlanificacionDeDieta : Long
-- fechaInicio : LocalDate
-- fechaFin : LocalDate
-}
 
 class Comida {
 - idComida : Long
@@ -104,16 +102,21 @@ class Comida {
 
 class Ingrediente {
 - idIngrediente : Long
+- nombre : String
 - cantidadGramos : float
+- calorias : float
+- proteinas : float
+- carbohidratos : float
+- grasas : float
 }
 
 class Alimento {
 - idAlimento : Long
 - nombre : String
-- calorias : float
-- proteinas : float
-- carbohidratos : float
-- grasas : float
+- caloriasPor100g : float
+- proteinasPor100g : float
+- carbohidratosPor100g : float
+- grasasPor100g : float
 }
 
 class RutinaCompleta {
@@ -134,7 +137,7 @@ class Ejercicio {
 - idEjercicio : Long
 - nombre : String
 - explicacion : String 
-- musculoEnfocado : Musculos
+- musculoEnfocado : Musculo
 }
 
 class Serie {
@@ -150,11 +153,7 @@ class Serie {
 
 Usuario "1"  -- "0..*" DietaCompleta
 
-Usuario "1" -- "0..*" PlanificacionDeDieta
-
 DietaCompleta "1" -- "1..*" DiaEnDieta
-
-DietaCompleta "1" -- "0..*" PlanificacionDeDieta
 
 Usuario "1"  -- "0..*" RutinaCompleta
 
@@ -162,7 +161,7 @@ DiaEnDieta "1"  -- "1..*" Comida
 
 Comida "1"  -- "1..*" Ingrediente
 
-Ingrediente "1..*" -- "1" Alimento
+Usuario "1" -- "0..*" Alimento
 
 RutinaCompleta "1"  -- "1..*" DiaEnRutina
 

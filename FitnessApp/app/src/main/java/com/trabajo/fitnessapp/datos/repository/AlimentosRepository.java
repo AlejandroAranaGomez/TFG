@@ -32,7 +32,7 @@ public class AlimentosRepository {
                 if (response.isSuccessful() && response.body() != null) {
                     listaAlimentos.setValue(new Result.Success<>(response.body()));
                 } else {
-                    String error = "Error en la api.";
+                    String error = "Error en la base de datos.";
                     try {
                         if (response.errorBody() != null) {
                             error = response.errorBody().string();
@@ -46,7 +46,7 @@ public class AlimentosRepository {
 
             @Override
             public void onFailure(Call<List<AlimentoDTO>> call, Throwable t) {
-                listaAlimentos.setValue(new Result.Error<>("Fallo de conexion con la api: " + t.getMessage()));
+                listaAlimentos.setValue(new Result.Error<>("Fallo de conexion con la base de datos: " + t.getMessage()));
             }
         });
         return listaAlimentos;
@@ -61,7 +61,7 @@ public class AlimentosRepository {
                 if (response.isSuccessful() && response.body() != null) {
                     resultado.setValue(new Result.Success<>(response.body()));
                 } else {
-                    String error = "Error en la api.";
+                    String error = "Error en la base de datos.";
                     try {
                         if (response.errorBody() != null) {
                             error = response.errorBody().string();
@@ -75,7 +75,7 @@ public class AlimentosRepository {
 
             @Override
             public void onFailure(Call<AlimentoDTO> call, Throwable t) {
-                resultado.setValue(new Result.Error<>("Fallo de conexion con la api: " + t.getMessage()));
+                resultado.setValue(new Result.Error<>("Fallo de conexion con la base de datos: " + t.getMessage()));
             }
         });
         return resultado;
@@ -90,7 +90,7 @@ public class AlimentosRepository {
                 if (response.isSuccessful()) {
                     resultado.setValue(new Result.Success<>(true));
                 } else {
-                    String error = "Error en la api.";
+                    String error = "Error en la base de datos.";
                     try {
                         if (response.errorBody() != null) {
                             error = response.errorBody().string();
@@ -104,7 +104,7 @@ public class AlimentosRepository {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                resultado.setValue(new Result.Error<>("Fallo de conexion con la api: " + t.getMessage()));
+                resultado.setValue(new Result.Error<>("Fallo de conexion con la base de datos: " + t.getMessage()));
             }
         });
         return resultado;
@@ -119,7 +119,7 @@ public class AlimentosRepository {
                 if (response.isSuccessful() && response.body() != null) {
                     resultado.setValue(new Result.Success<>(response.body()));
                 } else {
-                    String error = "Error en la api.";
+                    String error = "Error en la base de datos.";
                     try {
                         if (response.errorBody() != null) {
                             error = response.errorBody().string();
@@ -133,7 +133,7 @@ public class AlimentosRepository {
 
             @Override
             public void onFailure(Call<AlimentoDTO> call, Throwable t) {
-                resultado.setValue(new Result.Error<>("Fallo de conexion con la api: " + t.getMessage()));
+                resultado.setValue(new Result.Error<>("Fallo de conexion con la base de datos: " + t.getMessage()));
             }
         });
         return resultado;

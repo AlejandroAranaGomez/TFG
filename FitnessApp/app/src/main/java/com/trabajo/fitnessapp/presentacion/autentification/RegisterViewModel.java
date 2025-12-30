@@ -11,9 +11,9 @@ import com.trabajo.fitnessapp.datos.dto.UsuarioDTO;
 
 import com.trabajo.fitnessapp.datos.dto.RegistroDTO;
 import com.trabajo.fitnessapp.datos.repository.AutentificationRepository;
-import com.trabajo.fitnessapp.dominio.Generos;
+import com.trabajo.fitnessapp.dominio.Genero;
 import com.trabajo.fitnessapp.dominio.NivelDeActividad;
-import com.trabajo.fitnessapp.dominio.Objetivos;
+import com.trabajo.fitnessapp.dominio.Objetivo;
 
 public class RegisterViewModel extends ViewModel {
 
@@ -38,59 +38,48 @@ public class RegisterViewModel extends ViewModel {
         return registrarExito;
     }
 
-    public void registrar(String nombre, String apellido1, String apellido2, String email, String contrasenha, String telefono, String fechaNacimiento,
-                          String genero, String peso, String altura, Objetivos objetivo, NivelDeActividad nivelDeActividad) {
-        if (nombre.isEmpty() || apellido1.isEmpty() || email.isEmpty() || contrasenha.isEmpty() ||
-                telefono.isEmpty() || fechaNacimiento.isEmpty() ||
-                peso.isEmpty() || altura.isEmpty()) {
+    public void registrar(RegistroDTO registroDTO) {
+
+        if (registroDTO.getNombre().isEmpty() || registroDTO.getApellido1().isEmpty() || registroDTO.getEmail().isEmpty() || registroDTO.getContrasenha().isEmpty() ||
+                registroDTO.getTelefono().isEmpty() || registroDTO.getFechaNacimiento().isEmpty()) {
 
             mensajeError.setValue("Por favor, rellena todos los campos");
             return;
         }
 
-        if (!fechaNacimiento.matches("\\d{4}-\\d{2}-\\d{2}")) {
+        if (!registroDTO.getFechaNacimiento().matches("\\d{4}-\\d{2}-\\d{2}")) {
             mensajeError.setValue("Formato de fecha incorrecto (YYYY-MM-DD)");
             return;
         }
 
-        if (genero.equals("Genero")) {
+        if (registroDTO.getGenero().equals("Genero")) {
             mensajeError.setValue("Por favor, seleccione un genero");
             return;
         }
 
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(registroDTO.getEmail()).matches()) {
             mensajeError.setValue("Formato de email incorrecto");
             return;
         }
 
-        if (!telefono.matches("\\d{9}")) {
+        if (!registroDTO.getTelefono().matches("\\d{9}")) {
             mensajeError.setValue("El telefono debe tener 9 digitos");
             return;
         }
 
-        // Creo el dto con los datos.
+        if (registroDTO.getAltura() < 100 || registroDTO.getAltura() > 300) {
+            mensajeError.setValue("La altura debe estar entre 100 y 300");
+            return;
+        }
 
-        RegistroDTO dto = new RegistroDTO();
-        try {
-            dto.setNombre(nombre);
-            dto.setApellido1(apellido1);
-            dto.setApellido2(apellido2);
-            dto.setEmail(email);
-            dto.setContrasenha(contrasenha);
-            dto.setTelefono(telefono);
-            dto.setFechaNacimiento(fechaNacimiento);
-            dto.setGenero(Generos.valueOf(genero));
-            dto.setPeso(Float.parseFloat(peso));
-            dto.setAltura(Float.parseFloat(altura));
-            dto.setObjetivos(objetivo);
-            dto.setNivelDeActividad(nivelDeActividad);
-        } catch (Exception e) {
-            mensajeError.setValue("Error al procesar los datos");
+        if (registroDTO.getPeso() < 30 || registroDTO.getPeso() > 300) {
+            mensajeError.setValue("El peso debe estar entre 30 y 200");
+            return;
         }
 
         // Devolvemos true o el string del error dependiendo el resultado al registrar el Usuario
 
-        autentificationRepository.registrarUsuario(dto).observeForever(result -> {
+        autentificationRepository.registrarUsuario(registroDTO).observeForever(result -> {
             if (result instanceof Result.Success) {
                 registrarExito.setValue(((Result.Success<UsuarioDTO>) result).datos);
             } else if (result instanceof Result.Error) {

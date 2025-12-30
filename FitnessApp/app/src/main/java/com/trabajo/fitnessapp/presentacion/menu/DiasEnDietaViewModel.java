@@ -11,7 +11,7 @@ import com.trabajo.fitnessapp.datos.repository.DiasEnDietaRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiasViewModel extends ViewModel {
+public class DiasEnDietaViewModel extends ViewModel {
 
     private final MutableLiveData<String> mensajeError = new MutableLiveData<>();
     public LiveData<String> getMensajeError() {
@@ -40,7 +40,7 @@ public class DiasViewModel extends ViewModel {
 
     private final DiasEnDietaRepository diasEnDietaRepository;
 
-    public DiasViewModel() {
+    public DiasEnDietaViewModel() {
         this.diasEnDietaRepository = new DiasEnDietaRepository();
     }
     public void obtenerLosDias(Long idDietaCompleta) {

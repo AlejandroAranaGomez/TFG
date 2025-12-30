@@ -22,9 +22,10 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.trabajo.fitnessapp.R;
-import com.trabajo.fitnessapp.dominio.Generos;
+import com.trabajo.fitnessapp.datos.dto.RegistroDTO;
+import com.trabajo.fitnessapp.dominio.Genero;
 import com.trabajo.fitnessapp.dominio.NivelDeActividad;
-import com.trabajo.fitnessapp.dominio.Objetivos;
+import com.trabajo.fitnessapp.dominio.Objetivo;
 import com.trabajo.fitnessapp.presentacion.menu.MenuPrincipalActivity;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Spinner spinnerGenero;
     private Button botonRegistrar;
     private ImageButton botonVolverActividad;
-    private Objetivos objetivoSeleccionado;
+    private Objetivo objetivoSeleccionado;
     private NivelDeActividad nivelDeActividadSeleccionado;
     private ProgressBar barraProgresoActividad;
 
@@ -60,7 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         try {
             String objetivo = getIntent().getStringExtra("Objetivo_seleccionado");
-            objetivoSeleccionado = Objetivos.valueOf(objetivo);
+            objetivoSeleccionado = Objetivo.valueOf(objetivo);
             String nivelDeActividad = getIntent().getStringExtra("Actividad_seleccionada");
             nivelDeActividadSeleccionado = NivelDeActividad.valueOf(nivelDeActividad);
         } catch (Exception e) {
@@ -93,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         List<String> opcinesGenero = new ArrayList<>();
         opcinesGenero.add("Genero");
-        for (Generos generos : Generos.values()) {
+        for (Genero generos : Genero.values()) {
             opcinesGenero.add(generos.name());
         }
         ArrayAdapter<String> adapter = editDesplegableGenero(opcinesGenero);
@@ -154,19 +155,39 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void registrarUsuarioDesdeFormulario() {
 
-        viewModel.registrar(editNombre.getText().toString().trim(),
-                editApellido1.getText().toString().trim(),
-                editApellido2.getText().toString().trim(),
-                editEmail.getText().toString().trim(),
-                editContrasenha.getText().toString().trim(),
-                editTelefono.getText().toString().trim(),
-                editFechaNacimiento.getText().toString().trim(),
-                (String) spinnerGenero.getSelectedItem(),
-                editPeso.getText().toString().trim(),
-                editAltura.getText().toString().trim(),
-                objetivoSeleccionado,
-                nivelDeActividadSeleccionado
-                );
+        String generoSeleccionado = (String) spinnerGenero.getSelectedItem();
+        if (generoSeleccionado.equals("Genero")) {
+            Toast.makeText(this, "Por favor, seleccione un género", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        String pesoStr = editPeso.getText().toString().trim();
+        String alturaStr = editAltura.getText().toString().trim();
+
+        if (pesoStr.isEmpty() || alturaStr.isEmpty()) {
+            Toast.makeText(this, "Peso y altura son obligatorios", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        RegistroDTO dto = new RegistroDTO();
+
+        dto.setNombre(editNombre.getText().toString());
+        dto.setApellido1(editApellido1.getText().toString());
+        dto.setApellido2(editApellido2.getText().toString());
+        dto.setEmail(editEmail.getText().toString());
+        dto.setContrasenha(editContrasenha.getText().toString());
+        dto.setTelefono(editTelefono.getText().toString());
+        dto.setFechaNacimiento(editFechaNacimiento.getText().toString());
+        dto.setGenero(Genero.valueOf((String) spinnerGenero.getSelectedItem()));
+        dto.setPeso(Float.parseFloat(editPeso.getText().toString()));
+        dto.setAltura(Integer.parseInt(editAltura.getText().toString()));
+        dto.setObjetivos(objetivoSeleccionado);
+        dto.setNivelDeActividad(nivelDeActividadSeleccionado);
+
+
+
+        viewModel.registrar(dto);
+
     }
 
     // Mensaje que se muestra al registrarse dependiendo de los datos que escribas.

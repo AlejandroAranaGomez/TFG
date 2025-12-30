@@ -17,12 +17,7 @@ public interface AlimentoRepository extends JpaRepository<Alimento, Long> {
     // alimento de un usuario
     Optional<Alimento> findByNombreAndUsuario(String nombre, Usuario usuario);
 
-    // alimento por id
-    Optional<Alimento> findByIdAlimento(Long idAlimento);
-
     // devuelve los alimento globales y los del usuario.
     List<Alimento> findByUsuarioOrUsuarioIsNull(Usuario usuario);
 
-    // Todos los alimentos globales
-    List<Alimento> findByUsuarioIsNull();
 }

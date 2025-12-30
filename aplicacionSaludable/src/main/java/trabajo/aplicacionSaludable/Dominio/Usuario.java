@@ -31,11 +31,11 @@ public class Usuario {
     private LocalDate fechaNacimiento;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Generos genero;
+    private Genero genero;
     @Column(nullable = false)
     private float peso;
     @Column(nullable = false)
-    private float altura;
+    private int altura;
     @Column(nullable = false, unique = true)
     private String email;
     @Column(nullable = false)
@@ -43,7 +43,7 @@ public class Usuario {
     @Column(nullable = false)
     private String contrasenha;
     @Enumerated(EnumType.STRING)
-    private Objetivos objetivo;
+    private Objetivo objetivo;
     @Enumerated(EnumType.STRING)
     private NivelDeActividad nivelDeActividad;
 
@@ -61,8 +61,8 @@ public class Usuario {
     }
 
     public Usuario(String nombre, String apellido1, String apellido2, LocalDate fechaNacimiento,
-                   Generos genero, float peso, float altura, String email, String telefono, String contrasenha,
-                   Objetivos objetivo,  NivelDeActividad nivelDeActividad) {
+                   Genero genero, float peso, int altura, String email, String telefono, String contrasenha,
+                   Objetivo objetivo, NivelDeActividad nivelDeActividad) {
         this.nombre = nombre;
         this.apellido1 = apellido1;
         this.apellido2 = apellido2;

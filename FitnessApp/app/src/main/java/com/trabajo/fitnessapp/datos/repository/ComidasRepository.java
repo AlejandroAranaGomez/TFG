@@ -48,7 +48,7 @@ public class ComidasRepository {
 
             @Override
             public void onFailure(Call<List<ComidaDTO>> call, Throwable t) {
-                comidas.setValue(new Result.Error<>("Error de conexión: " + t.getMessage()));
+                comidas.setValue(new Result.Error<>("Error de conexión con la base de datos: " + t.getMessage()));
             }
         });
         return comidas;
@@ -78,7 +78,7 @@ public class ComidasRepository {
 
             @Override
             public void onFailure(Call<ComidaDTO> call, Throwable t) {
-                resultado.setValue(new Result.Error<>("Error de conexión: " + t.getMessage()));
+                resultado.setValue(new Result.Error<>("Error de conexión con la base de datos: " + t.getMessage()));
             }
         });
         return resultado;
@@ -109,7 +109,7 @@ public class ComidasRepository {
 
             @Override
             public void onFailure(Call<ComidaDTO> call, Throwable t) {
-                resultado.setValue(new Result.Error<>("Error de conexión: " + t.getMessage()));
+                resultado.setValue(new Result.Error<>("Error de conexión con la base de datos: " + t.getMessage()));
             }
         });
         return resultado;
@@ -138,7 +138,7 @@ public class ComidasRepository {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                resultado.setValue(new Result.Error<>("Error de conexión: " + t.getMessage()));
+                resultado.setValue(new Result.Error<>("Error de conexión con la base de datos: " + t.getMessage()));
             }
         });
         return resultado;

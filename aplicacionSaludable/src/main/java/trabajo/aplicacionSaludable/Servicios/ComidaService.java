@@ -1,13 +1,13 @@
 package trabajo.aplicacionSaludable.Servicios;
 
-import jakarta.persistence.Access;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import trabajo.aplicacionSaludable.Dominio.Comida;
 import trabajo.aplicacionSaludable.Dominio.DiaEnDieta;
 import trabajo.aplicacionSaludable.Dominio.DietaCompleta;
 import trabajo.aplicacionSaludable.Dtos.ComidaDTO;
-import trabajo.aplicacionSaludable.Dtos.DiaEnDietaDTO;
+import trabajo.aplicacionSaludable.Excepciones.ExcepcionesComidas.ComidaPerteneceAOtroDiaException;
+import trabajo.aplicacionSaludable.Excepciones.ExcepcionesComidas.ComidaYaExisteException;
 import trabajo.aplicacionSaludable.Repositorios.ComidaRepository;
 import trabajo.aplicacionSaludable.Repositorios.DiaEnDietaRepository;
 
@@ -84,21 +84,24 @@ public class ComidaService {
         diaEnDietaRepository.save(dia);
     }
 
-    public List<ComidaDTO> listaComidas(Long idDiaEnDieta) throws Exception {
+    public List<ComidaDTO> listaComidas(Long idDiaEnDieta) {
         DiaEnDieta diaExiste = diaEnDietaRepository.findById(idDiaEnDieta)
-                .orElseThrow(() -> new Exception("No existe un dia con este id."));
+                .orElse(null);
+
+        if (diaExiste == null) {
+            return null;
+        }
 
         return comidaRepository.findByDiaEnDieta(diaExiste).stream().map(this::EntidadaDTO).collect(Collectors.toList());
     }
 
-    public ComidaDTO crearComida(Long idDiaEnDieta, ComidaDTO comidaDTO) throws Exception {
+    public ComidaDTO crearComida(Long idDiaEnDieta, ComidaDTO comidaDTO) {
         DiaEnDieta diaExiste = diaEnDietaRepository.findById(idDiaEnDieta)
-                .orElseThrow(() -> new Exception("No existe un dia con este id."));
+                .orElse(null);
 
         if (comidaRepository.findByNombreAndDiaEnDieta(comidaDTO.getNombre(), diaExiste).isPresent()) {
-            throw new Exception("Ya existe una comida con ese nombre en este día");
+            throw new ComidaYaExisteException();
         }
-
 
         Comida nuevaComida = DTOaEntidad(comidaDTO, diaExiste);
         Comida comidaGuardada = comidaRepository.save(nuevaComida);
@@ -107,20 +110,21 @@ public class ComidaService {
 
     }
 
-    public ComidaDTO editarComida(Long idDiaEnDieta, Long idComida, ComidaDTO comidaDTO) throws Exception {
+    public ComidaDTO editarComida(Long idDiaEnDieta, Long idComida, ComidaDTO comidaDTO) {
         Comida comida = comidaRepository.findById(idComida)
-                .orElseThrow(() -> new Exception("No existe una comida con este id."));
+                .orElse(null);
 
-        DiaEnDieta diaExiste = diaEnDietaRepository.findById(idDiaEnDieta)
-                .orElseThrow(() -> new Exception("No existe un dia con este id."));
+        if (comida == null) {
+            return null;
+        }
 
         if (!comida.getDiaEnDieta().getIdDiaEnDieta().equals(idDiaEnDieta)) {
-            throw new Exception("Esta comida no pertenece a este día");
+            throw new ComidaPerteneceAOtroDiaException();
         }
 
         Optional<Comida> otraComidaMismoNombre = comidaRepository.findByNombreAndDiaEnDieta(comidaDTO.getNombre(), comida.getDiaEnDieta());
         if (otraComidaMismoNombre.isPresent() && !otraComidaMismoNombre.get().getIdComida().equals(idComida)) {
-            throw new Exception("Ya existe otra comida con ese nombre en este día.");
+            throw new ComidaYaExisteException();
         }
 
         comida.setNombre(comidaDTO.getNombre());
@@ -130,19 +134,22 @@ public class ComidaService {
 
     }
 
-    public void borrarComida(Long idDiaEnDieta, Long idComida) throws Exception {
+    public boolean borrarComida(Long idDiaEnDieta, Long idComida) {
         Comida comida = comidaRepository.findById(idComida)
-                .orElseThrow(() -> new Exception("No existe una comida con este id."));
+                .orElse(null);
 
-        DiaEnDieta diaExiste = diaEnDietaRepository.findById(idDiaEnDieta)
-                .orElseThrow(() -> new Exception("No existe un dia con este id."));
+        if (comida == null) {
+            return false;
+        }
 
         if (!comida.getDiaEnDieta().getIdDiaEnDieta().equals(idDiaEnDieta)) {
-            throw new Exception("Esta comida no pertenece a este día");
+            throw new ComidaPerteneceAOtroDiaException();
         }
 
         comidaRepository.delete(comida);
-        recalcularTotales(diaExiste);
+        recalcularTotales(comida.getDiaEnDieta());
+
+        return true;
     }
 
 }

@@ -23,16 +23,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.trabajo.fitnessapp.R;
-import com.trabajo.fitnessapp.datos.dto.ComidaDTO;
 import com.trabajo.fitnessapp.datos.dto.IngredienteDTO;
 import com.trabajo.fitnessapp.presentacion.Utils.ModoIngrediente;
 import com.trabajo.fitnessapp.presentacion.adaptador.IngredientesAdapter;
-import com.trabajo.fitnessapp.presentacion.autentification.NivelActividadActivity;
-import com.trabajo.fitnessapp.presentacion.autentification.RegisterActivity;
 
 import java.util.ArrayList;
 
-public class IngredientesActivity extends AppCompatActivity {
+public class MenuIngredientesActivity extends AppCompatActivity {
 
     private RecyclerView recyclerViewIngredientes;
     private IngredientesAdapter ingredientesAdapter;
@@ -96,7 +93,7 @@ public class IngredientesActivity extends AppCompatActivity {
 
     private void configurarBotones() {
         botonAnhadirIngrediente.setOnClickListener(v -> {
-            Intent intent = new Intent(IngredientesActivity.this, AnhadirIngredienteActivity.class);
+            Intent intent = new Intent(MenuIngredientesActivity.this, AnhadirIngredienteActivity.class);
             intent.putExtra("ID_COMIDA", idComida);
             intent.putExtra("ID_USUARIO", idUsuario);
             startActivity(intent);

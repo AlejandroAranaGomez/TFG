@@ -142,7 +142,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Peso (ej. 70.5)"
+                android:hint="Peso (ej. 70.5kg)"
                 android:inputType="numberDecimal"
                 android:textColorHint="@color/pistaEditables"
                 android:textColor="@color/white"/>
@@ -152,7 +152,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Altura (ej. 1.75)"
+                android:hint="Altura (ej. 175cm)"
                 android:inputType="numberDecimal"
                 android:textColorHint="@color/pistaEditables"
                 android:textColor="@color/white"/>

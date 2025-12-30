@@ -46,7 +46,7 @@ public class DiasEnDietaRepository {
 
             @Override
             public void onFailure(Call<List<DiaEnDietaDTO>> call, Throwable t) {
-                dias.setValue(new Result.Error<>("Error de conexión: " + t.getMessage()));
+                dias.setValue(new Result.Error<>("Error de conexión con la base de datos: " + t.getMessage()));
             }
         });
         return dias;
@@ -75,7 +75,7 @@ public class DiasEnDietaRepository {
 
             @Override
             public void onFailure(Call<DiaEnDietaDTO> call, Throwable t) {
-                resultado.setValue(new Result.Error<>("Error de conexión: " + t.getMessage()));
+                resultado.setValue(new Result.Error<>("Error de conexión con la base de datos: " + t.getMessage()));
             }
         });
         return resultado;
@@ -104,7 +104,7 @@ public class DiasEnDietaRepository {
 
             @Override
             public void onFailure(Call<DiaEnDietaDTO> call, Throwable t) {
-                resultado.setValue(new Result.Error<>("Error de conexión: " + t.getMessage()));
+                resultado.setValue(new Result.Error<>("Error de conexión con la base de datos: " + t.getMessage()));
             }
         });
         return resultado;
@@ -133,7 +133,7 @@ public class DiasEnDietaRepository {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                resultado.setValue(new Result.Error<>("Error de conexión: " + t.getMessage()));
+                resultado.setValue(new Result.Error<>("Error de conexión con la base de datos: " + t.getMessage()));
             }
         });
         return resultado;

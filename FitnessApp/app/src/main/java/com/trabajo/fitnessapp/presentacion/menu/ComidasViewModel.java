@@ -84,11 +84,10 @@ public class ComidasViewModel extends ViewModel {
                 comidaCreadaExito.setValue(false);
             }
         });
-
     }
 
-    public void editarComida(Long idComida, Long idDia, ComidaDTO comidaDTO) {
-        if (idDia == null) {
+    public void editarComida(Long idComida, Long idDiaEnDieta, ComidaDTO comidaDTO) {
+        if (idDiaEnDieta == null) {
             mensajeError.setValue("Dia no encontrado");
             return;
         }
@@ -103,10 +102,10 @@ public class ComidasViewModel extends ViewModel {
             return;
         }
 
-        comidasRepository.editarComida(idComida, idDia, comidaDTO).observeForever(result -> {
+        comidasRepository.editarComida(idComida, idDiaEnDieta, comidaDTO).observeForever(result -> {
             if (result instanceof Result.Success) {
                 comidaActualizadaExito.setValue(true);
-                obtenerComidas(idDia);
+                obtenerComidas(idDiaEnDieta);
             } else if (result instanceof Result.Error) {
                 mensajeError.setValue(((Result.Error<ComidaDTO>) result).error);
                 comidaActualizadaExito.setValue(false);
@@ -114,8 +113,8 @@ public class ComidasViewModel extends ViewModel {
         });
     }
 
-    public void borrarComida(Long idComida, Long idDia) {
-        if (idDia == null) {
+    public void borrarComida(Long idComida, Long idDiaEnDieta) {
+        if (idDiaEnDieta == null) {
             mensajeError.setValue("Dia no encontrada");
             return;
         }
@@ -126,10 +125,10 @@ public class ComidasViewModel extends ViewModel {
         }
 
 
-        comidasRepository.borrarComida(idComida, idDia).observeForever(result -> {
+        comidasRepository.borrarComida(idComida, idDiaEnDieta).observeForever(result -> {
             if (result instanceof Result.Success) {
                 comidaBorradaExito.setValue(true);
-                obtenerComidas(idDia);
+                obtenerComidas(idDiaEnDieta);
             } else if (result instanceof Result.Error) {
                 mensajeError.setValue(((Result.Error<?>) result).error);
                 comidaBorradaExito.setValue(false);

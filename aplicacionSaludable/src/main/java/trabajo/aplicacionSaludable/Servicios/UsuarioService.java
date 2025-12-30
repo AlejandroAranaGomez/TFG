@@ -25,12 +25,12 @@ public class UsuarioService {
 
     }
 
-    public UsuarioDTO registrarUsuario(RegistroDTO registroDTO) throws Exception {
+    public UsuarioDTO registrarUsuario(RegistroDTO registroDTO) {
 
         // Compruebo que no hay un usuario con ese email ya registrado.
 
         if (usuarioRepository.findByEmail(registroDTO.getEmail()).isPresent()) {
-            throw new Exception("Ya hay un usuario con este email.");
+            return null;
         }
 
         // Hasheo la contraseña para no pasarla directamente
@@ -67,16 +67,21 @@ public class UsuarioService {
         );
     }
 
-    public UsuarioDTO iniciarSesion(InicioSesionDTO inicioSesionDTO) throws Exception {
+    public UsuarioDTO iniciarSesion(InicioSesionDTO inicioSesionDTO) {
 
 
         // Compruebo si existe un usuario con ese email.
        Usuario usuario = usuarioRepository.findByEmail(inicioSesionDTO.getEmail())
-               .orElseThrow(() -> new Exception("No existe un usuario con este email."));
+               .orElse(null);
+
+       // No existe el usuario
+        if (usuario == null) {
+            return null;
+        }
 
         // Compruebo si la contrasenha coincide con la que hemos escrito.
         if (!passwordEncoder.matches(inicioSesionDTO.getContrasenha(), usuario.getContrasenha())) {
-            throw new Exception("La contraseña no coincide.");
+            return null;
         }
 
         return new UsuarioDTO(

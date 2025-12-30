@@ -26,10 +26,10 @@ public class ApiAlimentosRepository {
         this.apiAlimentosService = AlimentosRetrofit.getClient().create(ApiAlimentosService.class);
     }
 
-    public LiveData<List<ApiAlimentosDTO>> buscarAlimentos(String query) {
+    public LiveData<List<ApiAlimentosDTO>> buscarAlimentos(String nombre) {
         MutableLiveData<List<ApiAlimentosDTO>> listaAlimentosConsulta = new MutableLiveData<>();
 
-        apiAlimentosService.buscarAlimentos(APP_ID, APP_KEY, query).enqueue(new Callback<ApiAlimentosResponse>() {
+        apiAlimentosService.buscarAlimentos(APP_ID, APP_KEY, nombre).enqueue(new Callback<ApiAlimentosResponse>() {
             @Override
             public void onResponse(Call<ApiAlimentosResponse> call, Response<ApiAlimentosResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -59,7 +59,7 @@ public class ApiAlimentosRepository {
 
             @Override
             public void onFailure(Call<ApiAlimentosResponse> call, Throwable t) {
-                Log.e("API_ALIMENTOS", "Error buscando los alimentos en la api" + t.getMessage());
+                Log.e("API_ALIMENTOS", "Error buscando los alimentos en la base de datos" + t.getMessage());
                 listaAlimentosConsulta.setValue(null);
             }
         });

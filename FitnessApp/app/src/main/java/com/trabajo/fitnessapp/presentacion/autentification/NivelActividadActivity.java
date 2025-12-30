@@ -18,7 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.trabajo.fitnessapp.R;
 import com.trabajo.fitnessapp.dominio.NivelDeActividad;
-import com.trabajo.fitnessapp.dominio.Objetivos;
+import com.trabajo.fitnessapp.dominio.Objetivo;
 
 public class NivelActividadActivity extends AppCompatActivity {
 
@@ -27,7 +27,7 @@ public class NivelActividadActivity extends AppCompatActivity {
     private ImageButton botonVolverObjetivo;
     private RadioGroup radioGroup;
     private RadioButton botonSedentario, botonEjercicioLigero, botonEjercicioModerado, botonEjercicioIntenso, botonAtleta;
-    private Objetivos objetivoSeleccionado;
+    private Objetivo objetivoSeleccionado;
     private ProgressBar barraProgresoActividad;
 
     @Override
@@ -43,7 +43,7 @@ public class NivelActividadActivity extends AppCompatActivity {
 
         try {
             String objetivo = getIntent().getStringExtra("Objetivo_seleccionado");
-            objetivoSeleccionado = Objetivos.valueOf(objetivo);
+            objetivoSeleccionado = Objetivo.valueOf(objetivo);
         } catch (Exception e) {
             Toast.makeText(this, "Error al recibir el objetivo.", Toast.LENGTH_LONG).show();
         }

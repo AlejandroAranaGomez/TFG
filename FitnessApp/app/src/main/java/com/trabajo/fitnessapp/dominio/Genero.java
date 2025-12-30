@@ -1,6 +1,6 @@
 package com.trabajo.fitnessapp.dominio;
 
-public enum Generos {
+public enum Genero {
     HOMBRE,
     MUJER,
     OTRO

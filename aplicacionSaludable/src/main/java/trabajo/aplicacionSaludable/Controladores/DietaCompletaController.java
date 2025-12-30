@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import trabajo.aplicacionSaludable.Dtos.DietaCompletaDTO;
+import trabajo.aplicacionSaludable.Excepciones.ExcepcionesDietas.DietaDeOtroUsuarioException;
+import trabajo.aplicacionSaludable.Excepciones.ExcepcionesDietas.DietaDuplicadaException;
 import trabajo.aplicacionSaludable.Servicios.DietaCompletaService;
 
 import java.util.List;
@@ -18,42 +20,52 @@ public class DietaCompletaController {
     private DietaCompletaService dietaCompletaService;
 
     @PostMapping("/usuarios/{idUsuario}")
-    public ResponseEntity<?> crearDietasCompletas(@PathVariable Long idUsuario, @RequestBody DietaCompletaDTO dietaCompletaDTO) throws Exception {
+    public ResponseEntity<?> crearDietasCompletas(@PathVariable Long idUsuario, @RequestBody DietaCompletaDTO dietaCompletaDTO) {
         try {
             DietaCompletaDTO nuevaDieta = dietaCompletaService.creaDietaCompleta(idUsuario, dietaCompletaDTO);
+            if  (nuevaDieta == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+            }
             return new ResponseEntity<>(nuevaDieta, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (DietaDuplicadaException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
     @GetMapping("/usuarios/{idUsuario}")
-    public ResponseEntity<?> obtenerDietasCompletas(@PathVariable Long idUsuario) throws Exception {
-        try {
-            List<DietaCompletaDTO> dietas = dietaCompletaService.listaDietaCompletaUsuario(idUsuario);
-            return ResponseEntity.ok(dietas);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> obtenerDietasCompletas(@PathVariable Long idUsuario) {
+        List<DietaCompletaDTO> dietas = dietaCompletaService.listaDietaCompletaUsuario(idUsuario);
+        if (dietas == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
         }
+        return ResponseEntity.ok(dietas);
     }
 
     @PutMapping("/{idDietaCompleta}/usuarios/{idUsuario}")
-    public ResponseEntity<?> actualizarDieta(@PathVariable Long idDietaCompleta, @PathVariable Long idUsuario, @RequestBody DietaCompletaDTO dietaCompletaDTO) throws Exception {
+    public ResponseEntity<?> actualizarDieta(@PathVariable Long idDietaCompleta, @PathVariable Long idUsuario, @RequestBody DietaCompletaDTO dietaCompletaDTO) {
         try {
             DietaCompletaDTO dietaActualizada = dietaCompletaService.actualizaDietaCompleta(dietaCompletaDTO, idUsuario, idDietaCompleta);
+            if (dietaActualizada == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dieta no encontrada");
+            }
             return ResponseEntity.ok(dietaActualizada);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (DietaDuplicadaException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (DietaDeOtroUsuarioException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
     }
 
     @DeleteMapping("/{idDietaCompleta}/usuarios/{idUsuario}")
-    public ResponseEntity<?> borrarDietaCompleta(@PathVariable Long idDietaCompleta, @PathVariable Long idUsuario) throws Exception {
+    public ResponseEntity<?> borrarDietaCompleta(@PathVariable Long idDietaCompleta, @PathVariable Long idUsuario) {
         try {
-            dietaCompletaService.borraDietaCompleta(idUsuario, idDietaCompleta);
+            boolean eliminada = dietaCompletaService.borraDietaCompleta(idUsuario, idDietaCompleta);
+            if (!eliminada) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dieta no encontrada");
+            }
             return new ResponseEntity<>("Dieta borrada",HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (DietaDeOtroUsuarioException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
     }
 

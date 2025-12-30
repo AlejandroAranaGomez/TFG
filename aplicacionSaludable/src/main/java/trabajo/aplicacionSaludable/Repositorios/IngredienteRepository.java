@@ -5,11 +5,10 @@ import org.springframework.stereotype.Repository;
 import trabajo.aplicacionSaludable.Dominio.Comida;
 import trabajo.aplicacionSaludable.Dominio.Ingrediente;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface IngredienteRepository extends JpaRepository<Ingrediente, Long> {
 
-    List<Ingrediente> findByComida(Comida comida);
-
+    Optional<Ingrediente> findByNombreAndComida(String nombre, Comida comida);
 }

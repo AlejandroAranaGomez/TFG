@@ -288,5 +288,11 @@ public class AnhadirIngredienteActivity extends AppCompatActivity {
             }
         });
 
+        ingredientesViewModel.getMensajeError().observe(this, mensaje -> {
+            if (mensaje != null && !mensaje.isEmpty()) {
+                Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 }

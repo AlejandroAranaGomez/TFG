@@ -9,12 +9,24 @@ package "Arquitectura de Componentes" {
 
     component "AutentificationController" 
     component "AlimentoController" 
-
+    component "DietaCompletaController"
+    component "DiaEnDietaController"
+    component "ComidaController"
+    component "IngredienteController"
+    
     component "UsuarioService" 
-    component "AlimentoService" 
+    component "AlimentoService"
+    component "DietaCompletaService"
+    component "DiaEnDietaService"
+    component "ComidaService"  
+    component "IngredienteService"
 
     component "UsuarioRepository" 
     component "AlimentoRepository" 
+    component "DietaCompletaRepository"
+    component "DiaEnDietaRepository"
+    component "ComidaRepository"
+    component "IngredienteRepository"
 
     
     AutentificationController -(0- UsuarioService : IUsuarioService
@@ -22,8 +34,23 @@ package "Arquitectura de Componentes" {
 
     AlimentoController -(0- AlimentoService : IAlimentoService
     AlimentoService -(0- AlimentoRepository : IAlimentoRepository
-
     AlimentoService -(0- UsuarioRepository : IUsuarioRepository
+
+    DietaCompletaController -(0- DietaCompletaService : IDietaCompletaService
+    DietaCompletaService -(0- DietaCompletaRepository : IDietaCompletaRepository
+    DietaCompletaService -(0- UsuarioRepository : IUsuarioRepository
+
+    DiaEnDietaController -(0- DiaEnDietaService : IDiaEnDietaService
+    DiaEnDietaService -(0- DiaEnDietaRepository : IDiaEnDietaRepository
+    DiaEnDietaService -(0- DietaCompletaRepository : IDietaCompletaRepository
+
+    ComidaController -(0- ComidaService : IComidaService
+    ComidaService -(0- ComidaRepository : IComidaRepository
+    ComidaService -(0- DiaEnDietaRepository : IDiaEnDietaRepository
+
+    IngredienteController -(0- IngredienteService : IIngredienteService
+    IngredienteService -(0- IngredienteRepository : IIngredienteRepository
+    IngredienteService -(0- ComidaRepository : IComidaRepository
 
 }
 
@@ -39,20 +66,67 @@ package "Especificación de Interfaces" {
         + creaAlimento(AlimentoDTO, Long) : AlimentoDTO
         + actualizaAlimento(Long, AlimentoDTO, Long) : AlimentoDTO
         + listaAlimentosUsuario(Long idUsuario) : List<AlimentoDTO>
-        + listaAlimentosGlobales() : List<AlimentoDTO>
         + borraAlimento(Long, Long) : void
+    }
+
+    interface "IDietaCompletaService" {
+        + creaDietaCompleta(Long, DietaCompletaDTO) : DietaCompletaDTO
+        + actualizarDietaCompleta(DietaCompletaDTO, Long, Long) : DietaCompletaDTO
+        + borrarDietaCompleta(Long, Long) : void
+        + listaDietaCompletaUsuario(Long) : List<DietaCompletaDTO>
+    }
+
+    interface "IDiaEnDietaService" {
+        + listaDiaEnDieta(Long) : List<DiaEnDietaDTO>
+        + crearDiaEnDieta(Long, DiaEnDietaDTO) : DiaEnDietaDTO
+        + editarDiaEnDieta(DiaEnDietaDTO, Long, Long) : DiaEnDietaDTO
+        + borrarDiaEnDieta(Long, Long) : void
+    }
+
+    interface "IComidaService" {
+        + listaComidas(Long) : List<ComidaDTO>
+        + crearComida(Long, ComidaDTO) : ComidaDTO
+        + editarComida(Long, Long, ComidaDTO) : ComidaDTO
+        + borrarComida(Long, Long) : void
+    }
+
+    interface "IIngredienteService" {
+        + listaIngrediente(Long) : List<IngredienteDTO>
+        + crearIngrediente(Long, IngredienteDTO) : IngredienteDTO
+        + editarIngrediente(Long, Long, IngredienteDTO) : IngredienteDTO
+        + borraAlimento(Long, Long) : IngredienteDTO
     }
 
     interface "IUsuarioRepository" {
         + findByEmail(String) : Usuario
+        + findByIdUsuario(Long) : Usuario
     }
 
     interface "IAlimentoRepository" {
         + findByNombreAndUsuarioIsNull(String) : Alimento
         + findByNombreAndUsuario(String, Usuario) : Alimento
-        + findByIdAlimento(Long) : Alimento
         + findByUsuarioOrUsuarioIsNull(Usuario) : List<Alimento>
-        + findByUsuarioIsNull() : List<Alimento>
+    }
+
+    interface "IDietaCompletaRepository" {
+        + findByUsuario(Usuario) : List<DietaCompleta>
+        + finsByUsuarioAndActiveTrue(Usuario) : DietaCompleta
+        + findByNombreAndUsuario(String, Usuario) : DietaCompleta
+        + findByIdDietaCompleta(Long) : DietaCompleta
+    }
+
+    interface "IDiaEnDietaRepository" {
+        + findByDietaCompleta(DietaCompleta) : List<DiaEnDieta>
+        + findByDiaDeLaSemanaAndDietaCompleta(DiaDeLaSemana, DietaCompleta) : DiaEnDieta
+    }
+
+    interface "IComidaRepository" {
+        + findByDiaEnDieta(DiaEnDieta) : List<Comida>
+        + findByNombreAndDiaEnDieta(String, DiaEnDieta) : Comida
+    }
+
+    interface "IIngredienteRepository" {
+        + findByNombreAndComida(String nombre, Comida comida) : Ingrediente
     }
 }
 

@@ -12,30 +12,146 @@ package "Arquitectura de Componentes" {
     component "LoginActivity" 
     component "LoginViewModel" 
 
+    component "MenuAlimentosActivity"
+    component "AlimentosViewModel"
+    component "AlimentosRepository"
+    component "ApiAlimentosRepository"
+
+    component "FragmentoDietas"
+    component "DetallesDietaActivity"
+    component "DietasViewModel"
+    component "DietasRepository"
+
+    component "DiasEnDietaViewModel"
+    component "DiasEnDietaRepository"
+
+    component "ComidasViewModel"
+    component "ComidasRepository"
+
+    component "MenuIngredientesActivity"
+    component "AnhadirIngredienteActivity"
+    component "IngredientesViewModel"
+    component "IngredientesRepository"
+
     RegisterActivity -(0- RegisterViewModel : IRegisterViewModel
     RegisterViewModel -(0- AutentificationRepository : IAutentificationRepository
 
     LoginActivity -(0- LoginViewModel : ILoginViewModel
     LoginViewModel -(0- AutentificationRepository : IAutentificationRepository
+
+    MenuAlimentosActivity -(0- AlimentosViewModel : IAlimentosViewModel
+    AlimentosViewModel -(0- AlimentosRepository : IAlimentosRepository
+    AlimentosViewModel -(0- ApiAlimentosRepository : IApiAlimentosRepository
+
+    FragmentoDietas -(0- DietasViewModel : IDietasViewModel
+    DetallesDietaActivity -(0- DietasViewModel : IDietasViewModel
+    DietasViewModel -(0- DietasRepository : IDietasRepository
+
+    FragmentoDietas -(0- DiasEnDietaViewModel : IDiasEnDietaViewModel
+    DiasEnDietaViewModel -(0- DiasEnDietaRepository : IDiasEnDietaRepository
+
+    FragmentoDietas -(0- ComidasViewModel : IComidasViewModel
+    ComidasViewModel -(0- ComidasRepository : IComidasRepository
+
+    FragmentoDietas -(0- IngredientesViewModel : IIngredientesViewModel
+    IngredientesViewModel -(0- IngredientesRepository : IIngredientesRepository
+
+    MenuIngredientesActivity -(0- IngredientesViewModel : IIngredientesViewModel
+
+    AnhadirIngredienteActivity -(0- AlimentosViewModel : IAlimentosViewModel
+    AnhadirIngredienteActivity -(0- IngredientesViewModel : IIngredientesViewModel
 }
 
 package "Especificación de Interfaces" {
 
 
     interface IRegisterViewModel {
-        + registar(String nombre, String apellido1, String apellido2, String email, 
-                    String contrasenha, String telefono, String fechaNacimiento,
-                    String genero, String peso, String altura, Objetivos objetivo, NivelDeActividad nivelDeActividad) : void
+        + registar(RegistroDTO registroDTO) : void
     }
 
     interface ILoginViewModel {
-        + login(String email, String contrasenha) : void
+        + login(InicioSesionDTO inicioSesionDTO) : void
+    }
+
+    interface IAlimentosViewModel {
+        + buscarAlimentosGlobales(String nombre) : List<ApiAlimentosDTO>
+        + obtenerLosAlimentos(Long idUsuario) : void
+        + actualizarAlimento(Long idAlimento, Long idUsuario, AlimentoDTO alimentoDTO) : void
+        + borrarAlimento(Long idAlimento, Long idUsuario) : void
+        + crearAlimento(Long idUsuario, AlimentoDTO alimentoDTO) : void
+    }
+
+    interface IDietasViewModel {
+        + obtenerLasDietas(Long idUsuario) : void
+        + crearDieta(Long idUsuario, DietaCompletaDTO dietaCompletaDTO) : void
+        + actualizarDieta(Long idUsuario, Long idDietaCompleta, DietaCompletaDTO dietaCompletaDTO) : void
+        + borrarDieta(Long idDietaCompleta, Long idUsuario) : void
+    }
+
+    interface IDiasEnDietaViewModel {
+        + obtenerLosDias(Long idDietaCompleta) : void
+        + crearDia(Long idDietaCompleta, DiaEnDietaDTO diaEnDietaDTO) : void
+        + editarDia(Long idDiaEnDieta, Long idDietaCompleta, DiaEnDietaDTO diaEnDietaDTO) : void
+        + borrarDia(Long idDiaEnDieta, Long idDietaCompleta) : void
+    }
+
+    interface IComidasViewModel {
+        + obtenerComidas(Long idDiaEnDieta) : void
+        + crearComida(Long idDiaEnDieta, ComidaDTO comidaDTO) : void
+        + editarComida(Long idDiaEnDieta, Long idComida, ComidaDTO comidaDTO) : void
+        + borrarComida(Long idComida, Long idDiaEnDieta) : void
+    }
+
+    interface IIngredientesViewModel {
+        + obtenerIngredientes(Long idComida) : void
+        + crearIngrediente(Long idComida, IngredienteDTO ingredienteDTO) : void
+        + editarIngrediente(Long idIngrediente, Long idComida, IngredienteDTO ingredienteDTO) : void
+        + borrarIngrediente(Long idComida, Long idIngrediente) : void
     }
 
 
     interface IAutentificationRepository {
         + registarUsuario(RegistroDTO registroDTO) : UsuarioDTO
         + iniciarSesion(InicioSesionDTO inicioSesionDTO) : UsuarioDTO
+    }
+
+    interface IApiAlimentosRepository {
+        + buscarAlimentos(String nombre) : ApiAlimentosDTO
+    }
+
+    interface IAlimentosRepository {
+        + obtenerAlimentosUsuario(Long idUsuario) : List<AlimentoDTO>
+        + actualizarAlimento(Long idAlimento, Long idUsuario, AlimentoDTO alimentoDTO) : AlimentoDTO
+        + borrarAlimento(Long idAlimento, Long idUsuario) : Boolean
+        + crearAlimento(Long idUsuario, AlimentoDTO alimentoDTO) : AlimentoDTO
+    }
+
+    interface IDietasRepository {
+        + obtenerDietasUsuario(Long idUsuario) : List<DietaCompletaDTO>
+        + crearDieta(Long idUsuario, DietaCompletaDTO dietaCompletaDTO) :DietaCompletaDTO
+        + actualizarDieta(Long idUsuario, Long idDietaCompleta, DietaCompletaDTO dietaCompletaDTO) : DietaCompletaDTO
+        + borrarDieta(Long idDietaCompleta, Long idUsuario) : Boolean
+    }
+
+    interface IDiasEnDietaRepository {
+        + obtenerDiasEnDieta(Long idDietaCompleta) : List<DiaEnDietaDTO>
+        + crearDia(Long idDietaCompleta, DiaEnDietaDTO diaEnDietaDTO) : DiaEnDietaDTO
+        + editarDia(Long idDiaEnDieta, Long idDietaCompleta, DiaEnDietaDTO diaEnDietaDTO) : DiaEnDietaDTO
+        + borrarDia(Long idDiaEnDieta, Long idDietaCompleta) : Boolean
+    }
+
+    interface IComidasRepository {
+        + obtenerComidas(Long idDiaEnDieta) : List<ComidaDTO>
+        + crearComida(Long idDiaEnDieta, ComidaDTO comidaDTO) : ComidaDTO
+        + editarComida(Long idDiaEnDieta, Long idComida, ComidaDTO comidaDTO) : ComidaDTO
+        + borrarComida(Long idComida, Long idDiaEnDieta) : ComidaDTO
+    }
+
+    interface IIngredientesRepository {
+        + obtenerobtenerIngredientes(Long idComida) : List<IngredienteDTO>
+        + crearIngrediente(Long idComida, IngredienteDTO ingredienteDTO) : IngredienteDTO
+        + editarIngrediente(Long idIngrediente, Long idComida, IngredienteDTO ingredienteDTO) : IngredienteDTO
+        + borrarIngrediente(Long idComida, Long idIngrediente) : IngredienteDTO
     }
 
 }

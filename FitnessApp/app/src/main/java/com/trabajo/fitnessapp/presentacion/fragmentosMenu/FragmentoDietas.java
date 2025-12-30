@@ -37,9 +37,9 @@ import com.trabajo.fitnessapp.presentacion.adaptador.DietasAdapter;
 import com.trabajo.fitnessapp.presentacion.adaptador.IngredientesAdapter;
 import com.trabajo.fitnessapp.presentacion.menu.ComidasViewModel;
 import com.trabajo.fitnessapp.presentacion.menu.DetallesDietaActivity;
-import com.trabajo.fitnessapp.presentacion.menu.DiasViewModel;
+import com.trabajo.fitnessapp.presentacion.menu.DiasEnDietaViewModel;
 import com.trabajo.fitnessapp.presentacion.menu.DietasViewModel;
-import com.trabajo.fitnessapp.presentacion.menu.IngredientesActivity;
+import com.trabajo.fitnessapp.presentacion.menu.MenuIngredientesActivity;
 import com.trabajo.fitnessapp.presentacion.menu.IngredientesViewModel;
 import com.trabajo.fitnessapp.presentacion.menu.MenuAlimentosActivity;
 
@@ -56,7 +56,7 @@ public class FragmentoDietas extends Fragment {
     private IngredientesAdapter ingredientesAdapter;
     private RecyclerView recyclerViewDietas, recyclerViewDias, recyclerViewComidas;
     private DietasViewModel dietasViewModel;
-    private DiasViewModel diasViewModel;
+    private DiasEnDietaViewModel diasViewModel;
     private ComidasViewModel comidasViewModel;
     private IngredientesViewModel ingredientesViewModel;
     private TextView nombreDia;
@@ -163,7 +163,7 @@ public class FragmentoDietas extends Fragment {
         });
 
         dietasViewModel = new ViewModelProvider(this).get(DietasViewModel.class);
-        diasViewModel = new ViewModelProvider(this).get(DiasViewModel.class);
+        diasViewModel = new ViewModelProvider(this).get(DiasEnDietaViewModel.class);
         comidasViewModel = new ViewModelProvider(this).get(ComidasViewModel.class);
         ingredientesViewModel = new ViewModelProvider(this).get(IngredientesViewModel.class);
 
@@ -600,7 +600,7 @@ public class FragmentoDietas extends Fragment {
         botonCerrar.setOnClickListener(v -> dialog.dismiss());
 
         botonModificar.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), IngredientesActivity.class);
+            Intent intent = new Intent(getContext(), MenuIngredientesActivity.class);
             intent.putExtra("ID_COMIDA", comidaDTO.getIdComida());
             intent.putExtra("ID_USUARIO", idUsuario);
             startActivity(intent);

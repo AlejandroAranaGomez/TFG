@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import trabajo.aplicacionSaludable.Dominio.Alimento;
 import trabajo.aplicacionSaludable.Dominio.Usuario;
 import trabajo.aplicacionSaludable.Dtos.AlimentoDTO;
+import trabajo.aplicacionSaludable.Excepciones.ExcepcionesAlimentos.AlimentoDeOtroUsuarioException;
+import trabajo.aplicacionSaludable.Excepciones.ExcepcionesAlimentos.AlimentoDuplicadoException;
+import trabajo.aplicacionSaludable.Excepciones.ExcepcionesAlimentos.PropiedadesNegativasException;
 import trabajo.aplicacionSaludable.Repositorios.AlimentoRepository;
 import trabajo.aplicacionSaludable.Repositorios.UsuarioRepository;
 
@@ -45,21 +48,21 @@ public class AlimentoService {
         return alimentoDTO;
     }
 
-    public AlimentoDTO creaAlimento(AlimentoDTO alimentoDTO, Long idUsuario) throws Exception {
+    public AlimentoDTO creaAlimento(AlimentoDTO alimentoDTO, Long idUsuario) {
 
         Usuario usuario = usuarioRepository.findByIdUsuario(idUsuario)
-                .orElseThrow(() -> new Exception("No existe un usuario con este id."));
+                .orElse(null);
 
-        if (alimentoRepository.findByNombreAndUsuario(alimentoDTO.getNombre(), usuario).isPresent()) {
-            throw new Exception("Ya tienes un alimento creado con este nombre.");
+        if (usuario == null) {
+            return null;
         }
 
-        if (alimentoRepository.findByNombreAndUsuarioIsNull(alimentoDTO.getNombre()).isPresent()) {
-            throw new Exception("Ya existe un alimento con este nombre en la aplicacion.");
+        if (alimentoRepository.findByNombreAndUsuario(alimentoDTO.getNombre(), usuario).isPresent()) {
+            throw new AlimentoDuplicadoException();
         }
 
         if (alimentoDTO.getCalorias() < 0 || alimentoDTO.getCarbohidratos() < 0 || alimentoDTO.getProteinas() < 0 || alimentoDTO.getGrasas() < 0) {
-            throw new Exception("Las propiedades de los alimentos no pueden ser negativas.");
+            throw new PropiedadesNegativasException();
         }
 
         Alimento nuevoAlimento = DTOaEntidad(alimentoDTO, usuario);
@@ -70,25 +73,29 @@ public class AlimentoService {
         return EntidadaDTO(alimentoGuardado);
     }
 
-    public AlimentoDTO actualizaAlimento(Long idAlimento, AlimentoDTO alimentoDTO, Long idUsuario) throws Exception {
+    public AlimentoDTO actualizaAlimento(Long idAlimento, AlimentoDTO alimentoDTO, Long idUsuario) {
 
         Alimento alimentoExistente = alimentoRepository.findById(idAlimento)
-                .orElseThrow(() -> new Exception("No existe un alimento con este id."));
+                .orElse(null);
 
-        if (alimentoExistente.getUsuario() == null) {
-            throw new Exception("No puedes editar un alimento global.");
+        if (alimentoExistente == null) {
+            return null;
         }
 
         if (!alimentoExistente.getUsuario().getIdUsuario().equals(idUsuario)) {
-            throw new Exception("Este alimento pertenece a otro usuario.");
+            throw new AlimentoDeOtroUsuarioException();
         }
 
         // Compruebo que no existe un alimento con ese nombre creado por el usuario o en la bbdd de forma global.
         if (!alimentoExistente.getNombre().equals(alimentoDTO.getNombre())) {
             if (alimentoRepository.findByNombreAndUsuarioIsNull(alimentoDTO.getNombre()).isPresent()
                     || alimentoRepository.findByNombreAndUsuario(alimentoDTO.getNombre(), alimentoExistente.getUsuario()).isPresent()) {
-                throw new Exception("Ya existe un alimento con este nombre.");
+                throw new AlimentoDuplicadoException();
             }
+        }
+
+        if (alimentoDTO.getCalorias() < 0 || alimentoDTO.getCarbohidratos() < 0 || alimentoDTO.getProteinas() < 0 || alimentoDTO.getGrasas() < 0) {
+            throw new PropiedadesNegativasException();
         }
 
         alimentoExistente.setNombre(alimentoDTO.getNombre());
@@ -101,35 +108,33 @@ public class AlimentoService {
         return EntidadaDTO(alimentoActualizado);
     }
 
-    public List<AlimentoDTO> listaAlimentosUsuario(Long idUsuario) throws Exception {
+    public List<AlimentoDTO> listaAlimentosUsuario(Long idUsuario) {
         Usuario usuario = usuarioRepository.findByIdUsuario(idUsuario)
-                .orElseThrow(() -> new Exception("No existe un usuario con este id."));
+                .orElse(null);
+
+        if (usuario == null) {
+            return null;
+        }
 
         List<Alimento> alimentos = alimentoRepository.findByUsuarioOrUsuarioIsNull(usuario);
 
         return alimentos.stream().map(this::EntidadaDTO).collect(Collectors.toList());
     }
 
-    public List<AlimentoDTO> listaAlimentosGlobales() throws Exception {
-
-        List<Alimento> alimentos = alimentoRepository.findByUsuarioIsNull();
-
-        return alimentos.stream().map(this::EntidadaDTO).collect(Collectors.toList());
-    }
-
-    public void borraAlimento(Long idAlimento, Long idUsuario) throws Exception {
+    public boolean borraAlimento(Long idAlimento, Long idUsuario) {
 
         Alimento alimentoExistente = alimentoRepository.findById(idAlimento)
-                .orElseThrow(() -> new Exception("No existe un alimento con este id."));
+                .orElse(null);
 
-        if (alimentoExistente.getUsuario() == null) {
-            throw new Exception("No puedes borrar un alimento global.");
+        if (alimentoExistente == null) {
+            return false;
         }
 
         if (!alimentoExistente.getUsuario().getIdUsuario().equals(idUsuario)) {
-            throw new Exception("Este alimento pertenece a otro usuario.");
+            throw new AlimentoDeOtroUsuarioException();
         }
 
         alimentoRepository.deleteById(idAlimento);
+        return true;
     }
 }

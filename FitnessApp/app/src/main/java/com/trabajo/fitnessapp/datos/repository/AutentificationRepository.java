@@ -34,7 +34,7 @@ public class AutentificationRepository {
                 if (response.isSuccessful() && response.body() != null) {
                     resultadoConsulta.setValue(new Result.Success<>(response.body()));
                 } else {
-                    String error = "Error en la api.";
+                    String error = "Error en la base de datos.";
                     try {
                         if (response.errorBody() != null) {
                             error = response.errorBody().string();
@@ -48,7 +48,7 @@ public class AutentificationRepository {
 
             @Override
             public void onFailure(Call<UsuarioDTO> call, Throwable t) {
-                resultadoConsulta.setValue(new Result.Error<>("Fallo de conexion con la api: " + t.getMessage()));
+                resultadoConsulta.setValue(new Result.Error<>("Fallo de conexion con la base de datos: " + t.getMessage()));
             }
         });
 
@@ -78,7 +78,7 @@ public class AutentificationRepository {
 
             @Override
             public void onFailure(Call<UsuarioDTO> call, Throwable t) {
-                resultadoConsulta.setValue(new Result.Error<>("Fallo de conexion con la api: " + t.getMessage()));
+                resultadoConsulta.setValue(new Result.Error<>("Fallo de conexion con la base de datos: " + t.getMessage()));
             }
         });
         return resultadoConsulta;

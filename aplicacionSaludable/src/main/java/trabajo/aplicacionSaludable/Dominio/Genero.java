@@ -1,6 +1,6 @@
 package trabajo.aplicacionSaludable.Dominio;
 
-public enum Generos {
+public enum Genero {
     HOMBRE,
     MUJER,
     OTRO

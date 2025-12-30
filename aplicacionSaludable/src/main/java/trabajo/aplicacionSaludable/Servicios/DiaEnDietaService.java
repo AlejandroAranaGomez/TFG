@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import trabajo.aplicacionSaludable.Dominio.DiaEnDieta;
 import trabajo.aplicacionSaludable.Dominio.DietaCompleta;
-import trabajo.aplicacionSaludable.Dominio.Usuario;
 import trabajo.aplicacionSaludable.Dtos.DiaEnDietaDTO;
-import trabajo.aplicacionSaludable.Dtos.DietaCompletaDTO;
+import trabajo.aplicacionSaludable.Excepciones.ExcepcionesDiaEnDieta.DiaPerteneceAOtraDietaException;
+import trabajo.aplicacionSaludable.Excepciones.ExcepcionesDiaEnDieta.DiaYaCreadoException;
 import trabajo.aplicacionSaludable.Repositorios.DiaEnDietaRepository;
 import trabajo.aplicacionSaludable.Repositorios.DietaCompletaRepository;
 
@@ -69,9 +69,13 @@ public class DiaEnDietaService {
     }
 
 
-    public List<DiaEnDietaDTO> listaDiaEnDieta(Long idDietaCompleta) throws Exception {
+    public List<DiaEnDietaDTO> listaDiaEnDieta(Long idDietaCompleta) {
         DietaCompleta dietaCompleta = dietaCompletaRepository.findByIdDietaCompleta(idDietaCompleta)
-                .orElseThrow(() -> new Exception("No existe una dieta con este id."));
+                .orElse(null);
+
+        if (dietaCompleta == null) {
+            return null;
+        }
 
         List<DiaEnDieta> diasSinOrdenar = diaEnDietaRepository.findByDietaCompleta(dietaCompleta);
 
@@ -82,13 +86,17 @@ public class DiaEnDietaService {
         return diasOrdenados.stream().map(this::EntidadaDTO).collect(Collectors.toList());
     }
 
-    public DiaEnDietaDTO crearDiaEnDieta(DiaEnDietaDTO diaEnDietaDTO, Long idDietaCompleta) throws Exception {
+    public DiaEnDietaDTO crearDiaEnDieta(DiaEnDietaDTO diaEnDietaDTO, Long idDietaCompleta) {
 
         DietaCompleta dietaCompleta = dietaCompletaRepository.findByIdDietaCompleta(idDietaCompleta)
-                .orElseThrow(() -> new Exception("No existe una dieta con este id."));
+                .orElse(null);
+
+        if (dietaCompleta == null) {
+            return null;
+        }
 
         if (diaEnDietaRepository.findByDiaDeLaSemanaAndDietaCompleta(diaEnDietaDTO.getDiaDeLaSemana(), dietaCompleta).isPresent()) {
-            throw new Exception("Ya tienes este dia creado en la dieta.");
+            throw new DiaYaCreadoException();
         }
 
         DiaEnDieta nuevoDiaEnDieta = DTOaEntidad(diaEnDietaDTO, dietaCompleta);
@@ -98,15 +106,16 @@ public class DiaEnDietaService {
 
     }
 
-    public DiaEnDietaDTO editarDiaEnDieta(DiaEnDietaDTO diaEnDietaDTO, Long idDietaCompleta, Long idDiaEnDieta) throws Exception {
+    public DiaEnDietaDTO editarDiaEnDieta(DiaEnDietaDTO diaEnDietaDTO, Long idDietaCompleta, Long idDiaEnDieta) {
         DiaEnDieta diaExiste = diaEnDietaRepository.findById(idDiaEnDieta)
-                .orElseThrow(() -> new Exception("No existe un dia con este id."));
+                .orElse(null);
 
-        DietaCompleta dietaExistente = dietaCompletaRepository.findById(idDietaCompleta)
-                .orElseThrow(() -> new Exception("No existe una dieta con ese id."));
+        if  (diaExiste == null) {
+            return null;
+        }
 
         if (!diaExiste.getDietaCompleta().getIdDietaCompleta().equals(idDietaCompleta)) {
-            throw new Exception("Este dia pertenece a otra dieta.");
+            throw new DiaPerteneceAOtraDietaException();
         }
 
         diaExiste.setNombre(diaEnDietaDTO.getNombre());
@@ -115,18 +124,20 @@ public class DiaEnDietaService {
         return EntidadaDTO(actualizado);
     }
 
-    public void borrarDia(Long idDiaEnDieta, Long idDietaCompleta) throws Exception {
-        DiaEnDieta diaEnDieta = diaEnDietaRepository.findById(idDiaEnDieta).orElseThrow(() -> new Exception("No existe un dia con este id."));
+    public boolean borrarDia(Long idDiaEnDieta, Long idDietaCompleta) {
+        DiaEnDieta diaEnDieta = diaEnDietaRepository.findById(idDiaEnDieta).orElse(null);
 
-        DietaCompleta dietaExistente = dietaCompletaRepository.findById(idDietaCompleta)
-                .orElseThrow(() -> new Exception("No existe una dieta con ese id."));
+        if (diaEnDieta == null) {
+            return false;
+        }
 
         if (!diaEnDieta.getDietaCompleta().getIdDietaCompleta().equals(idDietaCompleta)) {
-            throw new Exception("Este dia pertenece a otra dieta.");
+            throw new DiaPerteneceAOtraDietaException();
         }
 
         diaEnDietaRepository.deleteById(idDiaEnDieta);
 
-        recalcularTotales(dietaExistente);
+        recalcularTotales(diaEnDieta.getDietaCompleta());
+        return true;
     }
 }
