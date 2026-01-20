@@ -2,15 +2,20 @@ package trabajo.aplicacionSaludable.Dominio;
 
 public enum Musculo {
     CUELLO,
-    HOMBRO,
+    HOMBROS,
+    DORSALES,
     PECHO,
     BICEPS,
     TRICEPS,
     ANTEBRAZO,
-    ESPALDA,
+    ZONA_LUMBAR,
+    ESPALDA_MEDIA,
+    TRAPECIOS,
+    ADUCTORES,
+    ABDUCTORES,
     ABDOMINALES,
-    GLUTEO,
+    GLUTEOS,
     CUADRICEPS,
-    FEMORAL,
-    GEMELO
+    ISQUIOTIBIALES,
+    GEMELOS
 }

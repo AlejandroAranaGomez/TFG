@@ -13,7 +13,7 @@ import java.util.Set;
 @Setter
 
 @Entity
-@Table(name = "ejecicio")
+@Table(name = "ejercicio")
 public class Ejercicio {
 
     @Id
@@ -23,13 +23,13 @@ public class Ejercicio {
 
     @Column(nullable = false)
     private String nombre;
-    @Column(nullable = false)
-    private String explicacion;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Musculo musculoEnfocado;
 
+    @Column(unique = true)
+    private String idApi;
 
     @ManyToMany(mappedBy = "ejercicios")
     private Set<DiaEnRutina> rutinasDelEjercicio = new HashSet<>();
@@ -41,9 +41,8 @@ public class Ejercicio {
 
     }
 
-    public Ejercicio(String nombre, String explicacion, Musculo musculoEnfocado) {
+    public Ejercicio(String nombre, Musculo musculoEnfocado) {
         this.nombre = nombre;
-        this.explicacion = explicacion;
         this.musculoEnfocado = musculoEnfocado;
     }
 

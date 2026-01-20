@@ -10,10 +10,13 @@
     <color name="fondoPantalla">#11140e</color>
     <color name="editar">#E26417</color>
     <color name="borrar">#93000a</color>
-    <color name="fondoDias">#55624b</color>
+    <color name="fondoDiasDieta">#55624b</color>
+    <color name="fondoDiasRutina">#A85814</color>
     <color name="textos">#c6eeaa</color>
     <color name="activa">#5ABD19</color>
-    <color name="fondoContenedor">#3e4a35</color>
+    <color name="fondoContenedorDietas">#3e4a35</color>
+    <color name="fondoContenedorRutinas">#6e390d</color>
+    <color name="fondoPopUp">#1E1E1E</color>
 
     <color name="colorImparcial">#509F90</color>
 </resources>

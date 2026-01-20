@@ -24,7 +24,7 @@ import lombok.Setter;
 @Getter
 @Setter
 
-public class DiasAdapter extends RecyclerView.Adapter<DiasAdapter.DiaViewHolder> {
+public class DiasDietaAdapter extends RecyclerView.Adapter<DiasDietaAdapter.DiaViewHolder> {
 
     private List<DiaEnDietaDTO> listaDias = new ArrayList<>();
     private OnDiaClickListener listener;
@@ -35,7 +35,7 @@ public class DiasAdapter extends RecyclerView.Adapter<DiasAdapter.DiaViewHolder>
         void onAddDiaClick();
     }
 
-    public void setOnDiaClickListener(DiasAdapter.OnDiaClickListener listener) {
+    public void setOnDiaClickListener(DiasDietaAdapter.OnDiaClickListener listener) {
         this.listener = listener;
     }
 
@@ -76,7 +76,7 @@ public class DiasAdapter extends RecyclerView.Adapter<DiasAdapter.DiaViewHolder>
                 holder.nombre.setTextColor(Color.BLACK);
                 holder.calorias.setTextColor(Color.BLACK);
             } else {
-                holder.layout.setBackgroundColor(context.getResources().getColor(R.color.fondoDias, context.getTheme()));
+                holder.layout.setBackgroundColor(context.getResources().getColor(R.color.fondoDiasDieta, context.getTheme()));
                 holder.nombre.setTextColor(Color.WHITE);
                 holder.calorias.setTextColor(Color.WHITE);
             }

@@ -7,13 +7,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fondoPantalla"
-    tools:context=".presentacion.menu.Dietas.DetallesDietaActivity">
+    tools:context=".presentacion.menu.Dietas.CrearDietaActivity">
 
     <TextView
-        android:id="@+id/tituloDetallesDietas"
+        android:id="@+id/tituloDetallesRutinas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nueva Dieta"
+        android:text="Nueva Rutina"
         android:textColor="@color/white"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -41,7 +41,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/tituloDetallesDietas"
+        app:layout_constraintTop_toBottomOf="@id/tituloDetallesRutinas"
         app:layout_constraintBottom_toTopOf="@id/botonGuardar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -54,13 +54,13 @@
 
             <TextView
                 android:text="Nombre"
-                android:textColor="@color/BotonesImagenesDietas"
+                android:textColor="@color/BotonesImagenesRutinas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18dp"/>
 
             <EditText
-                android:id="@+id/editNombreDieta"
+                android:id="@+id/editNombreRutina"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
@@ -68,14 +68,14 @@
                 android:layout_marginBottom="16dp"/>
 
             <TextView
-                android:text="Descripción"
-                android:textColor="@color/BotonesImagenesDietas"
+                android:text="Resumen"
+                android:textColor="@color/BotonesImagenesRutinas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18dp"/>
 
             <EditText
-                android:id="@+id/editDescripcionDieta"
+                android:id="@+id/editResumenRutina"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
@@ -88,10 +88,10 @@
         android:id="@+id/botonGuardar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="Guardar Dieta"
+        android:text="Guardar Rutina"
         android:textSize="18sp"
         android:textColor="@color/black"
-        android:backgroundTint="@color/BotonesImagenesDietas"
+        android:backgroundTint="@color/BotonesImagenesRutinas"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

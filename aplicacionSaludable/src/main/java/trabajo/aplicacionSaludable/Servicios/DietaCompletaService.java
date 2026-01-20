@@ -132,7 +132,6 @@ public class DietaCompletaService {
     public List<DietaCompletaDTO> listaDietaCompletaUsuario(Long idUsuario) {
         Usuario usuario = usuarioRepository.findByIdUsuario(idUsuario)
                 .orElse(null);
-
         if (usuario == null) {
             return null;
         }

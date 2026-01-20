@@ -1,7 +1,7 @@
 package trabajo.aplicacionSaludable.Excepciones.ExcepcionesDiaEnDieta;
 
-public class DiaYaCreadoException extends RuntimeException {
-    public DiaYaCreadoException() {
+public class DiaDietaYaCreadoException extends RuntimeException {
+    public DiaDietaYaCreadoException() {
         super("Ya tienes este dia creado en la dieta.");
     }
 }

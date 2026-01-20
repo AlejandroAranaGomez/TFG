@@ -3,10 +3,9 @@ package com.trabajo.fitnessapp.datos.repository;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.trabajo.fitnessapp.datos.GestionMensajes.Result;
+import com.trabajo.fitnessapp.datos.Utils.Result;
 import com.trabajo.fitnessapp.datos.api.IngredienteService;
 import com.trabajo.fitnessapp.datos.api.RetrofitClient;
-import com.trabajo.fitnessapp.datos.dto.ComidaDTO;
 import com.trabajo.fitnessapp.datos.dto.IngredienteDTO;
 
 import java.io.IOException;

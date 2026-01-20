@@ -6,7 +6,7 @@ import trabajo.aplicacionSaludable.Dominio.DiaEnDieta;
 import trabajo.aplicacionSaludable.Dominio.DietaCompleta;
 import trabajo.aplicacionSaludable.Dtos.DiaEnDietaDTO;
 import trabajo.aplicacionSaludable.Excepciones.ExcepcionesDiaEnDieta.DiaPerteneceAOtraDietaException;
-import trabajo.aplicacionSaludable.Excepciones.ExcepcionesDiaEnDieta.DiaYaCreadoException;
+import trabajo.aplicacionSaludable.Excepciones.ExcepcionesDiaEnDieta.DiaDietaYaCreadoException;
 import trabajo.aplicacionSaludable.Repositorios.DiaEnDietaRepository;
 import trabajo.aplicacionSaludable.Repositorios.DietaCompletaRepository;
 
@@ -96,7 +96,7 @@ public class DiaEnDietaService {
         }
 
         if (diaEnDietaRepository.findByDiaDeLaSemanaAndDietaCompleta(diaEnDietaDTO.getDiaDeLaSemana(), dietaCompleta).isPresent()) {
-            throw new DiaYaCreadoException();
+            throw new DiaDietaYaCreadoException();
         }
 
         DiaEnDieta nuevoDiaEnDieta = DTOaEntidad(diaEnDietaDTO, dietaCompleta);

@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.trabajo.fitnessapp.R;
 import com.trabajo.fitnessapp.datos.dto.IngredienteDTO;
-import com.trabajo.fitnessapp.presentacion.Utils.ModoIngrediente;
+import com.trabajo.fitnessapp.datos.Utils.ModoIngrediente;
 import com.trabajo.fitnessapp.presentacion.adaptador.IngredientesAdapter;
 
 import java.util.ArrayList;

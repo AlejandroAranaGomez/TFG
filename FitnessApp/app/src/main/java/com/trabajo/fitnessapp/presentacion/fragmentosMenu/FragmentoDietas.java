@@ -30,13 +30,13 @@ import com.trabajo.fitnessapp.datos.dto.ComidaDTO;
 import com.trabajo.fitnessapp.datos.dto.DiaEnDietaDTO;
 import com.trabajo.fitnessapp.datos.dto.DietaCompletaDTO;
 import com.trabajo.fitnessapp.dominio.DiaDeLaSemana;
-import com.trabajo.fitnessapp.presentacion.Utils.ModoIngrediente;
+import com.trabajo.fitnessapp.datos.Utils.ModoIngrediente;
 import com.trabajo.fitnessapp.presentacion.adaptador.ComidasAdapter;
-import com.trabajo.fitnessapp.presentacion.adaptador.DiasAdapter;
+import com.trabajo.fitnessapp.presentacion.adaptador.DiasDietaAdapter;
 import com.trabajo.fitnessapp.presentacion.adaptador.DietasAdapter;
 import com.trabajo.fitnessapp.presentacion.adaptador.IngredientesAdapter;
 import com.trabajo.fitnessapp.presentacion.menu.Dietas.ComidasViewModel;
-import com.trabajo.fitnessapp.presentacion.menu.Dietas.DetallesDietaActivity;
+import com.trabajo.fitnessapp.presentacion.menu.Dietas.CrearDietaActivity;
 import com.trabajo.fitnessapp.presentacion.menu.Dietas.DiasEnDietaViewModel;
 import com.trabajo.fitnessapp.presentacion.menu.Dietas.DietasViewModel;
 import com.trabajo.fitnessapp.presentacion.menu.Dietas.MenuIngredientesActivity;
@@ -51,7 +51,7 @@ public class FragmentoDietas extends Fragment {
     private ImageButton botonCrearDieta;
     private Long idUsuario;
     private DietasAdapter dietasAdapter;
-    private DiasAdapter diasAdapter;
+    private DiasDietaAdapter diasAdapter;
     private ComidasAdapter comidasAdapter;
     private IngredientesAdapter ingredientesAdapter;
     private RecyclerView recyclerViewDietas, recyclerViewDias, recyclerViewComidas;
@@ -89,7 +89,7 @@ public class FragmentoDietas extends Fragment {
         recyclerViewComidas.setLayoutManager(layoutManagerComidas);
 
         dietasAdapter = new DietasAdapter();
-        diasAdapter = new DiasAdapter();
+        diasAdapter = new DiasDietaAdapter();
         comidasAdapter = new ComidasAdapter();
         ingredientesAdapter = new IngredientesAdapter();
 
@@ -115,7 +115,7 @@ public class FragmentoDietas extends Fragment {
 
             @Override
             public void onEditarClick(DietaCompletaDTO dieta) {
-                Intent intent = new Intent(requireContext(), DetallesDietaActivity.class);
+                Intent intent = new Intent(requireContext(), CrearDietaActivity.class);
                 intent.putExtra("ID_USUARIO", idUsuario);
                 intent.putExtra("DIETA", dieta);
                 startActivity(intent);
@@ -127,7 +127,7 @@ public class FragmentoDietas extends Fragment {
             }
         });
 
-        diasAdapter.setOnDiaClickListener(new DiasAdapter.OnDiaClickListener() {
+        diasAdapter.setOnDiaClickListener(new DiasDietaAdapter.OnDiaClickListener() {
             @Override
             public void onDiaClick(DiaEnDietaDTO dia) {
                 mostrarDetalleDia(dia);
@@ -200,7 +200,7 @@ public class FragmentoDietas extends Fragment {
         botonCrearDieta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(requireContext(), DetallesDietaActivity.class);
+                Intent intent = new Intent(requireContext(), CrearDietaActivity.class);
                 intent.putExtra("ID_USUARIO", idUsuario);
                 startActivity(intent);
             }
@@ -349,7 +349,7 @@ public class FragmentoDietas extends Fragment {
                 diaEditado.setCaloriasTotales(diaEnDietaDTO.getCaloriasTotales());
                 diaEditado.setDiaDeLaSemana(diaEnDietaDTO.getDiaDeLaSemana());
 
-                actualizarDiaConfirmado(diaEditado, dialogoActual);
+                actualizarDiaConfirmado(diaEditado);
 
             } catch (NumberFormatException e) {
                 Toast.makeText(getContext(), "Error al editar", Toast.LENGTH_SHORT).show();
@@ -358,7 +358,7 @@ public class FragmentoDietas extends Fragment {
         dialogoActual.show();
     }
 
-    private void actualizarDiaConfirmado(DiaEnDietaDTO diaEditado, AlertDialog dialog) {
+    private void actualizarDiaConfirmado(DiaEnDietaDTO diaEditado) {
 
         Long idDietaCompleta = dietaActual.getIdDietaCompleta();
 
@@ -636,6 +636,8 @@ public class FragmentoDietas extends Fragment {
                     botonEditarNombreDia.setVisibility(View.GONE);
                     botonBorrarDia.setVisibility(View.GONE);
                     dietaActual = null;
+                    diaActual = null;
+                    recyclerViewComidas.setVisibility(View.GONE);
                 }
                 Toast.makeText(getContext(), "Dieta eliminada correctamente", Toast.LENGTH_SHORT).show();
                 dietasViewModel.obtenerLasDietas(idUsuario);

@@ -1,19 +1,21 @@
 package com.trabajo.fitnessapp.datos.dto;
 
+import java.util.List;
+
 public class ApiEjercicioDTO {
 
     private String id;
     private String name;
-    private String bodyPart;
-    private String target;
-    private String equipment;
-    private String gifUrl;
-
+    private List<String> primaryMuscles;
+    public List<String> getPrimaryMuscles() {
+        return primaryMuscles;
+    }
+    private List<String> images;
+    public List<String> getImages() {
+        return images;
+    }
     public String getId() { return id; }
 
     public String getName() { return name; }
-    public String getBodyPart() { return bodyPart; }
-    public String getTarget() { return target; }
-    public String getEquipment() { return equipment; }
-    public String getGifUrl() { return gifUrl; }
+
 }

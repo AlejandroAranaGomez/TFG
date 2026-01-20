@@ -20,7 +20,7 @@ public class RutinaCompleta {
     private Long idRutinaCompleta;
 
     @Column(nullable = false)
-    private String nombreCompleta;
+    private String nombreRutinaCompleta;
 
     private String resumen;
 
@@ -36,7 +36,7 @@ public class RutinaCompleta {
     }
 
     public RutinaCompleta(String nombreCompleta, String resumen, Usuario usuario) {
-        this.nombreCompleta = nombreCompleta;
+        this.nombreRutinaCompleta = nombreCompleta;
         this.resumen = resumen;
         this.usuario = usuario;
     }

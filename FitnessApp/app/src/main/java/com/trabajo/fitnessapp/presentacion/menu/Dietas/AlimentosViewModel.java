@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.trabajo.fitnessapp.datos.GestionMensajes.Result;
+import com.trabajo.fitnessapp.datos.Utils.Result;
 import com.trabajo.fitnessapp.datos.dto.AlimentoDTO;
 import com.trabajo.fitnessapp.datos.dto.ApiAlimentosDTO;
 import com.trabajo.fitnessapp.datos.repository.AlimentosRepository;
@@ -18,22 +18,18 @@ public class AlimentosViewModel extends ViewModel {
     public LiveData<String> getMensajeError() {
         return mensajeError;
     }
-
     private final MutableLiveData<List<AlimentoDTO>> alimentos = new MutableLiveData<>();
     public LiveData<List<AlimentoDTO>> getAlimentos() {
         return alimentos;
     }
-
     private final MutableLiveData<Boolean> alimentoCreado = new MutableLiveData<>();
     public LiveData<Boolean> getAlimentoCreado() {
         return alimentoCreado;
     }
-
     private final MutableLiveData<Boolean> alimentoActualizado = new MutableLiveData<>();
     public LiveData<Boolean> getAlimentoActualizado() {
         return alimentoActualizado;
     }
-
     private final MutableLiveData<Boolean> alimentoBorrado = new MutableLiveData<>();
     public LiveData<Boolean> getAlimentoBorrado() {
         return alimentoBorrado;

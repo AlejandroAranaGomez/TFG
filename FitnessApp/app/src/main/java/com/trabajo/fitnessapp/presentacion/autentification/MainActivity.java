@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
     private Button botonIrARegistro;
     private Button botonIrALogin;
 
-    private Button botonMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
         botonIrARegistro = findViewById(R.id.botonPruebaRegistro);
         botonIrALogin = findViewById(R.id.botonPruebaLogin);
 
-        botonMenu = findViewById(R.id.botonMenu);
 
         View mainView = findViewById(R.id.main);
         ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
@@ -56,14 +54,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        botonMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MenuPrincipalActivity.class);
                 startActivity(intent);
             }
         });

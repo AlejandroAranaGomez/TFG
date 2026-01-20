@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.trabajo.fitnessapp.datos.GestionMensajes.Result;
+import com.trabajo.fitnessapp.datos.Utils.Result;
 import com.trabajo.fitnessapp.datos.dto.ComidaDTO;
 import com.trabajo.fitnessapp.datos.repository.ComidasRepository;
 

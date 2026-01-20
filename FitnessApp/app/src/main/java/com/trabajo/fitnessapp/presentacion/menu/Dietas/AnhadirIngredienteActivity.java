@@ -124,7 +124,6 @@ public class AnhadirIngredienteActivity extends AppCompatActivity {
 
             @Override
             public void onBorrarClick(AlimentoDTO alimento) {
-
             }
         });
 

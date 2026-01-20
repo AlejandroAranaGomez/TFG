@@ -23,15 +23,11 @@ public class DiaEnRutina {
     @Column(nullable = false)
     private String nombre;
 
-    private String resumen;
-
-    private float caloriasQuemadas;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private DiaDeLaSemana diaDeLaSemana;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idRutinaCompleta",  nullable = false)
     private RutinaCompleta rutinaCompleta;
 
@@ -49,10 +45,8 @@ public class DiaEnRutina {
 
     }
 
-    public DiaEnRutina(String nombre, String resumen, float caloriasQuemadas, DiaDeLaSemana diaDeLaSemana, RutinaCompleta rutinaCompleta) {
+    public DiaEnRutina(String nombre, DiaDeLaSemana diaDeLaSemana, RutinaCompleta rutinaCompleta) {
         this.nombre = nombre;
-        this.resumen = resumen;
-        this.caloriasQuemadas = caloriasQuemadas;
         this.diaDeLaSemana = diaDeLaSemana;
         this.rutinaCompleta = rutinaCompleta;
     }

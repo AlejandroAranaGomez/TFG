@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import trabajo.aplicacionSaludable.Dtos.DiaEnDietaDTO;
 import trabajo.aplicacionSaludable.Excepciones.ExcepcionesDiaEnDieta.DiaPerteneceAOtraDietaException;
-import trabajo.aplicacionSaludable.Excepciones.ExcepcionesDiaEnDieta.DiaYaCreadoException;
+import trabajo.aplicacionSaludable.Excepciones.ExcepcionesDiaEnDieta.DiaDietaYaCreadoException;
 import trabajo.aplicacionSaludable.Servicios.DiaEnDietaService;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class DiaEnDietaController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dieta no encontrada");
             }
             return new ResponseEntity<>(nuevoDia,HttpStatus.CREATED);
-        } catch (DiaYaCreadoException e) {
+        } catch (DiaDietaYaCreadoException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
@@ -66,7 +66,4 @@ public class DiaEnDietaController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
     }
-
-
-
 }

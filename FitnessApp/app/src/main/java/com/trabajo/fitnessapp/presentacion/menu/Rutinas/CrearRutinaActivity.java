@@ -1,4 +1,4 @@
-package com.trabajo.fitnessapp.presentacion.menu.Dietas;
+package com.trabajo.fitnessapp.presentacion.menu.Rutinas;
 
 import android.os.Bundle;
 import android.view.View;
@@ -17,22 +17,23 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.trabajo.fitnessapp.R;
 import com.trabajo.fitnessapp.datos.dto.DietaCompletaDTO;
+import com.trabajo.fitnessapp.datos.dto.RutinaCompletaDTO;
 
-public class DetallesDietaActivity extends AppCompatActivity {
+public class CrearRutinaActivity extends AppCompatActivity {
 
-    private DietasViewModel viewModel;
+    private RutinasViewModel viewModel;
     private ImageButton botonVolver;
     private Button botonGuardar;
-    private EditText editNombre, editDescripcion;
+    private EditText editNombre, editResumen;
     private TextView tituloPantalla;
     private Long idUsuario;
-    private DietaCompletaDTO dietaCompletaDTO;
+    private RutinaCompletaDTO rutinaCompletaDTO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_detalles_dieta);
+        setContentView(R.layout.activity_crear_rutina);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -40,10 +41,10 @@ public class DetallesDietaActivity extends AppCompatActivity {
         });
 
         idUsuario = getIntent().getLongExtra("ID_USUARIO", -1L);
-        dietaCompletaDTO = (DietaCompletaDTO) getIntent().getSerializableExtra("DIETA");
+        rutinaCompletaDTO = (RutinaCompletaDTO) getIntent().getSerializableExtra("RUTINA");
 
         enlazarVistas();
-        viewModel = new ViewModelProvider(this).get(DietasViewModel.class);
+        viewModel = new ViewModelProvider(this).get(RutinasViewModel.class);
         configurarPantalla();
         configurarBotones();
         observarDatos();
@@ -51,9 +52,9 @@ public class DetallesDietaActivity extends AppCompatActivity {
 
     private void enlazarVistas() {
         botonVolver = findViewById(R.id.botonVolver);
-        editNombre = findViewById(R.id.editNombreDieta);
-        editDescripcion = findViewById(R.id.editDescripcionDieta);
-        tituloPantalla = findViewById(R.id.tituloDetallesDietas);
+        editNombre = findViewById(R.id.editNombreRutina);
+        editResumen = findViewById(R.id.editResumenRutina);
+        tituloPantalla = findViewById(R.id.tituloDetallesRutinas);
         botonGuardar = findViewById(R.id.botonGuardar);
     }
 
@@ -69,55 +70,47 @@ public class DetallesDietaActivity extends AppCompatActivity {
     }
 
     private void configurarPantalla() {
-        if (dietaCompletaDTO != null) {
-            tituloPantalla.setText("Editar Dieta");
+        if (rutinaCompletaDTO != null) {
+            tituloPantalla.setText("Editar Rutina");
             botonGuardar.setText("Actualizar Cambios");
 
-            editNombre.setText(dietaCompletaDTO.getNombre());
-            editDescripcion.setText(dietaCompletaDTO.getDescripcion());
+            editNombre.setText(rutinaCompletaDTO.getNombreRutinaCompleta());
+            editResumen.setText(rutinaCompletaDTO.getResumen());
         } else {
-            tituloPantalla.setText("Nueva Dieta");
-            botonGuardar.setText("Crear Dieta");
+            tituloPantalla.setText("Nueva Rutina");
+            botonGuardar.setText("Crear Rutina");
         }
     }
 
     private void guardarCambios() {
         String nombre = editNombre.getText().toString().trim();
-        String descripcion = editDescripcion.getText().toString().trim();
+        String resumen = editResumen.getText().toString().trim();
 
+        if (rutinaCompletaDTO != null) {
+            rutinaCompletaDTO.setNombreRutinaCompleta(nombre);
+            rutinaCompletaDTO.setResumen(resumen);
 
-        if (dietaCompletaDTO != null) {
-            dietaCompletaDTO.setNombre(nombre);
-            dietaCompletaDTO.setDescripcion(descripcion);
-
-            viewModel.actualizarDieta(dietaCompletaDTO.getIdDietaCompleta(), idUsuario, dietaCompletaDTO);
-
+            viewModel.actualizarRutina(rutinaCompletaDTO.getIdRutinaCompleta(), idUsuario, rutinaCompletaDTO);
         } else {
-            DietaCompletaDTO nuevaDieta = new DietaCompletaDTO();
-            nuevaDieta.setNombre(nombre);
-            nuevaDieta.setDescripcion(descripcion);
-            nuevaDieta.setActiva(false);
+            RutinaCompletaDTO nuevaRutina = new RutinaCompletaDTO();
+            nuevaRutina.setNombreRutinaCompleta(nombre);
+            nuevaRutina.setResumen(resumen);
 
-            nuevaDieta.setCaloriasTotales(0);
-            nuevaDieta.setCarbohidratos(0);
-            nuevaDieta.setProteinas(0);
-            nuevaDieta.setGrasas(0);
-
-            viewModel.crearDieta(idUsuario, nuevaDieta);
+            viewModel.crearRutina(idUsuario, nuevaRutina);
         }
     }
 
     private void observarDatos() {
-        viewModel.getDietaCreada().observe(this, dieta -> {
-            if (dieta != null) {
-                Toast.makeText(this, "Dieta creada", Toast.LENGTH_SHORT).show();
+        viewModel.getRutinaCreada().observe(this, rutina -> {
+            if (rutina != null) {
+                Toast.makeText(this, "Rutina creada", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
 
-        viewModel.getDietaActualizada().observe(this, dieta -> {
-            if (dieta != null) {
-                Toast.makeText(this, "Dieta actualizada", Toast.LENGTH_SHORT).show();
+        viewModel.getRutinaActualizada().observe(this, rutina -> {
+            if (rutina != null) {
+                Toast.makeText(this, "Rutina actualizada", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

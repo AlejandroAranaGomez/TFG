@@ -40,7 +40,6 @@ public class ApiAlimentosRepository {
                             ApiAlimentosDTO alimento = new ApiAlimentosDTO();
 
                             alimento.setNombre(hint.getFood().getLabel());
-                            alimento.setImageUrl(hint.getFood().getImage());
 
                             alimento.setCalorias(hint.getFood().getNutrients().getCalorias().floatValue());
                             alimento.setProteinas(hint.getFood().getNutrients().getProteinas().floatValue());

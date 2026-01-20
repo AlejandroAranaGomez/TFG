@@ -7,6 +7,7 @@ import trabajo.aplicacionSaludable.Dominio.Usuario;
 import trabajo.aplicacionSaludable.Dtos.InicioSesionDTO;
 import trabajo.aplicacionSaludable.Dtos.RegistroDTO;
 import trabajo.aplicacionSaludable.Dtos.UsuarioDTO;
+import trabajo.aplicacionSaludable.Dtos.UsuarioPerfilDTO;
 import trabajo.aplicacionSaludable.Repositorios.UsuarioRepository;
 
 import java.time.LocalDate;
@@ -88,6 +89,34 @@ public class UsuarioService {
                 usuario.getIdUsuario(),
                 usuario.getNombre()
         );
+    }
+
+    public UsuarioPerfilDTO obtenerPerfilUsuario(Long idUsuario) {
+        Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
+
+        if (usuario == null) {
+            return null;
+        }
+
+        UsuarioPerfilDTO usuarioPerfilDTO = new UsuarioPerfilDTO();
+        usuarioPerfilDTO.setIdUsuario(usuario.getIdUsuario());
+        usuarioPerfilDTO.setNombre(usuario.getNombre());
+        usuarioPerfilDTO.setApellido1(usuario.getApellido1());
+        usuarioPerfilDTO.setApellido2(usuario.getApellido2());
+
+        usuarioPerfilDTO.setFechaNacimiento(usuario.getFechaNacimiento().toString());
+
+
+        usuarioPerfilDTO.setPeso(usuario.getPeso());
+        usuarioPerfilDTO.setAltura(usuario.getAltura());
+        usuarioPerfilDTO.setObjetivo(usuario.getObjetivo());
+        usuarioPerfilDTO.setNivelDeActividad(usuario.getNivelDeActividad());
+
+        usuarioPerfilDTO.setEmail(usuario.getEmail());
+        usuarioPerfilDTO.setTelefono(usuario.getTelefono());
+        usuarioPerfilDTO.setGenero(usuario.getGenero());
+
+        return usuarioPerfilDTO;
     }
 
 }

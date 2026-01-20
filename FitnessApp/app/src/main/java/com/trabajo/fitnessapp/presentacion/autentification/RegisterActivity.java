@@ -181,7 +181,7 @@ public class RegisterActivity extends AppCompatActivity {
         dto.setGenero(Genero.valueOf((String) spinnerGenero.getSelectedItem()));
         dto.setPeso(Float.parseFloat(editPeso.getText().toString()));
         dto.setAltura(Integer.parseInt(editAltura.getText().toString()));
-        dto.setObjetivos(objetivoSeleccionado);
+        dto.setObjetivo(objetivoSeleccionado);
         dto.setNivelDeActividad(nivelDeActividadSeleccionado);
 
 

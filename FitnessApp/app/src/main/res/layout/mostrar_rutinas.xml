@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="300dp"
+    android:layout_height="240dp"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="6dp"
+    android:backgroundTint="@color/fondoContenedorRutinas">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/nombreRutina"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rutina Ejemplo"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/descripcionRutina"
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:text="Rutina enfocada a mejorar la fuerza general."
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:lineSpacingExtra="4dp"
+            android:layout_marginBottom="12dp"/>
+
+        <Button
+            android:id="@+id/botonVerDiasRutina"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🗓️ Ver días de la rutina"
+            android:textColor="@color/BotonesImagenesRutinas"
+            android:backgroundTint="@color/white"
+            android:layout_marginBottom="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/botonEditarRutina"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Editar"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/editar"
+                android:layout_marginEnd="5dp"/>
+
+            <Button
+                android:id="@+id/botonBorrarRutina"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Borrar"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/borrar"
+                android:layout_marginStart="5dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

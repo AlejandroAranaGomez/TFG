@@ -12,7 +12,6 @@ import lombok.Setter;
 public class ApiAlimentosDTO {
 
     private String nombre;
-    private String imageUrl;
     private float calorias;
     private float proteinas;
     private float carbohidratos;

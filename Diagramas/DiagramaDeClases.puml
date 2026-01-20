@@ -6,17 +6,22 @@
 
 enum Musculo  {
 CUELLO
-HOMBRO
+HOMBROS
+DORSALES
 PECHO
 BICEPS
 TRICEPS
 ANTEBRAZO
-ESPALDA
+ZONA_LUMBAR
+ESPALDA_MEDIA
+TRAPECIOS
+ADUCTORES
+ABDUCTORES
 ABDOMINALES
-GLUTEO
+GLUTEOS
 CUADRICEPS
-FEMORAL
-GEMELO 
+ISQUIOTIBIALES
+GEMELOS
 }
 
 enum DiaDeLaSemana  {
@@ -128,15 +133,12 @@ class RutinaCompleta {
 class DiaEnRutina {
 - idDiaEnDieta : Long
 - nombre : String
-- resumen : String 
-- caloriasQuemadas : float
 - diaDeLaSemana : DiaDeLaSemana
 }
 
 class Ejercicio {
 - idEjercicio : Long
 - nombre : String
-- explicacion : String 
 - musculoEnfocado : Musculo
 }
 

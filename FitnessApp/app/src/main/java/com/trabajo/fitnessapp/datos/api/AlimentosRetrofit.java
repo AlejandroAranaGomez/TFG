@@ -13,12 +13,6 @@ public class AlimentosRetrofit {
 
     public static Retrofit getClient() {
 
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(1, TimeUnit.MINUTES) // Tiempo para conectar
-                .readTimeout(1, TimeUnit.MINUTES)    // Tiempo para esperar datos
-                .writeTimeout(1, TimeUnit.MINUTES)   // Tiempo para enviar datos
-                .build();
-
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(URL)

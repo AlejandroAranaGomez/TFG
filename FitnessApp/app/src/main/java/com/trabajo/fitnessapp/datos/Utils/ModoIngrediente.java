@@ -1,4 +1,4 @@
-package com.trabajo.fitnessapp.presentacion.Utils;
+package com.trabajo.fitnessapp.datos.Utils;
 
 public enum ModoIngrediente {
     SOLO_LECTURA,
