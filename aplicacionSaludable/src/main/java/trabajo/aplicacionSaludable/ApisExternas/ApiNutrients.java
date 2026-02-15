@@ -1,19 +1,19 @@
-package com.trabajo.fitnessapp.datos.dto;
+package trabajo.aplicacionSaludable.ApisExternas;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ApiNutrients {
 
-    @SerializedName("ENERC_KCAL")
+    @JsonProperty("ENERC_KCAL")
     private Double calorias;
 
-    @SerializedName("PROCNT")
+    @JsonProperty("PROCNT")
     private Double proteinas;
 
-    @SerializedName("FAT")
+    @JsonProperty("FAT")
     private Double grasas;
 
-    @SerializedName("CHOCDF")
+    @JsonProperty("CHOCDF")
     private Double carbohidratos;
 
     // Si es nulo devolvemos 0.

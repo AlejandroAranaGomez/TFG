@@ -1,15 +1,15 @@
-package com.trabajo.fitnessapp.datos.dto;
+package trabajo.aplicacionSaludable.ApisExternas;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ApiFood {
-    @SerializedName("label")
+    @JsonProperty("label")
     private String label;
 
-    @SerializedName("image")
+    @JsonProperty("image")
     private String image;
 
-    @SerializedName("nutrients")
+    @JsonProperty("nutrients")
     private ApiNutrients nutrients;
 
     public String getLabel() {

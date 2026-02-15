@@ -70,7 +70,7 @@ public class DiaEnDietaService {
 
 
     public List<DiaEnDietaDTO> listaDiaEnDieta(Long idDietaCompleta) {
-        DietaCompleta dietaCompleta = dietaCompletaRepository.findByIdDietaCompleta(idDietaCompleta)
+        DietaCompleta dietaCompleta = dietaCompletaRepository.findById(idDietaCompleta)
                 .orElse(null);
 
         if (dietaCompleta == null) {
@@ -88,7 +88,7 @@ public class DiaEnDietaService {
 
     public DiaEnDietaDTO crearDiaEnDieta(DiaEnDietaDTO diaEnDietaDTO, Long idDietaCompleta) {
 
-        DietaCompleta dietaCompleta = dietaCompletaRepository.findByIdDietaCompleta(idDietaCompleta)
+        DietaCompleta dietaCompleta = dietaCompletaRepository.findById(idDietaCompleta)
                 .orElse(null);
 
         if (dietaCompleta == null) {

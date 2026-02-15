@@ -2,6 +2,7 @@ package trabajo.aplicacionSaludable.Dominio;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -12,13 +13,14 @@ import java.util.Set;
 @Getter
 @Setter
 
+@NoArgsConstructor
+
 @Entity
 @Table(name = "ejercicio")
 public class Ejercicio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idEjercicio")
     private Long idEjercicio;
 
     @Column(nullable = false)
@@ -36,10 +38,6 @@ public class Ejercicio {
 
     @OneToMany(mappedBy = "ejercicio", cascade = CascadeType.ALL,  orphanRemoval = true)
     private List<Serie> series = new ArrayList<>();
-
-    public Ejercicio() {
-
-    }
 
     public Ejercicio(String nombre, Musculo musculoEnfocado) {
         this.nombre = nombre;

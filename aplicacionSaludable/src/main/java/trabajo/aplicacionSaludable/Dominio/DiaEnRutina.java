@@ -3,6 +3,7 @@ package trabajo.aplicacionSaludable.Dominio;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -11,13 +12,14 @@ import java.util.List;
 @Getter
 @Setter
 
+@NoArgsConstructor
+
 @Entity
 @Table(name = "diaEnRutina")
 public class DiaEnRutina {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idDiaEnRutina")
     private Long idDiaEnRutina;
 
     @Column(nullable = false)
@@ -40,10 +42,6 @@ public class DiaEnRutina {
 
     )
     private List<Ejercicio> ejercicios = new ArrayList<>();
-
-    public DiaEnRutina() {
-
-    }
 
     public DiaEnRutina(String nombre, DiaDeLaSemana diaDeLaSemana, RutinaCompleta rutinaCompleta) {
         this.nombre = nombre;

@@ -63,7 +63,7 @@ public class DietaCompletaService {
     }
 
     public DietaCompletaDTO creaDietaCompleta(Long idUsuario, DietaCompletaDTO dietaCompletaDTO) {
-        Usuario usuario = usuarioRepository.findByIdUsuario(idUsuario)
+        Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElse(null);
 
         if (usuario == null) {
@@ -130,7 +130,7 @@ public class DietaCompletaService {
     }
 
     public List<DietaCompletaDTO> listaDietaCompletaUsuario(Long idUsuario) {
-        Usuario usuario = usuarioRepository.findByIdUsuario(idUsuario)
+        Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElse(null);
         if (usuario == null) {
             return null;

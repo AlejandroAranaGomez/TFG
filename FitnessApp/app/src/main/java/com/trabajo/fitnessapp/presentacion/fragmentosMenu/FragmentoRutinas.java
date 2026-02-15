@@ -201,6 +201,8 @@ public class FragmentoRutinas extends Fragment {
     }
 
     private void configurarRecycler() {
+        ejerciciosRutinaAdapter = new EjerciciosRutinaAdapter();
+
         LinearLayoutManager layoutManagerRutinas = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewRutinas.setLayoutManager(layoutManagerRutinas);
         rutinasAdapter = new RutinasAdapter();
@@ -226,7 +228,6 @@ public class FragmentoRutinas extends Fragment {
             }
         });
         recyclerViewEjercicios.setLayoutManager(gridLayoutManager);
-        ejerciciosRutinaAdapter = new EjerciciosRutinaAdapter();
         recyclerViewEjercicios.setAdapter(ejerciciosRutinaAdapter);
         recyclerViewEjercicios.setVisibility(View.GONE);
 

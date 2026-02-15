@@ -43,7 +43,7 @@ public class RutinaCompletaService {
 
     public List<RutinaCompletaDTO> listarRutinasUsuario(Long idUsuario) {
 
-        Usuario usuario = usuarioRepository.findByIdUsuario(idUsuario).orElse(null);
+        Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
 
         if (usuario == null) {
             return null;
@@ -53,7 +53,7 @@ public class RutinaCompletaService {
     }
 
     public RutinaCompletaDTO crearRutina(Long idUsuario, RutinaCompletaDTO rutinaCompletaDTO) {
-        Usuario usuario = usuarioRepository.findByIdUsuario(idUsuario)
+        Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElse(null);
 
         if (usuario == null) {

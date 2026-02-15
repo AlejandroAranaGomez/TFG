@@ -2,6 +2,7 @@ package trabajo.aplicacionSaludable.Dominio;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -11,6 +12,8 @@ import java.util.Set;
 @Getter
 @Setter
 
+@NoArgsConstructor
+
 @Entity
 @Table(name = "usuario")
 public class Usuario {
@@ -18,7 +21,6 @@ public class Usuario {
     // Clave Primaria BBDD
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idUsuario")
     private Long idUsuario;
 
     @Column(nullable = false)
@@ -36,14 +38,12 @@ public class Usuario {
     private float peso;
     @Column(nullable = false)
     private int altura;
-    @Column(nullable = false, unique = true)
-    private String email;
     @Column(nullable = false)
     private String telefono;
     @Column(nullable = false)
-    private String contrasenha;
     @Enumerated(EnumType.STRING)
     private Objetivo objetivo;
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private NivelDeActividad nivelDeActividad;
 
@@ -53,15 +53,10 @@ public class Usuario {
     private Set<RutinaCompleta> rutinas = new HashSet<>();
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,  orphanRemoval = true)
     private Set<Alimento> alimentosPersonales = new HashSet<>();
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Credenciales credenciales;
 
-
-    // Necesario para JPA
-    public Usuario() {
-
-    }
-
-    public Usuario(String nombre, String apellido1, String apellido2, LocalDate fechaNacimiento,
-                   Genero genero, float peso, int altura, String email, String telefono, String contrasenha,
+    public Usuario(String nombre, String apellido1, String apellido2, LocalDate fechaNacimiento, Genero genero, float peso, int altura, String telefono,
                    Objetivo objetivo, NivelDeActividad nivelDeActividad) {
         this.nombre = nombre;
         this.apellido1 = apellido1;
@@ -70,9 +65,7 @@ public class Usuario {
         this.genero = genero;
         this.peso = peso;
         this.altura = altura;
-        this.email = email;
         this.telefono = telefono;
-        this.contrasenha = contrasenha;
         this.objetivo = objetivo;
         this.nivelDeActividad = nivelDeActividad;
     }

@@ -44,7 +44,7 @@ public class DiaEnRutinaService {
     }
 
     public List<DiaEnRutinaDTO> listaDiaEnRutina(Long idRutinaCompleta) {
-        RutinaCompleta rutinaCompleta = rutinaCompletaRepository.findByIdRutinaCompleta(idRutinaCompleta).orElse(null);
+        RutinaCompleta rutinaCompleta = rutinaCompletaRepository.findById(idRutinaCompleta).orElse(null);
 
         if (rutinaCompleta == null) {
             return null;
@@ -61,7 +61,7 @@ public class DiaEnRutinaService {
     }
 
     public DiaEnRutinaDTO crearDiaEnRutina(DiaEnRutinaDTO diaEnRutinaDTO, Long idRutinaCompleta) {
-        RutinaCompleta rutinaCompleta = rutinaCompletaRepository.findByIdRutinaCompleta(idRutinaCompleta).orElse(null);
+        RutinaCompleta rutinaCompleta = rutinaCompletaRepository.findById(idRutinaCompleta).orElse(null);
 
         if (rutinaCompleta == null) {
             return null;

@@ -17,5 +17,4 @@ public interface DietaCompletaRepository extends JpaRepository<DietaCompleta, Lo
 
     Optional<DietaCompleta> findByNombreAndUsuario(String nombre, Usuario usuario);
 
-    Optional<DietaCompleta> findByIdDietaCompleta(Long idDietaCompleta);
 }

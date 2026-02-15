@@ -166,7 +166,7 @@
                 android:id="@+id/tvEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="📧 alejandro@email.com"
+                android:text="alejandro@email.com"
                 android:textColor="@color/white"
                 android:textSize="16sp"/>
 
@@ -174,7 +174,7 @@
                 android:id="@+id/tvTelefono"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="📞 600123456"
+                android:text="600123456"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:layout_marginTop="8dp"/>
@@ -183,7 +183,7 @@
                 android:id="@+id/tvGenero"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="🚻 Masculino"
+                android:text="HOMBRE"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:layout_marginTop="8dp"/>
@@ -192,7 +192,7 @@
                 android:id="@+id/tvFechaNacimiento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="🎂 2001-05-12"
+                android:text="2001-05-12"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:layout_marginTop="8dp"/>

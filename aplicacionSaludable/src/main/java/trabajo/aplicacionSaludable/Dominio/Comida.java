@@ -2,6 +2,7 @@ package trabajo.aplicacionSaludable.Dominio;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.service.spi.InjectService;
 
@@ -11,6 +12,8 @@ import java.util.Set;
 @Getter
 @Setter
 
+@NoArgsConstructor
+
 @Entity
 @Table(name = "comida")
 public class Comida {
@@ -18,7 +21,6 @@ public class Comida {
     // Clave Primaria BBDD
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idComida")
     private Long idComida;
 
     @Column(nullable = false)
@@ -38,10 +40,6 @@ public class Comida {
 
     @OneToMany(mappedBy = "comida", cascade = CascadeType.ALL,  orphanRemoval = true)
     private Set<Ingrediente> ingredientes = new HashSet<>();
-
-    public Comida() {
-
-    }
 
     public Comida(String nombre,  float caloriasTotales, float proteinas, float carbohidratos, float grasas,  DiaEnDieta diaEnDieta) {
         this.nombre = nombre;

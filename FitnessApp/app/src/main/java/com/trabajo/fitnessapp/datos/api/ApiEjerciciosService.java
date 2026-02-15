@@ -1,5 +1,6 @@
 package com.trabajo.fitnessapp.datos.api;
 
+import com.trabajo.fitnessapp.datos.dto.ApiAlimentosDTO;
 import com.trabajo.fitnessapp.datos.dto.ApiEjercicioDTO;
 import com.trabajo.fitnessapp.datos.dto.RespuestaEjerciciosDTO;
 
@@ -12,10 +13,6 @@ import retrofit2.http.Headers;
 import retrofit2.http.Query;
 
 public interface ApiEjerciciosService {
-
-    @GET("exercises")
-    Call<RespuestaEjerciciosDTO> obtenerEjercicios(
-            @Query("page") int page,
-            @Query("limit") int limit
-    );
+    @GET("api/ejercicios/buscar")
+    Call<List<ApiEjercicioDTO>> buscarEjercicios();
 }

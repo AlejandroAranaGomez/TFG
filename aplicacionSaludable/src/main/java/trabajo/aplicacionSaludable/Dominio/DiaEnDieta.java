@@ -2,6 +2,7 @@ package trabajo.aplicacionSaludable.Dominio;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -9,6 +10,8 @@ import java.util.List;
 
 @Getter
 @Setter
+
+@NoArgsConstructor
 
 @Entity
 @Table(name = "diaEnDieta")
@@ -18,7 +21,6 @@ public class DiaEnDieta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idDiaEnDieta")
     private Long idDiaEnDieta;
 
     @Column(nullable = false)
@@ -42,10 +44,6 @@ public class DiaEnDieta {
 
     @OneToMany(mappedBy = "diaEnDieta", cascade = CascadeType.ALL,  orphanRemoval = true)
     private List<Comida> comidas = new ArrayList<>();
-
-    public DiaEnDieta() {
-
-    }
 
     public DiaEnDieta(String nombre, float caloriasTotales, float proteinas, float carbohidratos, float grasas, DiaDeLaSemana diaDeLaSemana,  DietaCompleta dietaCompleta) {
         this.nombre = nombre;

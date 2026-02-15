@@ -1,11 +1,11 @@
-package com.trabajo.fitnessapp.datos.dto;
+package trabajo.aplicacionSaludable.ApisExternas;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
 public class ApiAlimentosResponse {
-    @SerializedName("hints")
+    @JsonProperty("hints")
     private List<ApiHints> hints;
 
     public List<ApiHints> getHints() {

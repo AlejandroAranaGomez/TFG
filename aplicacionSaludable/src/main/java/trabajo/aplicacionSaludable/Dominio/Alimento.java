@@ -2,6 +2,7 @@ package trabajo.aplicacionSaludable.Dominio;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
@@ -10,6 +11,8 @@ import java.util.Set;
 @Getter
 @Setter
 
+@NoArgsConstructor
+
 @Entity
 @Table(name = "alimento")
 public class Alimento {
@@ -17,7 +20,6 @@ public class Alimento {
     // Clave Primaria BBDD
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idAlimento")
     private Long idAlimento;
 
     @Column(nullable = false)
@@ -36,10 +38,6 @@ public class Alimento {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idUsuario", nullable = true)
     private Usuario usuario;
-
-    public Alimento() {
-
-    }
 
     public Alimento(String nombre, float calorias,float proteinas, float carbohidratos, float grasas,  Usuario usuario) {
         this.nombre = nombre;

@@ -3,11 +3,13 @@ package trabajo.aplicacionSaludable.Servicios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import trabajo.aplicacionSaludable.Dominio.Credenciales;
 import trabajo.aplicacionSaludable.Dominio.Usuario;
 import trabajo.aplicacionSaludable.Dtos.InicioSesionDTO;
 import trabajo.aplicacionSaludable.Dtos.RegistroDTO;
 import trabajo.aplicacionSaludable.Dtos.UsuarioDTO;
 import trabajo.aplicacionSaludable.Dtos.UsuarioPerfilDTO;
+import trabajo.aplicacionSaludable.Repositorios.CredencialesRepository;
 import trabajo.aplicacionSaludable.Repositorios.UsuarioRepository;
 
 import java.time.LocalDate;
@@ -16,74 +18,52 @@ import java.time.LocalDate;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-
+    private final CredencialesRepository credencialesRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepository usuarioRepository,
+                          CredencialesRepository credencialesRepository,
+                          PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.credencialesRepository = credencialesRepository;
         this.passwordEncoder = passwordEncoder;
-
     }
 
     public UsuarioDTO registrarUsuario(RegistroDTO registroDTO) {
 
-        // Compruebo que no hay un usuario con ese email ya registrado.
-
-        if (usuarioRepository.findByEmail(registroDTO.getEmail()).isPresent()) {
+        // Comprobar si ya existe el email
+        if (credencialesRepository.findByEmail(registroDTO.getEmail()).isPresent()) {
             return null;
         }
 
-        // Hasheo la contraseña para no pasarla directamente
-        String contrasenhaHash = passwordEncoder.encode(registroDTO.getContrasenha());
+        Usuario usuario = crearUsuarioDesdeDTO(registroDTO);
 
-        Usuario nuevoUsuario = getUsuario(registroDTO, contrasenhaHash);
-
-        Usuario usuarioGuardado = usuarioRepository.save(nuevoUsuario);
+        usuarioRepository.save(usuario);
 
         return new UsuarioDTO(
-                usuarioGuardado.getIdUsuario(),
-                usuarioGuardado.getNombre()
-        );
-    }
-
-    //Metodo auxiliar que parsea la fecha y crea el usuario
-    private static Usuario getUsuario(RegistroDTO registroDTO, String contrasenhaHash) {
-        LocalDate fechaNacimiento = LocalDate.parse(registroDTO.getFechaNacimiento());
-
-        // Creo el usuario a partir del dto y le guardo
-        return new Usuario(
-                registroDTO.getNombre(),
-                registroDTO.getApellido1(),
-                registroDTO.getApellido2(),
-                fechaNacimiento,
-                registroDTO.getGenero(),
-                registroDTO.getPeso(),
-                registroDTO.getAltura(),
-                registroDTO.getEmail(),
-                registroDTO.getTelefono(),
-                contrasenhaHash,
-                registroDTO.getObjetivo(),
-                registroDTO.getNivelDeActividad()
+                usuario.getIdUsuario(),
+                usuario.getNombre()
         );
     }
 
     public UsuarioDTO iniciarSesion(InicioSesionDTO inicioSesionDTO) {
 
+        Credenciales credenciales = credencialesRepository
+                .findByEmail(inicioSesionDTO.getEmail())
+                .orElse(null);
 
-        // Compruebo si existe un usuario con ese email.
-       Usuario usuario = usuarioRepository.findByEmail(inicioSesionDTO.getEmail())
-               .orElse(null);
-
-       // No existe el usuario
-        if (usuario == null) {
+        if (credenciales == null) {
             return null;
         }
 
-        // Compruebo si la contrasenha coincide con la que hemos escrito.
-        if (!passwordEncoder.matches(inicioSesionDTO.getContrasenha(), usuario.getContrasenha())) {
+        if (!passwordEncoder.matches(
+                inicioSesionDTO.getContrasenha(),
+                credenciales.getContrasenha())) {
             return null;
         }
+
+        Usuario usuario = credenciales.getUsuario();
 
         return new UsuarioDTO(
                 usuario.getIdUsuario(),
@@ -92,31 +72,56 @@ public class UsuarioService {
     }
 
     public UsuarioPerfilDTO obtenerPerfilUsuario(Long idUsuario) {
+
         Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
 
         if (usuario == null) {
             return null;
         }
 
-        UsuarioPerfilDTO usuarioPerfilDTO = new UsuarioPerfilDTO();
-        usuarioPerfilDTO.setIdUsuario(usuario.getIdUsuario());
-        usuarioPerfilDTO.setNombre(usuario.getNombre());
-        usuarioPerfilDTO.setApellido1(usuario.getApellido1());
-        usuarioPerfilDTO.setApellido2(usuario.getApellido2());
+        UsuarioPerfilDTO dto = new UsuarioPerfilDTO();
+        dto.setIdUsuario(usuario.getIdUsuario());
+        dto.setNombre(usuario.getNombre());
+        dto.setApellido1(usuario.getApellido1());
+        dto.setApellido2(usuario.getApellido2());
+        dto.setFechaNacimiento(usuario.getFechaNacimiento().toString());
+        dto.setGenero(usuario.getGenero());
+        dto.setPeso(usuario.getPeso());
+        dto.setAltura(usuario.getAltura());
+        dto.setTelefono(usuario.getTelefono());
+        dto.setObjetivo(usuario.getObjetivo());
+        dto.setNivelDeActividad(usuario.getNivelDeActividad());
+        dto.setEmail(usuario.getCredenciales().getEmail());
 
-        usuarioPerfilDTO.setFechaNacimiento(usuario.getFechaNacimiento().toString());
+        return dto;
+    }
 
+    private Usuario crearUsuarioDesdeDTO(RegistroDTO registroDTO) {
 
-        usuarioPerfilDTO.setPeso(usuario.getPeso());
-        usuarioPerfilDTO.setAltura(usuario.getAltura());
-        usuarioPerfilDTO.setObjetivo(usuario.getObjetivo());
-        usuarioPerfilDTO.setNivelDeActividad(usuario.getNivelDeActividad());
+        LocalDate fechaNacimiento = LocalDate.parse(registroDTO.getFechaNacimiento());
 
-        usuarioPerfilDTO.setEmail(usuario.getEmail());
-        usuarioPerfilDTO.setTelefono(usuario.getTelefono());
-        usuarioPerfilDTO.setGenero(usuario.getGenero());
+        Usuario usuario = new Usuario(
+                registroDTO.getNombre(),
+                registroDTO.getApellido1(),
+                registroDTO.getApellido2(),
+                fechaNacimiento,
+                registroDTO.getGenero(),
+                registroDTO.getPeso(),
+                registroDTO.getAltura(),
+                registroDTO.getTelefono(),
+                registroDTO.getObjetivo(),
+                registroDTO.getNivelDeActividad()
+        );
 
-        return usuarioPerfilDTO;
+        Credenciales credenciales = new Credenciales(
+                registroDTO.getEmail(),
+                passwordEncoder.encode(registroDTO.getContrasenha())
+        );
+
+        credenciales.setUsuario(usuario);
+        usuario.setCredenciales(credenciales);
+
+        return usuario;
     }
 
 }

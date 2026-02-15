@@ -53,7 +53,7 @@ enum NivelDeActividad {
     EJERCICIO_INTENSO 
     ATLETA
 }
-
+ 
 ' ========================
 ' ======== CLASES ========
 ' ========================
@@ -62,14 +62,14 @@ class Usuario {
 - idUsuario : Long
 - nombre : String
 - apellido1 : String
-- apellido2 : String
+- apellido2 : String [0..1]
 - fechaNacimiento : LocalDate
 - genero: Genero
 - peso : float
-- altura : int
-- email : String
-- telefono : String
 - contrasenha : String
+- email : String
+- altura : int
+- telefono : String
 - nivelDeActividad : NivelDeActividad
 - objetivo : Objetivo
 }
@@ -77,7 +77,7 @@ class Usuario {
 class DietaCompleta {
 - idDieta : Long
 - nombre : String
-- descripcion : String
+- descripcion : String [0..1]
 - caloriasTotales : float
 - proteinas : float
 - carbohidratos : float
@@ -127,7 +127,7 @@ class Alimento {
 class RutinaCompleta {
 - idRutina : Long
 - nombre : String
-- resumen : String
+- resumen : String [0..1]
 }
 
 class DiaEnRutina {
@@ -144,16 +144,16 @@ class Ejercicio {
 
 class Serie {
 - idSerie : Long
-- serieAnterior : String
+- serieAnterior : String [0..1]
 - repeticiones : int
-- peso : int
+- peso : int 
 }
 
 ' ========================
 ' ====== RELACIONES ======
 ' ========================
 
-Usuario "1"  -- "0..*" DietaCompleta
+Usuario "Usuarios 1"  -- "Dietas 0..*" DietaCompleta 
 
 DietaCompleta "1" -- "1..*" DiaEnDieta
 

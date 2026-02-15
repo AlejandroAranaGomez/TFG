@@ -30,7 +30,7 @@ public class AutentificationController {
                     .body("El email ya está registrado");
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
+        return new ResponseEntity<>(usuarioDTO, HttpStatus.CREATED);
 
     }
 

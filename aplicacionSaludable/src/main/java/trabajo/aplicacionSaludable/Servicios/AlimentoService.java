@@ -50,7 +50,7 @@ public class AlimentoService {
 
     public AlimentoDTO creaAlimento(AlimentoDTO alimentoDTO, Long idUsuario) {
 
-        Usuario usuario = usuarioRepository.findByIdUsuario(idUsuario)
+        Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElse(null);
 
         if (usuario == null) {
@@ -109,7 +109,7 @@ public class AlimentoService {
     }
 
     public List<AlimentoDTO> listaAlimentosUsuario(Long idUsuario) {
-        Usuario usuario = usuarioRepository.findByIdUsuario(idUsuario)
+        Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElse(null);
 
         if (usuario == null) {

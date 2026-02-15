@@ -13,6 +13,4 @@ public interface RutinaCompletaRepository extends JpaRepository<RutinaCompleta, 
     List<RutinaCompleta> findByUsuario(Usuario usuario);
 
     Optional<RutinaCompleta> findByNombreRutinaCompletaAndUsuario(String nombreRutinaCompleta, Usuario usuario);
-
-    Optional<RutinaCompleta> findByIdRutinaCompleta(Long idRutinaCompleta);
 }
