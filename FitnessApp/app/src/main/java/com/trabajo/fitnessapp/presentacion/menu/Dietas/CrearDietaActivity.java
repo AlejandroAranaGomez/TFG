@@ -102,6 +102,7 @@ public class CrearDietaActivity extends AppCompatActivity {
             nuevaDieta.setCarbohidratos(0);
             nuevaDieta.setProteinas(0);
             nuevaDieta.setGrasas(0);
+            nuevaDieta.setActiva(true);
 
             viewModel.crearDieta(idUsuario, nuevaDieta);
         }

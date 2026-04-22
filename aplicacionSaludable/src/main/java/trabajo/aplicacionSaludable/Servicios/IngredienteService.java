@@ -24,7 +24,6 @@ public class IngredienteService {
     private final ComidaRepository comidaRepository;
     private final IngredienteRepository ingredienteRepository;
 
-    @Autowired
     public IngredienteService(ComidaRepository comidaRepository, IngredienteRepository ingredienteRepository) {
         this.comidaRepository = comidaRepository;
         this.ingredienteRepository = ingredienteRepository;

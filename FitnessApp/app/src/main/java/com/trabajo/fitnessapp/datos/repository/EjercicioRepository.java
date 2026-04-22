@@ -7,6 +7,7 @@ import com.trabajo.fitnessapp.datos.Utils.Result;
 import com.trabajo.fitnessapp.datos.api.EjercicioService;
 import com.trabajo.fitnessapp.datos.api.RetrofitClient;
 import com.trabajo.fitnessapp.datos.dto.EjercicioDTO;
+import com.trabajo.fitnessapp.dominio.DiaDeLaSemana;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,10 +24,10 @@ public class EjercicioRepository {
         this.ejercicioService = RetrofitClient.getClient().create(EjercicioService.class);
     }
 
-    public LiveData<Result<List<EjercicioDTO>>> obtenerEjercicios(Long idDiaEnRutina) {
+    public LiveData<Result<List<EjercicioDTO>>> obtenerEjercicios(Long idRutina, DiaDeLaSemana diaDeLaSemana) {
         MutableLiveData<Result<List<EjercicioDTO>>> ejercicios = new MutableLiveData<>();
 
-        ejercicioService.obtenerEjercicios(idDiaEnRutina).enqueue(new Callback<List<EjercicioDTO>>() {
+        ejercicioService.obtenerEjercicios(idRutina, diaDeLaSemana).enqueue(new Callback<List<EjercicioDTO>>() {
             @Override
             public void onResponse(Call<List<EjercicioDTO>> call, Response<List<EjercicioDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -52,11 +53,11 @@ public class EjercicioRepository {
         return ejercicios;
     }
 
-    public LiveData<Result<Boolean>> anhadirEjercicio(Long idDiaEnRutina, EjercicioDTO ejercicioDTO) {
+    public LiveData<Result<Boolean>> anhadirEjercicio(Long idRutina, DiaDeLaSemana diaDeLaSemana, EjercicioDTO ejercicioDTO) {
         MutableLiveData<Result<Boolean>> resultado = new MutableLiveData<>();
 
 
-        ejercicioService.anhadirEjercicio(idDiaEnRutina, ejercicioDTO).enqueue(new Callback<Void>() {
+        ejercicioService.anhadirEjercicio(idRutina, diaDeLaSemana, ejercicioDTO).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
@@ -82,10 +83,10 @@ public class EjercicioRepository {
         return resultado;
     }
 
-    public LiveData<Result<Boolean>> borrarEjercicio(Long idEjercicio, Long idDiaEnRutina) {
+    public LiveData<Result<Boolean>> borrarEjercicio(Long idRutina, DiaDeLaSemana diaDeLaSemana, Long idEjercicio) {
         MutableLiveData<Result<Boolean>> resultado = new MutableLiveData<>();
 
-        ejercicioService.borrarEjercicio(idEjercicio, idDiaEnRutina).enqueue(new Callback<Void>() {
+        ejercicioService.borrarEjercicio(idRutina, diaDeLaSemana, idEjercicio).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {

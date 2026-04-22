@@ -2,17 +2,14 @@ package trabajo.aplicacionSaludable.Servicios;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import trabajo.aplicacionSaludable.Dominio.DiaDeLaSemana;
 import trabajo.aplicacionSaludable.Dominio.DiaEnDieta;
 import trabajo.aplicacionSaludable.Dominio.DietaCompleta;
 import trabajo.aplicacionSaludable.Dtos.DiaEnDietaDTO;
-import trabajo.aplicacionSaludable.Excepciones.ExcepcionesDiaEnDieta.DiaPerteneceAOtraDietaException;
-import trabajo.aplicacionSaludable.Excepciones.ExcepcionesDiaEnDieta.DiaDietaYaCreadoException;
 import trabajo.aplicacionSaludable.Repositorios.DiaEnDietaRepository;
 import trabajo.aplicacionSaludable.Repositorios.DietaCompletaRepository;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class DiaEnDietaService {
@@ -20,22 +17,9 @@ public class DiaEnDietaService {
     private final DietaCompletaRepository dietaCompletaRepository;
     private final DiaEnDietaRepository diaEnDietaRepository;
 
-    @Autowired
     public DiaEnDietaService(DiaEnDietaRepository diaEnDietaRepository, DietaCompletaRepository dietaCompletaRepository) {
         this.diaEnDietaRepository = diaEnDietaRepository;
         this.dietaCompletaRepository = dietaCompletaRepository;
-    }
-
-    private DiaEnDieta DTOaEntidad(DiaEnDietaDTO diaEnDietaDTO, DietaCompleta dietaCompleta) {
-        DiaEnDieta diaEnDieta = new DiaEnDieta();
-        diaEnDieta.setNombre(diaEnDietaDTO.getNombre());
-        diaEnDieta.setCaloriasTotales(diaEnDietaDTO.getCaloriasTotales());
-        diaEnDieta.setProteinas(diaEnDietaDTO.getProteinas());
-        diaEnDieta.setCarbohidratos(diaEnDietaDTO.getCarbohidratos());
-        diaEnDieta.setGrasas(diaEnDietaDTO.getGrasas());
-        diaEnDieta.setDiaDeLaSemana(diaEnDietaDTO.getDiaDeLaSemana());
-        diaEnDieta.setDietaCompleta(dietaCompleta);
-        return diaEnDieta;
     }
 
     private DiaEnDietaDTO EntidadaDTO(DiaEnDieta diaEnDieta) {
@@ -69,75 +53,57 @@ public class DiaEnDietaService {
     }
 
 
-    public List<DiaEnDietaDTO> listaDiaEnDieta(Long idDietaCompleta) {
-        DietaCompleta dietaCompleta = dietaCompletaRepository.findById(idDietaCompleta)
+    public DiaEnDietaDTO guardarDiaEnDieta(DiaEnDietaDTO diaEnDietaDTO, Long idDietaCompleta, DiaDeLaSemana diaDeLaSemana) {
+        DietaCompleta dieta = dietaCompletaRepository.findById(idDietaCompleta)
                 .orElse(null);
 
-        if (dietaCompleta == null) {
+        if (dieta == null) {
             return null;
         }
 
-        List<DiaEnDieta> diasSinOrdenar = diaEnDietaRepository.findByDietaCompleta(dietaCompleta);
+        Optional<DiaEnDieta> diaEnDieta = diaEnDietaRepository.findByDiaDeLaSemanaAndDietaCompleta(diaDeLaSemana, dieta);
 
-        List<DiaEnDieta> diasOrdenados = diasSinOrdenar.stream()
-                .sorted(Comparator.comparing(DiaEnDieta::getDiaDeLaSemana))
-                .collect(Collectors.toList());
+        DiaEnDieta dia;
 
-        return diasOrdenados.stream().map(this::EntidadaDTO).collect(Collectors.toList());
+        if (diaEnDieta.isPresent()) {
+            dia = diaEnDieta.get();
+        } else {
+            dia = new DiaEnDieta();
+            dia.setDietaCompleta(dieta);
+            dia.setDiaDeLaSemana(diaDeLaSemana);
+        }
+
+        dia.setNombre(diaEnDietaDTO.getNombre());
+        dia.setCaloriasTotales(diaEnDietaDTO.getCaloriasTotales());
+        dia.setProteinas(diaEnDietaDTO.getProteinas());
+        dia.setCarbohidratos(diaEnDietaDTO.getCarbohidratos());
+        dia.setGrasas(diaEnDietaDTO.getGrasas());
+
+        DiaEnDieta guardado = diaEnDietaRepository.save(dia);
+
+        recalcularTotales(dieta);
+
+        return EntidadaDTO(guardado);
     }
 
-    public DiaEnDietaDTO crearDiaEnDieta(DiaEnDietaDTO diaEnDietaDTO, Long idDietaCompleta) {
-
-        DietaCompleta dietaCompleta = dietaCompletaRepository.findById(idDietaCompleta)
+    public boolean borrarDia(DiaDeLaSemana diaDeLaSemana, Long idDietaCompleta) {
+        DietaCompleta dieta = dietaCompletaRepository.findById(idDietaCompleta)
                 .orElse(null);
 
-        if (dietaCompleta == null) {
-            return null;
-        }
-
-        if (diaEnDietaRepository.findByDiaDeLaSemanaAndDietaCompleta(diaEnDietaDTO.getDiaDeLaSemana(), dietaCompleta).isPresent()) {
-            throw new DiaDietaYaCreadoException();
-        }
-
-        DiaEnDieta nuevoDiaEnDieta = DTOaEntidad(diaEnDietaDTO, dietaCompleta);
-        DiaEnDieta diaGuardado = diaEnDietaRepository.save(nuevoDiaEnDieta);
-
-        return EntidadaDTO(diaGuardado);
-
-    }
-
-    public DiaEnDietaDTO editarDiaEnDieta(DiaEnDietaDTO diaEnDietaDTO, Long idDietaCompleta, Long idDiaEnDieta) {
-        DiaEnDieta diaExiste = diaEnDietaRepository.findById(idDiaEnDieta)
-                .orElse(null);
-
-        if  (diaExiste == null) {
-            return null;
-        }
-
-        if (!diaExiste.getDietaCompleta().getIdDietaCompleta().equals(idDietaCompleta)) {
-            throw new DiaPerteneceAOtraDietaException();
-        }
-
-        diaExiste.setNombre(diaEnDietaDTO.getNombre());
-
-        DiaEnDieta actualizado = diaEnDietaRepository.save(diaExiste);
-        return EntidadaDTO(actualizado);
-    }
-
-    public boolean borrarDia(Long idDiaEnDieta, Long idDietaCompleta) {
-        DiaEnDieta diaEnDieta = diaEnDietaRepository.findById(idDiaEnDieta).orElse(null);
-
-        if (diaEnDieta == null) {
+        if (dieta == null) {
             return false;
         }
 
-        if (!diaEnDieta.getDietaCompleta().getIdDietaCompleta().equals(idDietaCompleta)) {
-            throw new DiaPerteneceAOtraDietaException();
+        Optional<DiaEnDieta> diaOpt = diaEnDietaRepository.findByDiaDeLaSemanaAndDietaCompleta(diaDeLaSemana, dieta);
+
+        if (diaOpt.isEmpty()) {
+            return false;
         }
 
-        diaEnDietaRepository.deleteById(idDiaEnDieta);
+        DiaEnDieta dia = diaOpt.get();
+        diaEnDietaRepository.delete(dia);
+        recalcularTotales(dieta);
 
-        recalcularTotales(diaEnDieta.getDietaCompleta());
         return true;
     }
 }

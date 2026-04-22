@@ -1,69 +1,185 @@
 @startuml
+
 skinparam linetype polyline
 allow_mixing
 left to right direction
 
 package "Arquitectura de Componentes" {
 
-    component "RegisterActivity" 
-    component "RegisterViewModel" 
-    component "AutentificationRepository" 
-
+    ' -- COMPONENTES ACTIVITY --
+    component "RegisterActivity"
     component "LoginActivity" 
-    component "LoginViewModel" 
-
     component "MenuAlimentosActivity"
-    component "AlimentosViewModel"
-    component "AlimentosRepository"
-    component "ApiAlimentosRepository"
-
-    component "FragmentoDietas"
-    component "DetallesDietaActivity"
-    component "DietasViewModel"
-    component "DietasRepository"
-
-    component "DiasEnDietaViewModel"
-    component "DiasEnDietaRepository"
-
-    component "ComidasViewModel"
-    component "ComidasRepository"
-
+    component "CrearDietaActivity"
     component "MenuIngredientesActivity"
     component "AnhadirIngredienteActivity"
+    component "FragmentoDietas"
+    component "FragmentoRutinas"
+    component "FragmentoPerfil"
+    component "CrearRutinaActivity"
+    component "MenuEjerciciosActivity"
+    component "FragmentoProgreso"
+    component "FragmentoInicio"
+    component "EditarPerfilActivity"
+    
+    ' -- COMPONENTES VIEWMODEL --
+    component "RegisterViewModel" 
+    component "LoginViewModel" 
+    component "AlimentosViewModel"
+    component "DietasViewModel"
+    component "DiasEnDietaViewModel"
+    component "ComidasViewModel"
     component "IngredientesViewModel"
+    component "RutinasViewModel"
+    component "DiasEnRutinaViewModel"
+    component "EjerciciosViewModel"
+    component "SerieViewModel"
+    component "PerfilViewModel"
+    component "SeguimientoViewModel"
+    component "ProgresoViewModel"
+
+    ' -- COMPONENTES REPOSITORY --
+    component "AutentificationRepository" 
+    component "AlimentosRepository"
+    component "ApiAlimentosRepository"
+    component "DietasRepository"
+    component "DiasEnDietaRepository"
+    component "ComidasRepository"
     component "IngredientesRepository"
+    component "ApiEjerciciosRepository"
+    component "DiasEnRutinaRepository"
+    component "EjercicioRepository"
+    component "RutinasRepository"
+    component "SerieRepository"
+    component "UsuarioRepository"
+    component "SeguimientoRepository"
 
-    RegisterActivity -(0- RegisterViewModel : IRegisterViewModel
-    RegisterViewModel -(0- AutentificationRepository : IAutentificationRepository
+    component "API REST" as RestAPI
 
-    LoginActivity -(0- LoginViewModel : ILoginViewModel
-    LoginViewModel -(0- AutentificationRepository : IAutentificationRepository
+    ' --- INTERFACES COMO PUNTOS DE UNION (BOLAS UNICAS) ---
+    () "IRegisterViewModel" as Ball_RegisterVM
+    () "ILoginViewModel" as Ball_LoginVM
+    () "IAlimentosViewModel" as Ball_AlimentosVM
+    () "IDietasViewModel" as Ball_DietasVM
+    () "IDiasEnDietaViewModel" as Ball_DiasDietaVM
+    () "IComidasViewModel" as Ball_ComidasVM
+    () "IIngredientesViewModel" as Ball_IngredientesVM
+    () "IRutinasViewModel" as Ball_RutinasVM
+    () "IDiasEnRutinaViewModel" as Ball_DiasRutinasVM
+    () "IEjerciciosViewModel" as Ball_EjerciciosVM
+    () "ISeriesViewModel" as Ball_SeriesVM
+    () "IPerfilViewModel" as Ball_PerfilVM
+    () "IProgresoViewModel" as Ball_ProgresoVM
+    () "ISeguimientoViewModel" as Ball_SeguimientoVM
 
-    MenuAlimentosActivity -(0- AlimentosViewModel : IAlimentosViewModel
-    AlimentosViewModel -(0- AlimentosRepository : IAlimentosRepository
-    AlimentosViewModel -(0- ApiAlimentosRepository : IApiAlimentosRepository
+    () "IAutentificationRepository" as Ball_AuthRepo
+    () "IApiAlimentosRepository" as Ball_ApiAlimentosRepo
+    () "IAlimentosRepository" as Ball_AlimentosRepo
+    () "IDietasRepository" as Ball_DietasRepo
+    () "IDiasEnDietaRepository" as Ball_DiasDietaRepo
+    () "IComidasRepository" as Ball_ComidasRepo
+    () "IIngredientesRepository" as Ball_IngredientesRepo
+    () "IRutinasRepository" as Ball_RutinasRepo
+    () "IApiEjerciciosRepository" as Ball_ApiEjerciciosRepo
+    () "IDiasEnRutinaRepository" as Ball_DiasRutinaRepo
+    () "IEjercicioRepository" as Ball_EjercicioRepo
+    () "ISerieRepository" as Ball_SerieRepo
+    () "IUsuarioRepository" as Ball_UsuarioRepo
+    () "ISeguimientoRepository" as Ball_SeguimientoRepo
 
-    FragmentoDietas -(0- DietasViewModel : IDietasViewModel
-    DetallesDietaActivity -(0- DietasViewModel : IDietasViewModel
-    DietasViewModel -(0- DietasRepository : IDietasRepository
+    ' -- De Activity a IViewModel
+    RegisterActivity -- Ball_RegisterVM
+    LoginActivity -- Ball_LoginVM
+    MenuAlimentosActivity -- Ball_AlimentosVM
+    AnhadirIngredienteActivity -- Ball_AlimentosVM
+    FragmentoDietas -- Ball_DietasVM
+    CrearDietaActivity -- Ball_DietasVM
+    FragmentoDietas -- Ball_DiasDietaVM
+    FragmentoDietas -- Ball_ComidasVM
+    FragmentoDietas -- Ball_IngredientesVM
+    MenuIngredientesActivity -- Ball_IngredientesVM
+    AnhadirIngredienteActivity -- Ball_IngredientesVM
+    FragmentoRutinas -- Ball_RutinasVM
+    FragmentoRutinas -- Ball_DiasRutinasVM
+    FragmentoRutinas -- Ball_EjerciciosVM
+    FragmentoRutinas -- Ball_SeriesVM
+    CrearRutinaActivity -- Ball_RutinasVM
+    MenuEjerciciosActivity -- Ball_EjerciciosVM
+    FragmentoPerfil -- Ball_PerfilVM
+    FragmentoProgreso -- Ball_ProgresoVM
+    FragmentoInicio -- Ball_SeguimientoVM
+    FragmentoInicio -- Ball_DietasVM
+    FragmentoInicio -- Ball_PerfilVM
+    EditarPerfilActivity -- Ball_PerfilVM
 
-    FragmentoDietas -(0- DiasEnDietaViewModel : IDiasEnDietaViewModel
-    DiasEnDietaViewModel -(0- DiasEnDietaRepository : IDiasEnDietaRepository
+    ' -- De IViewModel a ViewModel
+    Ball_RegisterVM -- RegisterViewModel
+    Ball_LoginVM -- LoginViewModel
+    Ball_AlimentosVM -- AlimentosViewModel
+    Ball_DietasVM -- DietasViewModel
+    Ball_DiasDietaVM -- DiasEnDietaViewModel
+    Ball_ComidasVM -- ComidasViewModel
+    Ball_IngredientesVM -- IngredientesViewModel
+    Ball_RutinasVM -- RutinasViewModel
+    Ball_DiasRutinasVM -- DiasEnRutinaViewModel
+    Ball_EjerciciosVM -- EjerciciosViewModel
+    Ball_SeriesVM -- SerieViewModel
+    Ball_PerfilVM -- PerfilViewModel
+    Ball_SeguimientoVM -- SeguimientoViewModel
+    Ball_ProgresoVM -- ProgresoViewModel
 
-    FragmentoDietas -(0- ComidasViewModel : IComidasViewModel
-    ComidasViewModel -(0- ComidasRepository : IComidasRepository
+    ' -- De ViewModel a IRepository
+    RegisterViewModel -- Ball_AuthRepo
+    LoginViewModel -- Ball_AuthRepo
+    AlimentosViewModel -- Ball_AlimentosRepo
+    AlimentosViewModel -- Ball_ApiAlimentosRepo
+    DietasViewModel -- Ball_DietasRepo
+    DiasEnDietaViewModel -- Ball_DiasDietaRepo
+    ComidasViewModel -- Ball_ComidasRepo
+    IngredientesViewModel -- Ball_IngredientesRepo
+    DiasEnRutinaViewModel -- Ball_DiasRutinaRepo
+    PerfilViewModel -- Ball_UsuarioRepo
+    SerieViewModel -- Ball_SerieRepo
+    RutinasViewModel -- Ball_RutinasRepo
+    EjerciciosViewModel -- Ball_EjercicioRepo
+    EjerciciosViewModel -- Ball_ApiEjerciciosRepo
+    SeguimientoViewModel -- Ball_SeguimientoRepo
+    ProgresoViewModel -- Ball_UsuarioRepo
 
-    FragmentoDietas -(0- IngredientesViewModel : IIngredientesViewModel
-    IngredientesViewModel -(0- IngredientesRepository : IIngredientesRepository
+    ' -- De IRepository a Repository
+    Ball_AuthRepo -- AutentificationRepository
+    Ball_AlimentosRepo -- AlimentosRepository
+    Ball_ApiAlimentosRepo -- ApiAlimentosRepository
+    Ball_DietasRepo -- DietasRepository
+    Ball_DiasDietaRepo -- DiasEnDietaRepository
+    Ball_ComidasRepo -- ComidasRepository
+    Ball_IngredientesRepo -- IngredientesRepository
+    Ball_ApiEjerciciosRepo -- ApiEjerciciosRepository
+    Ball_DiasRutinaRepo -- DiasEnRutinaRepository
+    Ball_EjercicioRepo -- EjercicioRepository
+    Ball_SerieRepo -- SerieRepository
+    Ball_UsuarioRepo -- UsuarioRepository
+    Ball_RutinasRepo -- RutinasRepository
+    Ball_SeguimientoRepo -- SeguimientoRepository
 
-    MenuIngredientesActivity -(0- IngredientesViewModel : IIngredientesViewModel
+    AutentificationRepository --> RestAPI
+    AlimentosRepository --> RestAPI
+    ApiAlimentosRepository --> RestAPI
+    DietasRepository --> RestAPI
+    DiasEnDietaRepository --> RestAPI
+    ComidasRepository --> RestAPI
+    IngredientesRepository --> RestAPI
+    ApiEjerciciosRepository --> RestAPI
+    DiasEnRutinaRepository --> RestAPI
+    EjercicioRepository --> RestAPI
+    RutinasRepository --> RestAPI
+    SerieRepository --> RestAPI
+    UsuarioRepository --> RestAPI
+    SeguimientoRepository --> RestAPI
 
-    AnhadirIngredienteActivity -(0- AlimentosViewModel : IAlimentosViewModel
-    AnhadirIngredienteActivity -(0- IngredientesViewModel : IIngredientesViewModel
 }
 
-package "Especificación de Interfaces" {
-
+package "Especificacion de Interfaces" {
 
     interface IRegisterViewModel {
         + registar(RegistroDTO registroDTO) : void
@@ -86,20 +202,20 @@ package "Especificación de Interfaces" {
         + crearDieta(Long idUsuario, DietaCompletaDTO dietaCompletaDTO) : void
         + actualizarDieta(Long idUsuario, Long idDietaCompleta, DietaCompletaDTO dietaCompletaDTO) : void
         + borrarDieta(Long idDietaCompleta, Long idUsuario) : void
+        + obtenerDieta(Long idUsuario, Long idDieta) : void
+        + activarDieta(Long idUsuario, Long idDieta) : void
     }
 
     interface IDiasEnDietaViewModel {
-        + obtenerLosDias(Long idDietaCompleta) : void
-        + crearDia(Long idDietaCompleta, DiaEnDietaDTO diaEnDietaDTO) : void
-        + editarDia(Long idDiaEnDieta, Long idDietaCompleta, DiaEnDietaDTO diaEnDietaDTO) : void
-        + borrarDia(Long idDiaEnDieta, Long idDietaCompleta) : void
+        + editarDia(DiaDeLaSemana diaDeLaSemana, Long idDietaCompleta, DiaEnDietaDTO diaEnDietaDTO) : void
+        + borrarDia(DiaDeLaSemana diaDeLaSemana, Long idDietaCompleta) : void
     }
 
     interface IComidasViewModel {
-        + obtenerComidas(Long idDiaEnDieta) : void
-        + crearComida(Long idDiaEnDieta, ComidaDTO comidaDTO) : void
-        + editarComida(Long idDiaEnDieta, Long idComida, ComidaDTO comidaDTO) : void
-        + borrarComida(Long idComida, Long idDiaEnDieta) : void
+        + obtenerComidas(Long idDieta, DiaDeLaSemana diaDeLaSemana) : void
+        + crearComida(Long idDieta, DiaDeLaSemana diaDeLaSemana, ComidaDTO comidaDTO) : void
+        + editarComida(Long idDieta, Long idComida, DiaDeLaSemana diaDeLaSemana, ComidaDTO comidaDTO) : void
+        + borrarComida(Long idDieta, Long idComida, DiaDeLaSemana diaDeLaSemana) : void
     }
 
     interface IIngredientesViewModel {
@@ -109,14 +225,48 @@ package "Especificación de Interfaces" {
         + borrarIngrediente(Long idComida, Long idIngrediente) : void
     }
 
-
-    interface IAutentificationRepository {
-        + registarUsuario(RegistroDTO registroDTO) : UsuarioDTO
-        + iniciarSesion(InicioSesionDTO inicioSesionDTO) : UsuarioDTO
+    interface ISeguimientoViewModel {
+        + obtenerComidaHoy(Long idUsuario) : void
+        + registrarComidaRealizada(Long idUsuario, Long idComida) : void
+        + eliminarComidaRealizada(Long idUsuario, Long idComida) : void
     }
 
-    interface IApiAlimentosRepository {
-        + buscarAlimentos(String nombre) : ApiAlimentosDTO
+    interface IProgresoViewModel {
+        + cargarHistorial(Long idUsuario) : void
+        + actualizarPeso(Long idUsuario, PesoDTO pesoDTO) : void
+    }
+
+
+    interface IPerfilViewModel {
+        + cargarPerfil(Long idUsuario) : void
+        + editarPerfil(Long idUsuario, UsuarioActualizarDTO usuarioActualizarDTO) : void
+    }
+
+    interface ISerieViewModel {
+        + obtenerSeries(Long idEjercicio) : void
+        + crearSerie(Long idEjercicio, SerieDTO serieDTO) : void
+        + actualizarSerie(Long idSerie, Long idEjercicio, SerieDTO serieDTO) : void
+        + vorrarSerie(Long idSerie, Long idEjercicio) : void
+    }
+
+    interface IDiasEnRutinaViewModel {
+        + guardaDia(DiaDeLaSemana diaDeLaSemana, Long idRutinaCompleta, DiaEnRutinaDTO diaEnRutinaDTO) : void
+        + borrarDia(DiaDeLaSemana diaDeLaSemana, Long idRutinaCompleta) : void
+    }
+
+    interface IRutinasViewModel {
+        + obtenerLasRutinas(Long idUsuario) : void
+        + crearRutina(Long idUsuario, RutinaCompletaDTO rutinaCompletaDTO) : void
+        + actualizarRutina(Long idUsuario, Long idRutinaCompleta, RutinaCompletaDTO rutinaCompletaDTO) : void
+        + borrarRutina(Long idUsuario, Long idRutinaCompleta) : void
+        + obtenerRutina(Long idUsuario, Long idRutinaCompleta) : void
+    }
+
+    interface IEjerciciosViewModel {
+        + ejerciciosGlobales() : List<ApiEjercicioDTO>
+        + obtenerLosEjercicios(Long idRutina, DiaDeLaSemana diaDeLaSemana) : void
+        + anhadirEjercicio(Long idRutina, DiaDeLaSemana diaDeLaSemana, EjercicioDTO ejercicioDTO) : void
+        + borrarEjercicio(Long idRutina, DiaDeLaSemana diaDeLaSemana, Long idEjercicio) : void
     }
 
     interface IAlimentosRepository {
@@ -131,27 +281,79 @@ package "Especificación de Interfaces" {
         + crearDieta(Long idUsuario, DietaCompletaDTO dietaCompletaDTO) :DietaCompletaDTO
         + actualizarDieta(Long idUsuario, Long idDietaCompleta, DietaCompletaDTO dietaCompletaDTO) : DietaCompletaDTO
         + borrarDieta(Long idDietaCompleta, Long idUsuario) : Boolean
+        + obtenerDieta(Long idUsuario, Long idDieta) : DietaCompletaDTO
+        + activarDieta(Long idUsuario, Long idDieta) :Boolean
     }
 
     interface IDiasEnDietaRepository {
-        + obtenerDiasEnDieta(Long idDietaCompleta) : List<DiaEnDietaDTO>
-        + crearDia(Long idDietaCompleta, DiaEnDietaDTO diaEnDietaDTO) : DiaEnDietaDTO
-        + editarDia(Long idDiaEnDieta, Long idDietaCompleta, DiaEnDietaDTO diaEnDietaDTO) : DiaEnDietaDTO
-        + borrarDia(Long idDiaEnDieta, Long idDietaCompleta) : Boolean
+        + editarDia(DiaDeLaSemana diaDeLaSemana, Long idDietaCompleta, DiaEnDietaDTO diaEnDietaDTO) : DiaEnDietaDTO
+        + borrarDia(Long idDietaCompleta, DiaDeLaSemana diaDeLaSemana) : Boolean
     }
 
     interface IComidasRepository {
-        + obtenerComidas(Long idDiaEnDieta) : List<ComidaDTO>
-        + crearComida(Long idDiaEnDieta, ComidaDTO comidaDTO) : ComidaDTO
-        + editarComida(Long idDiaEnDieta, Long idComida, ComidaDTO comidaDTO) : ComidaDTO
-        + borrarComida(Long idComida, Long idDiaEnDieta) : ComidaDTO
+        + obtenerComidas(Long idDieta, DiaDeLaSemana diaDeLaSemana) : List<ComidaDTO>
+        + crearComida(Long idDieta, DiaDeLaSemana diaDeLaSemana, ComidaDTO comidaDTO) : ComidaDTO
+        + editarComida(Long idDieta, Long idComida, DiaDeLaSemana diaDeLaSemana, ComidaDTO comidaDTO) : ComidaDTO
+        + borrarComida(Long idDieta, Long idComida, DiaDeLaSemana diaDeLaSemana) : Boolean
     }
 
     interface IIngredientesRepository {
         + obtenerobtenerIngredientes(Long idComida) : List<IngredienteDTO>
         + crearIngrediente(Long idComida, IngredienteDTO ingredienteDTO) : IngredienteDTO
         + editarIngrediente(Long idIngrediente, Long idComida, IngredienteDTO ingredienteDTO) : IngredienteDTO
-        + borrarIngrediente(Long idComida, Long idIngrediente) : IngredienteDTO
+        + borrarIngrediente(Long idIngrediente, Long idComida) : Boolean
+    }
+
+    interface IAutentificationRepository {
+        + registrarUsuario(RegistroDTO registroDTO) : UsuarioDTO
+        + iniciarSesion(InicioSesionDTO inicioSesionDTO) : UsuarioDTO
+    }
+
+    interface ApiAlimentosRepository {
+        + buscarAlimentos(String Alimento) : List<ApiAlimentosDTO>
+    }
+
+    interface IUsuarioRepository {
+        + obtenerPerfil(Long idUsuario) : UsuarioPerfilDTO
+        + actualizarPerfil(Long idUsuario, UsuarioActualizarDTO dto) : UsuarioPerfilDTO
+        + obtenerHistorialPeso(Long idUsuario) : List<HistorialDTO>
+        + actualizarPeso(Long idUsuario, PesoDTO pesoDTO) : UsuarioPerfilDTO
+    }
+
+    interface ISerieRepository {
+        + obtenerSeries(Long idEjercicio) : List<SerieDTO>
+        + crearSerie(Long idEjercicio, SerieDTO serieDTO) : SerieDTO
+        + actualizarSerie(Long idSerie, SerieDTO serieDTO) : SerieDTO
+        + borrarSerie(Long idSerie) : Boolean
+    }
+
+    interface IDiasEnRutinaRepository {
+        + editarDia(DiaDeLaSemana diaDeLaSemana, Long idRutinaCompleta, DiaEnRutinaDTO diaEnRutinaDTO) : DiaEnRutinaDTO
+        + borrarDia(DiaDeLaSemana diaDeLaSemana, Long idRutinaCompleta) : Boolean
+    }
+
+    interface IRutinasRepository {
+        + obtenerRutinasUsuario(Long idUsuario) : Liist<RutinaCompletaDTO>
+        + crearRutina(Long idUsuario, RutinaCompletaDTO rutinaCompletaDTO) : RutinaCompletaDTO
+        + actualizarRutina(Long idUsuario, Long idRutinaCompleta, RutinaCompletaDTO rutinaCompletaDTO) : RutinaCompletaDTO
+        + borrarRutina(Long idUsuario, Long idRutinaCompleta) : Boolean
+        + obtenerRutina(Long idUsuario, Long idRutina) : RutinaCompletaDTO
+    }
+
+    interface IApiEjerciciosRepository {
+        + obtenerEjercicios() : List<ApiEjercicioDTO>
+    }
+
+    interface IEjercicioRepository {
+        + obtenerEjericios(Long idRutina, DiaDeLaSemana diaDeLaSemana) : List<EjercicioDTO>
+        + anhadirEjercicio(Long idRutina, DiaDeLaSemana diaDeLaSemana,  EjercicioDTO ejercicioDTO) : Boolean
+        + borrarAlimentoEjercicio(Long idRutina, DiaDeLaSemana diaDeLaSemana, Long idEjercicio) : Boolean
+    }
+
+    interface ISeguimientoRepository {
+        + obtenerComidasHoy(Long idUsuario) : List<ComidaSeguimientoDTO>
+        + registrarComidaRealizada(Long idUsuario, Long idComida) : RegistroComidaDiariaDTO
+        + eliminarComidaRealizada(Long idUsuario, Long idComida) : Boolean
     }
 
 }

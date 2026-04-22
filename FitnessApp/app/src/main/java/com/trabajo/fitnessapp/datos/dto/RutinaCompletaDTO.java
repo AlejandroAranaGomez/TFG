@@ -1,6 +1,7 @@
 package com.trabajo.fitnessapp.datos.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +14,8 @@ public class RutinaCompletaDTO implements Serializable {
 
     private String nombreRutinaCompleta;
     private String resumen;
+
+    private List<DiaEnRutinaDTO> dias;
 
     public RutinaCompletaDTO() {
 

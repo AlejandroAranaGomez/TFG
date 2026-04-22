@@ -7,5 +7,5 @@
     android:textSize="18sp"
     android:padding="16dp"
     android:textColor="@color/white"
-    android:background="@color/fondoPantalla"
+    android:background="@color/fondoBarraMenu"
     android:gravity="center_vertical"/>

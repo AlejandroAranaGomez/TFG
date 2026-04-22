@@ -14,26 +14,38 @@ import retrofit2.http.Path;
 
 public interface DietasService {
 
-    @GET("api/dietasCompletas/usuarios/{idUsuario}")
+    @GET("api/usuarios/{idUsuario}/dietas")
     Call<List<DietaCompletaDTO>> obtenerDietaUsuario(@Path("idUsuario") Long idUsuario);
 
-    @PUT("api/dietasCompletas/{idDietaCompleta}/usuarios/{idUsuario}")
+    @PUT("api/usuarios/{idUsuario}/dietas/{idDieta}")
     Call<DietaCompletaDTO> editarDieta(
-            @Path("idDietaCompleta") Long idDietaCompleta,
+            @Path("idDieta") Long idDietaCompleta,
             @Path("idUsuario") Long idUsuario,
             @Body DietaCompletaDTO dietaCompletaDTO
     );
 
-    @POST("api/dietasCompletas/usuarios/{idUsuario}")
+    @POST("api/usuarios/{idUsuario}/dietas")
     Call<DietaCompletaDTO> crearDieta(
             @Path("idUsuario") Long idUsuario,
             @Body DietaCompletaDTO dietaCompletaDTO
     );
 
-    @DELETE("api/dietasCompletas/{idDietaCompleta}/usuarios/{idUsuario}")
+    @DELETE("api/usuarios/{idUsuario}/dietas/{idDieta}")
     Call<Void> borrarDieta(
-            @Path("idDietaCompleta") Long idDietaCompleta,
+            @Path("idDieta") Long idDietaCompleta,
             @Path("idUsuario") Long idUsuario
+    );
+
+    @GET("api/usuarios/{idUsuario}/dietas/{idDieta}")
+    Call<DietaCompletaDTO> obtenerDieta(
+            @Path("idUsuario") Long idUsuario,
+            @Path("idDieta") Long idDieta
+    );
+
+    @PUT("api/usuarios/{idUsuario}/dietas/{idDieta}/activar")
+    Call<Void> activarDieta(
+            @Path("idUsuario") Long idUsuario,
+            @Path("idDieta") Long idDieta
     );
 
 }

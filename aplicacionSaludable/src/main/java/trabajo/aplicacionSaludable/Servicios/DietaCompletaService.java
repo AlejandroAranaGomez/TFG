@@ -2,8 +2,10 @@ package trabajo.aplicacionSaludable.Servicios;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import trabajo.aplicacionSaludable.Dominio.DiaEnDieta;
 import trabajo.aplicacionSaludable.Dominio.DietaCompleta;
 import trabajo.aplicacionSaludable.Dominio.Usuario;
+import trabajo.aplicacionSaludable.Dtos.DiaEnDietaDTO;
 import trabajo.aplicacionSaludable.Dtos.DietaCompletaDTO;
 import trabajo.aplicacionSaludable.Excepciones.ExcepcionesDietas.DietaDeOtroUsuarioException;
 import trabajo.aplicacionSaludable.Excepciones.ExcepcionesDietas.DietaDuplicadaException;
@@ -20,7 +22,6 @@ public class DietaCompletaService {
     private DietaCompletaRepository dietaCompletaRepository;
     private UsuarioRepository usuarioRepository;
 
-    @Autowired
     public DietaCompletaService(DietaCompletaRepository dietaCompletaRepository, UsuarioRepository usuarioRepository) {
         this.dietaCompletaRepository = dietaCompletaRepository;
         this.usuarioRepository = usuarioRepository;
@@ -52,14 +53,26 @@ public class DietaCompletaService {
         return dietaCompletaDTO;
     }
 
-    private void desactivarDieta(Usuario usuario) {
-        Optional<DietaCompleta> dietaActiva = dietaCompletaRepository.findByUsuarioAndActivaTrue(usuario);
+    private DiaEnDietaDTO convertirDiaADTO(DiaEnDieta dia) {
+        DiaEnDietaDTO dto = new DiaEnDietaDTO();
+        dto.setIdDiaEnDieta(dia.getIdDiaEnDieta());
+        dto.setNombre(dia.getNombre());
+        dto.setDiaDeLaSemana(dia.getDiaDeLaSemana());
+        dto.setCaloriasTotales(dia.getCaloriasTotales());
+        dto.setProteinas(dia.getProteinas());
+        dto.setCarbohidratos(dia.getCarbohidratos());
+        dto.setGrasas(dia.getGrasas());
+        return dto;
+    }
 
-        if (dietaActiva.isPresent()) {
-            DietaCompleta antigua = dietaActiva.get();
-            antigua.setActiva(false);
-            dietaCompletaRepository.save(antigua);
+    private void desactivarTodasLasDietas(Usuario usuario) {
+        List<DietaCompleta> dietas = dietaCompletaRepository.findByUsuario(usuario);
+
+        for (DietaCompleta d : dietas) {
+            d.setActiva(false);
         }
+
+        dietaCompletaRepository.saveAll(dietas);
     }
 
     public DietaCompletaDTO creaDietaCompleta(Long idUsuario, DietaCompletaDTO dietaCompletaDTO) {
@@ -75,7 +88,7 @@ public class DietaCompletaService {
         }
 
         if (dietaCompletaDTO.isActiva()) {
-            desactivarDieta(usuario);
+            desactivarTodasLasDietas(usuario);
         }
 
         DietaCompleta nuevaDietaCompleta = DTOaEntidad(dietaCompletaDTO, usuario);
@@ -103,7 +116,7 @@ public class DietaCompletaService {
         }
 
         if (dietaCompletaDTO.isActiva() && !dietaExistente.isActiva()) {
-            desactivarDieta(dietaExistente.getUsuario());
+            desactivarTodasLasDietas(dietaExistente.getUsuario());
         }
 
         dietaExistente.setNombre(dietaCompletaDTO.getNombre());
@@ -137,6 +150,49 @@ public class DietaCompletaService {
         }
 
         return dietaCompletaRepository.findByUsuario(usuario).stream().map(this::EntidadaDTO).collect(Collectors.toList());
+    }
+
+    public DietaCompletaDTO obtenerDieta(Long idUsuario, Long idDietaCompleta) {
+        DietaCompleta dieta = dietaCompletaRepository.findById(idDietaCompleta)
+                .orElse(null);
+
+        if (dieta == null) {
+            return null;
+        }
+
+        if (!dieta.getUsuario().getIdUsuario().equals(idUsuario)) {
+            throw new DietaDeOtroUsuarioException();
+        }
+
+        DietaCompletaDTO dto = EntidadaDTO(dieta);
+
+        List<DiaEnDietaDTO> dias = dieta.getDiasDeDieta()
+                .stream()
+                .map(this::convertirDiaADTO)
+                .collect(Collectors.toList());
+
+        dto.setDias(dias);
+
+        return dto;
+    }
+
+    public boolean activarDieta(Long idUsuario, Long idDieta) {
+        DietaCompleta dieta = dietaCompletaRepository.findById(idDieta).orElse(null);
+
+        if (dieta == null) {
+            return false;
+        }
+
+        if (!dieta.getUsuario().getIdUsuario().equals(idUsuario)) {
+            throw new DietaDeOtroUsuarioException();
+        }
+
+        desactivarTodasLasDietas(dieta.getUsuario());
+
+        dieta.setActiva(true);
+        dietaCompletaRepository.save(dieta);
+
+        return true;
     }
 
 }

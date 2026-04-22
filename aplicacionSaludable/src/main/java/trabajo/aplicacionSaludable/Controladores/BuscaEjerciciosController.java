@@ -6,20 +6,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import trabajo.aplicacionSaludable.Dtos.ApiEjercicioDTO;
-import trabajo.aplicacionSaludable.Servicios.ApiEjerciciosService;
+import trabajo.aplicacionSaludable.Servicios.EjercicioService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/ejercicios/buscar")
+@RequestMapping("/api/ejercicios")
 @CrossOrigin
 public class BuscaEjerciciosController {
 
-    @Autowired
-    private ApiEjerciciosService apiEjerciciosService;
+    private EjercicioService ejercicioService;
+
+    public BuscaEjerciciosController(EjercicioService ejercicioService) {
+        this.ejercicioService = ejercicioService;
+    }
 
     @GetMapping
     public List<ApiEjercicioDTO> obtenerEjercicios() {
-        return apiEjerciciosService.obtenerEjercicios();
+        return ejercicioService.obtenerEjercicios();
     }
 }

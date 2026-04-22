@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.trabajo.fitnessapp.datos.Utils.Result;
+import com.trabajo.fitnessapp.datos.dto.DietaCompletaDTO;
 import com.trabajo.fitnessapp.datos.dto.RutinaCompletaDTO;
 import com.trabajo.fitnessapp.datos.repository.RutinasRepository;
 
@@ -36,6 +37,11 @@ public class RutinasViewModel extends ViewModel {
     private final MutableLiveData<RutinaCompletaDTO> rutinaActualizada = new MutableLiveData<>();
     public LiveData<RutinaCompletaDTO> getRutinaActualizada() {
         return rutinaActualizada;
+    }
+
+    private final MutableLiveData<RutinaCompletaDTO> rutinaSeleccionada = new MutableLiveData<>();
+    public LiveData<RutinaCompletaDTO> getRutinaSeleccionada() {
+        return rutinaSeleccionada;
     }
 
     public RutinasViewModel() {
@@ -123,6 +129,22 @@ public class RutinasViewModel extends ViewModel {
             } else if (result instanceof Result.Error) {
                 mensajeError.setValue(((Result.Error<Boolean>) result).error);
                 rutinaBorrada.setValue(false);
+            }
+        });
+    }
+
+    public void obtenerRutina(Long idUsuario, Long idRutinaCompleta) {
+
+        if (idUsuario == null || idRutinaCompleta == null) {
+            mensajeError.setValue("Datos inválidos");
+            return;
+        }
+
+        rutinasRepository.obtenerRutina(idUsuario, idRutinaCompleta).observeForever(result -> {
+            if (result instanceof Result.Success) {
+                rutinaSeleccionada.setValue(((Result.Success<RutinaCompletaDTO>) result).datos);
+            } else if (result instanceof Result.Error) {
+                mensajeError.setValue(((Result.Error<RutinaCompletaDTO>) result).error);
             }
         });
     }

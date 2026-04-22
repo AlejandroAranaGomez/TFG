@@ -3,6 +3,8 @@ package trabajo.aplicacionSaludable.Dtos;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 
@@ -17,6 +19,8 @@ public class DietaCompletaDTO {
     private float carbohidratos;
     private float grasas;
     private boolean activa;
+
+    private List<DiaEnDietaDTO> dias;
 
     public DietaCompletaDTO() {
 

@@ -39,6 +39,17 @@ public class DietasViewModel extends ViewModel {
         return dietaActualizada;
     }
 
+    private final MutableLiveData<DietaCompletaDTO> dietaSeleccionada = new MutableLiveData<>();
+    public LiveData<DietaCompletaDTO> getDietaSeleccionada() {
+        return dietaSeleccionada;
+    }
+
+    private final MutableLiveData<Boolean> activarDieta = new MutableLiveData<>();
+
+    public LiveData<Boolean> getActivarDieta() {
+        return activarDieta;
+    }
+
     public DietasViewModel() {
         this.dietasRepository = new DietasRepository();
     }
@@ -124,6 +135,38 @@ public class DietasViewModel extends ViewModel {
             } else if (result instanceof Result.Error) {
                 mensajeError.setValue(((Result.Error<Boolean>) result).error);
                 dietaBorrada.setValue(false);
+            }
+        });
+    }
+
+    public void obtenerDieta(Long idUsuario, Long idDieta) {
+
+        if (idUsuario == null || idDieta == null) {
+            mensajeError.setValue("Datos inválidos");
+            return;
+        }
+
+        dietasRepository.obtenerDieta(idUsuario, idDieta).observeForever(result -> {
+                    if (result instanceof Result.Success) {
+                        dietaSeleccionada.setValue(((Result.Success<DietaCompletaDTO>) result).datos);
+                    } else if (result instanceof Result.Error) {
+                        mensajeError.setValue(((Result.Error<DietaCompletaDTO>) result).error);
+                    }
+        });
+    }
+
+    public void activarDieta(Long idUsuario, Long idDieta) {
+
+        if (idUsuario == null || idDieta == null) {
+            mensajeError.setValue("Datos inválidos");
+            return;
+        }
+
+        dietasRepository.activarDieta(idUsuario, idDieta).observeForever(result -> {
+            if (result instanceof Result.Success) {
+                activarDieta.setValue(true);
+            } else if (result instanceof Result.Error) {
+                activarDieta.setValue(false);
             }
         });
     }

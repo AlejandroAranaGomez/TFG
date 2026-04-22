@@ -29,6 +29,7 @@ import com.trabajo.fitnessapp.R;
 import com.trabajo.fitnessapp.datos.dto.ApiEjercicioDTO;
 import com.trabajo.fitnessapp.datos.Utils.MusculosFlitro;
 import com.trabajo.fitnessapp.datos.dto.EjercicioDTO;
+import com.trabajo.fitnessapp.dominio.DiaDeLaSemana;
 import com.trabajo.fitnessapp.dominio.Musculo;
 import com.trabajo.fitnessapp.presentacion.adaptador.EjerciciosAdapter;
 
@@ -43,8 +44,8 @@ public class MenuEjerciciosActivity extends AppCompatActivity {
     private EjerciciosAdapter ejerciciosAdapter;
     private EjerciciosViewModel viewModel;
     private Long idUsuario;
-
-    private Long idDiaEnRutina;
+    private Long idRutina;
+    private DiaDeLaSemana diaDeLaSemana;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,12 @@ public class MenuEjerciciosActivity extends AppCompatActivity {
         });
 
         idUsuario = getIntent().getLongExtra("ID_USUARIO", -1l);
+        idRutina = getIntent().getLongExtra("ID_RUTINA", -1);
+        String diaString = getIntent().getStringExtra("DIA_SEMANA");
+
+        if (diaString != null) {
+            diaDeLaSemana = DiaDeLaSemana.valueOf(diaString);
+        }
         viewModel = new ViewModelProvider(this).get(EjerciciosViewModel.class);
 
         enlazarVistas();
@@ -81,9 +88,14 @@ public class MenuEjerciciosActivity extends AppCompatActivity {
         ejerciciosAdapter = new EjerciciosAdapter();
         ejerciciosRecyclerView.setAdapter(ejerciciosAdapter);
 
-        idDiaEnRutina = getIntent().getLongExtra("ID_DIA_EN_RUTINA", -1);
+        idRutina = getIntent().getLongExtra("ID_RUTINA", -1);
 
-        if (idDiaEnRutina != -1) {
+        String diaString = getIntent().getStringExtra("DIA_SEMANA");
+        if (diaString != null) {
+            diaDeLaSemana = DiaDeLaSemana.valueOf(diaString);
+        }
+
+        if (idRutina != -1 && diaDeLaSemana != null) {
             ejerciciosAdapter.setMostrarBotonAñadir(true);
         } else {
             ejerciciosAdapter.setMostrarBotonAñadir(false);
@@ -96,11 +108,10 @@ public class MenuEjerciciosActivity extends AppCompatActivity {
 
             @Override
             public void onAñadirEjercicio(ApiEjercicioDTO apiEjercicioDTO) {
-                if (idDiaEnRutina != -1) {
+                if (idRutina != -1 && diaDeLaSemana != null) {
 
                     EjercicioDTO ejercicio = convertirApiEjercicioEnEjercicio(apiEjercicioDTO);
-                    viewModel.anhadirEjercicio(idDiaEnRutina, ejercicio);
-                    System.out.println("Hola");
+                    viewModel.anhadirEjercicio(idRutina, diaDeLaSemana, ejercicio);
                 }
             }
         });
@@ -178,7 +189,7 @@ public class MenuEjerciciosActivity extends AppCompatActivity {
     }
 
     private void cargarEjercicios() {
-        viewModel.getEjerciciosGlobales().observe(this, lista -> {
+        viewModel.ejerciciosGlobales().observe(this, lista -> {
             if (lista != null && !lista.isEmpty()) {
                 listaMusculos = lista;
                 ejerciciosAdapter.setLista(lista);
@@ -248,7 +259,8 @@ public class MenuEjerciciosActivity extends AppCompatActivity {
         viewModel.getEjercicioAnhadido().observe(this, exito -> {
             if (exito != null && exito) {
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("ID_DIA_EN_RUTINA", idDiaEnRutina);
+                resultIntent.putExtra("ID_RUTINA", idRutina);
+                resultIntent.putExtra("DIA_SEMANA", diaDeLaSemana.name());
                 setResult(RESULT_OK, resultIntent);
                 Toast.makeText(this, "Ejercicio añadido correctamente", Toast.LENGTH_SHORT).show();
                 finish();

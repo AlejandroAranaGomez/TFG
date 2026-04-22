@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import com.trabajo.fitnessapp.datos.Utils.Result;
 import com.trabajo.fitnessapp.datos.dto.ComidaDTO;
 import com.trabajo.fitnessapp.datos.repository.ComidasRepository;
+import com.trabajo.fitnessapp.dominio.DiaDeLaSemana;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,13 +48,13 @@ public class ComidasViewModel extends ViewModel {
     }
 
 
-    public void obtenerComidas(Long idDiaEnDieta) {
-        if (idDiaEnDieta == null) {
+    public void obtenerComidas(Long idDieta, DiaDeLaSemana diaDeLaSemana) {
+        if (diaDeLaSemana == null) {
             mensajeError.setValue("Dia no encontrado");
             return;
         }
 
-        comidasRepository.obtenerComidas(idDiaEnDieta).observeForever(result -> {
+        comidasRepository.obtenerComidas(idDieta, diaDeLaSemana).observeForever(result -> {
             if (result instanceof Result.Success) {
                 List<ComidaDTO> nuevaLista = new ArrayList<>(((Result.Success<List<ComidaDTO>>) result).datos);
                 comidas.setValue(nuevaLista);
@@ -63,8 +64,8 @@ public class ComidasViewModel extends ViewModel {
         });
     }
 
-    public void crearComida(Long idDiaEnDieta, ComidaDTO comidaDTO) {
-        if (idDiaEnDieta == null) {
+    public void crearComida(Long idDieta, DiaDeLaSemana diaDeLaSemana, ComidaDTO comidaDTO) {
+        if (diaDeLaSemana == null) {
             mensajeError.setValue("Dia no encontrado");
             return;
         }
@@ -74,10 +75,10 @@ public class ComidasViewModel extends ViewModel {
             return;
         }
 
-        comidasRepository.crearComida(idDiaEnDieta, comidaDTO).observeForever(result -> {
+        comidasRepository.crearComida(idDieta, diaDeLaSemana, comidaDTO).observeForever(result -> {
             if (result instanceof Result.Success) {
                 comidaCreadaExito.setValue(true);
-                obtenerComidas(idDiaEnDieta);
+                obtenerComidas(idDieta, diaDeLaSemana);
             } else if (result instanceof Result.Error) {
                 mensajeError.setValue(((Result.Error<ComidaDTO>) result).error);
                 comidaCreadaExito.setValue(false);
@@ -85,8 +86,8 @@ public class ComidasViewModel extends ViewModel {
         });
     }
 
-    public void editarComida(Long idComida, Long idDiaEnDieta, ComidaDTO comidaDTO) {
-        if (idDiaEnDieta == null) {
+    public void editarComida(Long idDieta, Long idComida, DiaDeLaSemana diaDeLaSemana, ComidaDTO comidaDTO) {
+        if (diaDeLaSemana == null) {
             mensajeError.setValue("Dia no encontrado");
             return;
         }
@@ -101,10 +102,10 @@ public class ComidasViewModel extends ViewModel {
             return;
         }
 
-        comidasRepository.editarComida(idComida, idDiaEnDieta, comidaDTO).observeForever(result -> {
+        comidasRepository.editarComida(idDieta ,idComida, diaDeLaSemana, comidaDTO).observeForever(result -> {
             if (result instanceof Result.Success) {
                 comidaActualizadaExito.setValue(true);
-                obtenerComidas(idDiaEnDieta);
+                obtenerComidas(idDieta, diaDeLaSemana);
             } else if (result instanceof Result.Error) {
                 mensajeError.setValue(((Result.Error<ComidaDTO>) result).error);
                 comidaActualizadaExito.setValue(false);
@@ -112,8 +113,8 @@ public class ComidasViewModel extends ViewModel {
         });
     }
 
-    public void borrarComida(Long idComida, Long idDiaEnDieta) {
-        if (idDiaEnDieta == null) {
+    public void borrarComida(Long idDieta, Long idComida, DiaDeLaSemana diaDeLaSemana) {
+        if (diaDeLaSemana == null) {
             mensajeError.setValue("Dia no encontrada");
             return;
         }
@@ -124,10 +125,10 @@ public class ComidasViewModel extends ViewModel {
         }
 
 
-        comidasRepository.borrarComida(idComida, idDiaEnDieta).observeForever(result -> {
+        comidasRepository.borrarComida(idDieta ,idComida, diaDeLaSemana).observeForever(result -> {
             if (result instanceof Result.Success) {
                 comidaBorradaExito.setValue(true);
-                obtenerComidas(idDiaEnDieta);
+                obtenerComidas(idDieta, diaDeLaSemana);
             } else if (result instanceof Result.Error) {
                 mensajeError.setValue(((Result.Error<?>) result).error);
                 comidaBorradaExito.setValue(false);

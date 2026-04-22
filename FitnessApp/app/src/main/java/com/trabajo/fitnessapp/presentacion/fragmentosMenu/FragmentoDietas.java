@@ -44,6 +44,7 @@ import com.trabajo.fitnessapp.presentacion.menu.Dietas.IngredientesViewModel;
 import com.trabajo.fitnessapp.presentacion.menu.Dietas.MenuAlimentosActivity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FragmentoDietas extends Fragment {
@@ -64,6 +65,7 @@ public class FragmentoDietas extends Fragment {
     private DiaEnDietaDTO diaActual;
     private ComidaDTO comidaActual;
     AlertDialog dialogoActual;
+    private int posicionAnterior = -1;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,9 +109,21 @@ public class FragmentoDietas extends Fragment {
 
             @Override
             public void onMostrarPlanClick(DietaCompletaDTO dieta) {
+                diaActual = null;
+                comidaActual = null;
+
+                nombreDia.setVisibility(View.GONE);
+                botonEditarNombreDia.setVisibility(View.GONE);
+                botonBorrarDia.setVisibility(View.GONE);
+                recyclerViewComidas.setVisibility(View.GONE);
+
+                comidasAdapter.setLista(new ArrayList<>());
+
+                // cargar nueva dieta
                 dietaActual = dieta;
                 Long idDietaSeleccionada = dieta.getIdDietaCompleta();
-                recyclerViewDias.setVisibility(VISIBLE);
+
+                recyclerViewDias.setVisibility(View.VISIBLE);
                 cargarDias(idDietaSeleccionada);
             }
 
@@ -130,6 +144,7 @@ public class FragmentoDietas extends Fragment {
         diasAdapter.setOnDiaClickListener(new DiasDietaAdapter.OnDiaClickListener() {
             @Override
             public void onDiaClick(DiaEnDietaDTO dia) {
+                posicionAnterior = diasAdapter.getPosicionActual();
                 mostrarDetalleDia(dia);
             }
 
@@ -216,8 +231,8 @@ public class FragmentoDietas extends Fragment {
             cargarDias(dietaActual.getIdDietaCompleta());
         }
 
-        if (diaActual != null) {
-            cargarComidas(diaActual.getIdDiaEnDieta());
+        if (diaActual != null && dietaActual != null) {
+            cargarComidas(dietaActual.getIdDietaCompleta(), diaActual.getDiaDeLaSemana());
         }
 
         if (comidaActual != null) {
@@ -230,11 +245,11 @@ public class FragmentoDietas extends Fragment {
     }
 
     private void cargarDias(Long idDietaCompleta) {
-        diasViewModel.obtenerLosDias(idDietaCompleta);
+        dietasViewModel.obtenerDieta(idUsuario, idDietaCompleta);
     }
 
-    private void cargarComidas(Long idDiaEnDieta) {
-        comidasViewModel.obtenerComidas(idDiaEnDieta);
+    private void cargarComidas(Long idDieta, DiaDeLaSemana diaDeLaSemana) {
+        comidasViewModel.obtenerComidas(idDieta, diaDeLaSemana);
     }
 
     public void mostrarPopUpBorrar(DietaCompletaDTO dietaCompletaDTO) {
@@ -279,7 +294,7 @@ public class FragmentoDietas extends Fragment {
         botonBorrarDia.setVisibility(VISIBLE);
         diaActual = dia;
         recyclerViewComidas.setVisibility(VISIBLE);
-        cargarComidas(dia.getIdDiaEnDieta());
+        cargarComidas(dietaActual.getIdDietaCompleta(), dia.getDiaDeLaSemana());
     }
 
     public void mostrarPopUpBorrarDia(DiaEnDietaDTO diaEnDietaDTO) {
@@ -316,7 +331,7 @@ public class FragmentoDietas extends Fragment {
 
         Long idDietaCompleta = dietaActual.getIdDietaCompleta();
 
-        diasViewModel.borrarDia(diaEnDietaDTO.getIdDiaEnDieta(), idDietaCompleta);
+        diasViewModel.borrarDia(diaEnDietaDTO.getDiaDeLaSemana(), idDietaCompleta);
     }
 
     private void mostrarEditarDia(DiaEnDietaDTO diaEnDietaDTO) {
@@ -362,7 +377,7 @@ public class FragmentoDietas extends Fragment {
 
         Long idDietaCompleta = dietaActual.getIdDietaCompleta();
 
-        diasViewModel.editarDia(diaEditado.getIdDiaEnDieta(), idDietaCompleta, diaEditado);
+        diasViewModel.editarDia(diaEditado.getDiaDeLaSemana(), idDietaCompleta, diaEditado);
     }
 
     private void mostrarCrearDia() {
@@ -444,7 +459,7 @@ public class FragmentoDietas extends Fragment {
     private void crearDiaConfirmado(DiaEnDietaDTO nuevoDia) {
         Long idDieta = dietaActual.getIdDietaCompleta();
 
-        diasViewModel.crearDia(idDieta, nuevoDia);
+        diasViewModel.editarDia(nuevoDia.getDiaDeLaSemana(), idDieta, nuevoDia);
     }
 
     private void mostrarPopUpCrearComida() {
@@ -494,9 +509,9 @@ public class FragmentoDietas extends Fragment {
     }
 
     private void crearComidaConfirmado(ComidaDTO comida) {
-        Long idDiaEnDieta = diaActual.getIdDiaEnDieta();
+        Long idDieta = dietaActual.getIdDietaCompleta();
 
-        comidasViewModel.crearComida(idDiaEnDieta, comida);
+        comidasViewModel.crearComida(idDieta, diaActual.getDiaDeLaSemana(), comida);
     }
 
     private void mostrarEditarComida(ComidaDTO comidaDTO) {
@@ -539,9 +554,10 @@ public class FragmentoDietas extends Fragment {
 
     private void actualizarComidaConfirmada(ComidaDTO comidaEditada) {
 
-        Long idDiaEnDieta = diaActual.getIdDiaEnDieta();
+        Long idDieta = dietaActual.getIdDietaCompleta();
 
-        comidasViewModel.editarComida(comidaEditada.getIdComida(), idDiaEnDieta, comidaEditada);
+
+        comidasViewModel.editarComida(idDieta, comidaEditada.getIdComida(), diaActual.getDiaDeLaSemana(), comidaEditada);
     }
 
     private void mostrarPopUpBorrarComida(ComidaDTO comida) {
@@ -572,12 +588,16 @@ public class FragmentoDietas extends Fragment {
         dialog.show();
     }
 
-    private void borrarComidaConfirmado(ComidaDTO comida) {
-        comidasViewModel.borrarComida(
-                comida.getIdComida(),
-                diaActual.getIdDiaEnDieta()
-        );
-    }
+        private void borrarComidaConfirmado(ComidaDTO comida) {
+
+            Long idDieta = dietaActual.getIdDietaCompleta();
+
+            comidasViewModel.borrarComida(
+                    idDieta,
+                    comida.getIdComida(),
+                    diaActual.getDiaDeLaSemana()
+            );
+        }
 
     private void mostrarPopUpIngredientes(ComidaDTO comidaDTO) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -629,18 +649,74 @@ public class FragmentoDietas extends Fragment {
 
         dietasViewModel.getDietaBorrada().observe(getViewLifecycleOwner(), exito -> {
             if (exito != null && exito) {
-                // Si se estaba mostrando la dieta eliminada
-                if (dietaActual != null) {
-                    recyclerViewDias.setVisibility(View.GONE);
-                    nombreDia.setVisibility(View.GONE);
-                    botonEditarNombreDia.setVisibility(View.GONE);
-                    botonBorrarDia.setVisibility(View.GONE);
-                    dietaActual = null;
-                    diaActual = null;
-                    recyclerViewComidas.setVisibility(View.GONE);
-                }
+
+                dietaActual = null;
+                diaActual = null;
+                comidaActual = null;
+                posicionAnterior = -1;
+
+                recyclerViewDias.setVisibility(View.GONE);
+                recyclerViewComidas.setVisibility(View.GONE);
+
+                nombreDia.setVisibility(View.GONE);
+                botonEditarNombreDia.setVisibility(View.GONE);
+                botonBorrarDia.setVisibility(View.GONE);
+
+                diasAdapter.setLista(new ArrayList<>());
+                comidasAdapter.setLista(new ArrayList<>());
+
                 Toast.makeText(getContext(), "Dieta eliminada correctamente", Toast.LENGTH_SHORT).show();
+
                 dietasViewModel.obtenerLasDietas(idUsuario);
+            }
+        });
+
+        dietasViewModel.getDietaSeleccionada().observe(getViewLifecycleOwner(), dieta -> {
+            if (dieta != null) {
+                dietaActual = dieta;
+
+                List<DiaEnDietaDTO> diasOrdenados = new ArrayList<>(dieta.getDias());
+                Collections.sort(diasOrdenados, (d1, d2) ->
+                        d1.getDiaDeLaSemana().ordinal() - d2.getDiaDeLaSemana().ordinal()
+                );
+                diasAdapter.setLista(diasOrdenados);
+                recyclerViewDias.setVisibility(View.VISIBLE);
+
+                boolean encontrado = false;
+
+                // este if para que se muestre los cambios al editar un dia al instante
+                if (diaActual != null) {
+
+                    for (int i = 0; i < diasOrdenados.size(); i++) {
+                        if (diasOrdenados.get(i).getIdDiaEnDieta()
+                                .equals(diaActual.getIdDiaEnDieta())) {
+
+                            diasAdapter.setPosicionActual(i);
+                            diaActual = diasOrdenados.get(i);
+                            mostrarDetalleDia(diaActual);
+                            encontrado = true;
+                            break;
+                        }
+                    }
+                }
+
+                // este if para cuando borramos un dia y se seleccione otro en vez de quedarse con el dia borrado seleccionado
+                if (!encontrado) {
+
+                    if (diasOrdenados.isEmpty()) {
+
+                        // si la dieta no tiene días
+                        diaActual = null;
+
+                        nombreDia.setVisibility(View.GONE);
+                        botonEditarNombreDia.setVisibility(View.GONE);
+                        botonBorrarDia.setVisibility(View.GONE);
+                        recyclerViewComidas.setVisibility(View.GONE);
+
+                        comidasAdapter.setLista(new ArrayList<>());
+
+                    }
+                }
             }
         });
     }
@@ -680,6 +756,9 @@ public class FragmentoDietas extends Fragment {
         diasViewModel.getDiaCreadoExito().observe(getViewLifecycleOwner(), exito -> {
             if (exito != null && exito) {
                 Toast.makeText(getContext(), "Día creado correctamente", Toast.LENGTH_SHORT).show();
+                if (dietaActual != null) {
+                    dietasViewModel.obtenerDieta(idUsuario, dietaActual.getIdDietaCompleta());
+                }
                 dialogoActual.dismiss();
             }
         });
@@ -687,6 +766,9 @@ public class FragmentoDietas extends Fragment {
         diasViewModel.getDiaActualizadoExito().observe(getViewLifecycleOwner(), exito -> {
             if (exito != null && exito) {
                 Toast.makeText(getContext(), "Día actualizado correctamente", Toast.LENGTH_SHORT).show();
+                if (dietaActual != null) {
+                    dietasViewModel.obtenerDieta(idUsuario, dietaActual.getIdDietaCompleta());
+                }
                 dialogoActual.dismiss();
             }
         });
@@ -694,18 +776,25 @@ public class FragmentoDietas extends Fragment {
         diasViewModel.getDiaBorradoExito().observe(getViewLifecycleOwner(), exito -> {
             if (exito != null && exito) {
                 Toast.makeText(getContext(), "Día eliminado correctamente", Toast.LENGTH_SHORT).show();
-                cargarDietas();
 
+                //Limpiar día seleccionado
+                diaActual = null;
+
+                //Ocultar detalles del día
+                nombreDia.setVisibility(View.GONE);
+                botonEditarNombreDia.setVisibility(View.GONE);
+                botonBorrarDia.setVisibility(View.GONE);
+                recyclerViewComidas.setVisibility(View.GONE);
+
+                //Limpiar lista de comidas
+                comidasAdapter.setLista(new ArrayList<>());
+
+                //Reset selección del adapter
+                diasAdapter.setPosicionActual(-1);
+
+                //Recargar dieta actual
                 if (dietaActual != null) {
-                    cargarDias(dietaActual.getIdDietaCompleta());
-                }
-
-                if (diaActual != null) {
-                    cargarComidas(diaActual.getIdDiaEnDieta());
-                }
-
-                if (comidaActual != null) {
-                    cargarIngredientes(comidaActual.getIdComida());
+                    dietasViewModel.obtenerDieta(idUsuario, dietaActual.getIdDietaCompleta());
                 }
             }
         });
@@ -745,8 +834,8 @@ public class FragmentoDietas extends Fragment {
                     cargarDias(dietaActual.getIdDietaCompleta());
                 }
 
-                if (diaActual != null) {
-                    cargarComidas(diaActual.getIdDiaEnDieta());
+                if (diaActual != null && dietaActual != null) {
+                    cargarComidas(dietaActual.getIdDietaCompleta(), diaActual.getDiaDeLaSemana());
                 }
 
                 if (comidaActual != null) {

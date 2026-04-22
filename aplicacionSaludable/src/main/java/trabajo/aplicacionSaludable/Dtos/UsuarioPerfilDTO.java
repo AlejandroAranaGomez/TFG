@@ -27,4 +27,6 @@ public class UsuarioPerfilDTO {
     private String email;
     private String telefono;
     private Genero genero;
+
+    private int caloriasObjetivo;
 }

@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -46,6 +48,8 @@ public class Usuario {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private NivelDeActividad nivelDeActividad;
+    @Column(nullable = false)
+    private int caloriasObjetivo;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,  orphanRemoval = true)
     private Set<DietaCompleta> dietas = new HashSet<>();
@@ -53,11 +57,15 @@ public class Usuario {
     private Set<RutinaCompleta> rutinas = new HashSet<>();
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,  orphanRemoval = true)
     private Set<Alimento> alimentosPersonales = new HashSet<>();
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HistorialPeso> historialPeso = new ArrayList<>();
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RegistroComidaDiaria> registrosComidaDiaria = new ArrayList<>();
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private Credenciales credenciales;
 
     public Usuario(String nombre, String apellido1, String apellido2, LocalDate fechaNacimiento, Genero genero, float peso, int altura, String telefono,
-                   Objetivo objetivo, NivelDeActividad nivelDeActividad) {
+                   Objetivo objetivo, NivelDeActividad nivelDeActividad, int caloriasObjetivo) {
         this.nombre = nombre;
         this.apellido1 = apellido1;
         this.apellido2 = apellido2;
@@ -68,6 +76,7 @@ public class Usuario {
         this.telefono = telefono;
         this.objetivo = objetivo;
         this.nivelDeActividad = nivelDeActividad;
+        this.caloriasObjetivo = caloriasObjetivo;
     }
 
 }

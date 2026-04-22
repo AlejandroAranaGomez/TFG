@@ -28,14 +28,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.trabajo.fitnessapp.R;
-import com.trabajo.fitnessapp.datos.dto.ApiEjercicioDTO;
 import com.trabajo.fitnessapp.datos.dto.DiaEnRutinaDTO;
 import com.trabajo.fitnessapp.datos.dto.EjercicioDTO;
 import com.trabajo.fitnessapp.datos.dto.RutinaCompletaDTO;
 import com.trabajo.fitnessapp.datos.dto.SerieDTO;
 import com.trabajo.fitnessapp.dominio.DiaDeLaSemana;
 import com.trabajo.fitnessapp.presentacion.adaptador.DiasRutinaAdapter;
-import com.trabajo.fitnessapp.presentacion.adaptador.EjerciciosAdapter;
 import com.trabajo.fitnessapp.presentacion.adaptador.EjerciciosRutinaAdapter;
 import com.trabajo.fitnessapp.presentacion.adaptador.RutinasAdapter;
 import com.trabajo.fitnessapp.presentacion.adaptador.SeriesAdapter;
@@ -47,6 +45,7 @@ import com.trabajo.fitnessapp.presentacion.menu.Rutinas.RutinasViewModel;
 import com.trabajo.fitnessapp.presentacion.menu.Rutinas.SerieViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FragmentoRutinas extends Fragment {
@@ -68,6 +67,8 @@ public class FragmentoRutinas extends Fragment {
     private EjercicioDTO ejercicioActual;
     private TextView nombreDia;
     AlertDialog dialogoActual;
+
+    private int posicionAnterior = -1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,9 +92,21 @@ public class FragmentoRutinas extends Fragment {
         rutinasAdapter.setOnRutinaClickListener(new RutinasAdapter.OnRutinaClickListener() {
             @Override
             public void onVerDiasClick(RutinaCompletaDTO rutina) {
+                diaActual = null;
+                ejercicioActual = null;
+
+                nombreDia.setVisibility(View.GONE);
+                botonEditarNombreDia.setVisibility(View.GONE);
+                botonBorrarDia.setVisibility(View.GONE);
+                recyclerViewEjercicios.setVisibility(View.GONE);
+
+                ejerciciosRutinaAdapter.setEjercicios(new ArrayList<>());
+
+                // cargar nueva rutina
                 rutinaActual = rutina;
                 Long idRutinaSeleccionada = rutina.getIdRutinaCompleta();
-                recyclerViewDias.setVisibility(VISIBLE);
+
+                recyclerViewDias.setVisibility(View.VISIBLE);
                 cargarDias(idRutinaSeleccionada);
             }
 
@@ -114,6 +127,7 @@ public class FragmentoRutinas extends Fragment {
         diasRutinaAdapter.setOnDiaClickListener(new DiasRutinaAdapter.OnDiaClickListener() {
             @Override
             public void onDiaClick(DiaEnRutinaDTO dia) {
+                posicionAnterior = diasRutinaAdapter.getPosicionActual();
                 mostrarDetalleDia(dia);
             }
 
@@ -132,7 +146,9 @@ public class FragmentoRutinas extends Fragment {
             @Override
             public void onAnhadirEjercicio() {
                 Intent intent = new Intent(getContext(), MenuEjerciciosActivity.class);
-                intent.putExtra("ID_DIA_EN_RUTINA", diaActual.getIdDiaEnRutina());
+                intent.putExtra("ID_USUARIO", idUsuario);
+                intent.putExtra("ID_RUTINA", rutinaActual.getIdRutinaCompleta());
+                intent.putExtra("DIA_SEMANA", diaActual.getDiaDeLaSemana().name());
                 startActivity(intent);
             }
 
@@ -164,8 +180,8 @@ public class FragmentoRutinas extends Fragment {
             cargarDias(rutinaActual.getIdRutinaCompleta());
         }
 
-        if (diaActual != null) {
-            cargarEjercicios(diaActual.getIdDiaEnRutina());
+        if (diaActual != null && rutinaActual != null) {
+            cargarEjercicios(rutinaActual.getIdRutinaCompleta(), diaActual.getDiaDeLaSemana());
         }
     }
 
@@ -241,7 +257,7 @@ public class FragmentoRutinas extends Fragment {
         botonBorrarDia.setVisibility(VISIBLE);
         diaActual = dia;
         recyclerViewEjercicios.setVisibility(VISIBLE);
-        cargarEjercicios(dia.getIdDiaEnRutina());
+        cargarEjercicios(rutinaActual.getIdRutinaCompleta(), diaActual.getDiaDeLaSemana());
     }
 
     public void mostrarPopUpBorrar(RutinaCompletaDTO rutinaCompletaDTO) {
@@ -358,7 +374,7 @@ public class FragmentoRutinas extends Fragment {
 
     private void crearDiaConfirmado(DiaEnRutinaDTO nuevoDia) {
         Long idRutina = rutinaActual.getIdRutinaCompleta();
-        diasEnRutinaViewModel.crearDia(idRutina, nuevoDia);
+        diasEnRutinaViewModel.guardaDia(nuevoDia.getDiaDeLaSemana() ,idRutina, nuevoDia);
     }
 
     private void mostrarEditarDia(DiaEnRutinaDTO diaEnRutinaDTO) {
@@ -391,6 +407,7 @@ public class FragmentoRutinas extends Fragment {
                 DiaEnRutinaDTO diaEditado = new DiaEnRutinaDTO();
                 diaEditado.setIdDiaEnRutina(diaEnRutinaDTO.getIdDiaEnRutina());
                 diaEditado.setNombre(nuevoNombre);
+                diaEditado.setDiaDeLaSemana(diaEnRutinaDTO.getDiaDeLaSemana());
 
                 actualizarDiaConfirmado(diaEditado);
 
@@ -405,7 +422,7 @@ public class FragmentoRutinas extends Fragment {
 
         Long idRutinaCompleta = rutinaActual.getIdRutinaCompleta();
 
-        diasEnRutinaViewModel.editaDia(diaEditado.getIdDiaEnRutina(), idRutinaCompleta, diaEditado);
+        diasEnRutinaViewModel.guardaDia(diaEditado.getDiaDeLaSemana(), idRutinaCompleta, diaEditado);
     }
 
     public void mostrarBorrarDia(DiaEnRutinaDTO diaEnRutinaDTO) {
@@ -446,7 +463,7 @@ public class FragmentoRutinas extends Fragment {
 
         Long idRutinaCompleta = rutinaActual.getIdRutinaCompleta();
 
-        diasEnRutinaViewModel.borrarDia(diaEnRutinaDTO.getIdDiaEnRutina(), idRutinaCompleta);
+        diasEnRutinaViewModel.borrarDia(diaEnRutinaDTO.getDiaDeLaSemana(), idRutinaCompleta);
     }
 
     private void borrarRutinaConfirmado(RutinaCompletaDTO rutinaCompletaDTO) {
@@ -487,7 +504,7 @@ public class FragmentoRutinas extends Fragment {
     }
 
     private void borrarEjercicioConfirmado(EjercicioDTO ejercicioDTO) {
-        ejerciciosViewModel.borrarEjercicio(diaActual.getIdDiaEnRutina(), ejercicioDTO.getIdEjercicio());
+        ejerciciosViewModel.borrarEjercicio(rutinaActual.getIdRutinaCompleta(), diaActual.getDiaDeLaSemana(), ejercicioDTO.getIdEjercicio());
     }
 
     private void mostrarPopUpSeries(EjercicioDTO ejercicioDTO) {
@@ -535,17 +552,16 @@ public class FragmentoRutinas extends Fragment {
         dialog.show();
     }
 
-
     private void cargarRutinas() {
         rutinasViewModel.obtenerLasRutinas(idUsuario);
     }
 
     private void cargarDias(Long idRutinaCompleta) {
-        diasEnRutinaViewModel.obtenerDias(idRutinaCompleta);
+        rutinasViewModel.obtenerRutina(idUsuario, idRutinaCompleta);
     }
 
-    private void cargarEjercicios(Long idDiaEnRutina) {
-        ejerciciosViewModel.obtenerLosEjercicios(idDiaEnRutina);
+    private void cargarEjercicios(Long idRutina, DiaDeLaSemana diaDeLaSemana) {
+        ejerciciosViewModel.obtenerLosEjercicios(idRutina, diaDeLaSemana);
     }
 
     private void observarRutinas() {
@@ -561,19 +577,72 @@ public class FragmentoRutinas extends Fragment {
 
         rutinasViewModel.getRutinaBorrada().observe(getViewLifecycleOwner(), exito -> {
             if (exito != null && exito) {
-                // Si se estaba mostrando la dieta eliminada
-                if (rutinaActual != null) {
-                    recyclerViewDias.setVisibility(View.GONE);
-                    nombreDia.setVisibility(View.GONE);
-                    botonEditarNombreDia.setVisibility(View.GONE);
-                    botonBorrarDia.setVisibility(View.GONE);
-                    rutinaActual = null;
-                    diaActual = null;
-                    recyclerViewEjercicios.setVisibility(View.GONE);
 
-                }
+                rutinaActual = null;
+                diaActual = null;
+                posicionAnterior = -1;
+
+                recyclerViewDias.setVisibility(View.GONE);
+                recyclerViewEjercicios.setVisibility(View.GONE);
+
+                nombreDia.setVisibility(View.GONE);
+                botonEditarNombreDia.setVisibility(View.GONE);
+                botonBorrarDia.setVisibility(View.GONE);
+
+                diasRutinaAdapter.setLista(new ArrayList<>());
+                ejerciciosRutinaAdapter.setEjercicios(new ArrayList<>());
+
                 Toast.makeText(getContext(), "Rutina eliminada correctamente", Toast.LENGTH_SHORT).show();
+
+                // recargar rutinas
                 rutinasViewModel.obtenerLasRutinas(idUsuario);
+            }
+        });
+
+        rutinasViewModel.getRutinaSeleccionada().observe(getViewLifecycleOwner(), rutina -> {
+            if (rutina != null) {
+                rutinaActual = rutina;
+
+                List<DiaEnRutinaDTO> diasOrdenados = new ArrayList<>(rutina.getDias());
+                Collections.sort(diasOrdenados, (d1, d2) ->
+                        d1.getDiaDeLaSemana().ordinal() - d2.getDiaDeLaSemana().ordinal()
+                );
+                diasRutinaAdapter.setLista(diasOrdenados);
+                recyclerViewDias.setVisibility(View.VISIBLE);
+
+                boolean encontrado = false;
+
+                // este if para que se muestre los cambios al editar un dia al instante
+                if (diaActual != null) {
+
+                    for (int i = 0; i < diasOrdenados.size(); i++) {
+                        if (diasOrdenados.get(i).getIdDiaEnRutina()
+                                .equals(diaActual.getIdDiaEnRutina())) {
+
+                            diasRutinaAdapter.setPosicionActual(i);
+                            diaActual = diasOrdenados.get(i);
+                            mostrarDetalleDia(diaActual);
+                            encontrado = true;
+                            break;
+                        }
+                    }
+                }
+
+                // este if para cuando borramos un dia y se seleccione otro en vez de quedarse con el dia borrado seleccionado
+                if (!encontrado) {
+
+                    if (diasOrdenados.isEmpty()) {
+
+                        diaActual = null;
+
+                        nombreDia.setVisibility(View.GONE);
+                        botonEditarNombreDia.setVisibility(View.GONE);
+                        botonBorrarDia.setVisibility(View.GONE);
+                        recyclerViewEjercicios.setVisibility(View.GONE);
+
+                        ejerciciosRutinaAdapter.setEjercicios(new ArrayList<>());
+                    }
+                }
             }
         });
     }
@@ -615,6 +684,9 @@ public class FragmentoRutinas extends Fragment {
         diasEnRutinaViewModel.getDiaCreadoExito().observe(getViewLifecycleOwner(), exito -> {
             if (exito != null && exito) {
                 Toast.makeText(getContext(), "Día creado correctamente", Toast.LENGTH_SHORT).show();
+                if (rutinaActual != null) {
+                    rutinasViewModel.obtenerRutina(idUsuario, rutinaActual.getIdRutinaCompleta());
+                }
                 dialogoActual.dismiss();
             }
         });
@@ -622,6 +694,9 @@ public class FragmentoRutinas extends Fragment {
         diasEnRutinaViewModel.getDiaActualizadoExito().observe(getViewLifecycleOwner(), exito -> {
             if (exito != null && exito) {
                 Toast.makeText(getContext(), "Día actualizado correctamente", Toast.LENGTH_SHORT).show();
+                if (rutinaActual != null) {
+                    rutinasViewModel.obtenerRutina(idUsuario, rutinaActual.getIdRutinaCompleta());
+                }
                 dialogoActual.dismiss();
             }
         });
@@ -629,12 +704,26 @@ public class FragmentoRutinas extends Fragment {
         diasEnRutinaViewModel.getDiaBorradoExito().observe(getViewLifecycleOwner(), exito -> {
             if (exito != null && exito) {
                 Toast.makeText(getContext(), "Día eliminado correctamente", Toast.LENGTH_SHORT).show();
-                cargarRutinas();
 
+                //Limpiar día seleccionado
+                diaActual = null;
+
+                //Ocultar detalles del día
+                nombreDia.setVisibility(View.GONE);
+                botonEditarNombreDia.setVisibility(View.GONE);
+                botonBorrarDia.setVisibility(View.GONE);
+                recyclerViewEjercicios.setVisibility(View.GONE);
+
+                //Limpiar lista de ejercicios
+                ejerciciosRutinaAdapter.setEjercicios(new ArrayList<>());
+
+                //Reset selección del adapter
+                diasRutinaAdapter.setPosicionActual(-1);
+
+                //Recargar rutina actual
                 if (rutinaActual != null) {
-                    cargarDias(rutinaActual.getIdRutinaCompleta());
+                    rutinasViewModel.obtenerRutina(idUsuario, rutinaActual.getIdRutinaCompleta());
                 }
-
             }
         });
     }
@@ -644,7 +733,7 @@ public class FragmentoRutinas extends Fragment {
             ejerciciosRutinaAdapter.setEjercicios(lista != null ? lista : new ArrayList<>());
         });
 
-        ejerciciosViewModel.getEjerciciosGlobales().observe(getViewLifecycleOwner(), listaApi -> {
+        ejerciciosViewModel.ejerciciosGlobales().observe(getViewLifecycleOwner(), listaApi -> {
             ejerciciosRutinaAdapter.setApiEjercicios(listaApi);
         });
 
@@ -663,8 +752,8 @@ public class FragmentoRutinas extends Fragment {
                     cargarDias(rutinaActual.getIdRutinaCompleta());
                 }
 
-                if (diaActual != null) {
-                    cargarEjercicios(diaActual.getIdDiaEnRutina());
+                if (diaActual != null && rutinaActual != null) {
+                    cargarEjercicios(rutinaActual.getIdRutinaCompleta(), diaActual.getDiaDeLaSemana());
                 }
             }
         });

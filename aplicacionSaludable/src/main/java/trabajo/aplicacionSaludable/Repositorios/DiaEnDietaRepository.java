@@ -12,8 +12,6 @@ import java.util.Optional;
 @Repository
 public interface DiaEnDietaRepository extends JpaRepository<DiaEnDieta, Long> {
 
-    List<DiaEnDieta> findByDietaCompleta(DietaCompleta dietaCompleta);
-
     Optional<DiaEnDieta> findByDiaDeLaSemanaAndDietaCompleta(DiaDeLaSemana diaDeLaSemana,  DietaCompleta dietaCompleta);
 
 }

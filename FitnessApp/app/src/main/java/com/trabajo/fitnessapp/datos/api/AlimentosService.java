@@ -14,23 +14,23 @@ import retrofit2.http.Path;
 
 public interface AlimentosService {
 
-    @GET("api/alimentos/usuarios/{idUsuario}")
+    @GET("/api/usuarios/{idUsuario}/alimentos")
     Call<List<AlimentoDTO>> obtenerAlimentosUsuario(@Path("idUsuario") Long idUsuario);
 
-    @PUT("api/alimentos/{idAlimento}/usuarios/{idUsuario}")
+    @PUT("/api/usuarios/{idUsuario}/alimentos/{idAlimento}")
     Call<AlimentoDTO> actualizarAlimento(
             @Path("idAlimento") Long idAlimento,
             @Path("idUsuario") Long idUsuario,
             @Body AlimentoDTO alimentoDTO
     );
 
-    @DELETE("api/alimentos/{idAlimento}/usuarios/{idUsuario}")
+    @DELETE("/api/usuarios/{idUsuario}/alimentos/{idAlimento}")
     Call<Void> borrarAlimento(
             @Path("idAlimento") Long idAlimento,
             @Path("idUsuario") Long idUsuario
     );
 
-    @POST("api/alimentos/usuarios/{idUsuario}")
+    @POST("/api/usuarios/{idUsuario}/alimentos")
     Call<AlimentoDTO> crearAlimento(
             @Path("idUsuario") Long idUsuario,
             @Body AlimentoDTO alimentoDTO

@@ -3,20 +3,23 @@ package trabajo.aplicacionSaludable.Controladores;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import trabajo.aplicacionSaludable.Dtos.ApiAlimentosDTO;
-import trabajo.aplicacionSaludable.Servicios.ApiAlimentosService;
+import trabajo.aplicacionSaludable.Servicios.AlimentoService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/alimentos/buscar")
+@RequestMapping("/api/alimentos")
 @CrossOrigin
 public class BuscaAlimentosController {
 
-    @Autowired
-    private ApiAlimentosService apiAlimentosService;
+    private AlimentoService alimentoService;
+
+    public BuscaAlimentosController(AlimentoService alimentoService) {
+        this.alimentoService = alimentoService;
+    }
 
     @GetMapping
-    public List<ApiAlimentosDTO> buscar(@RequestParam String query) {
-        return apiAlimentosService.buscarAlimentos(query);
+    public List<ApiAlimentosDTO> buscar(@RequestParam String alimento) {
+        return alimentoService.buscarAlimentos(alimento);
     }
 }

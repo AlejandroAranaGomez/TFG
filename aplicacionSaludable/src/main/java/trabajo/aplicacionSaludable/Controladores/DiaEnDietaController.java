@@ -4,46 +4,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import trabajo.aplicacionSaludable.Dominio.DiaDeLaSemana;
 import trabajo.aplicacionSaludable.Dtos.DiaEnDietaDTO;
 import trabajo.aplicacionSaludable.Excepciones.ExcepcionesDiaEnDieta.DiaPerteneceAOtraDietaException;
-import trabajo.aplicacionSaludable.Excepciones.ExcepcionesDiaEnDieta.DiaDietaYaCreadoException;
 import trabajo.aplicacionSaludable.Servicios.DiaEnDietaService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/diasEnDieta")
+@RequestMapping("/api/usuarios/{idUsuario}/dietas/{idDieta}/{diaDeLaSemana}")
 public class DiaEnDietaController {
 
-    @Autowired
     private DiaEnDietaService diaEnDietaService;
 
-    @PostMapping("/dietas/{idDietaCompleta}")
-    public ResponseEntity<?> crearDiaEnDieta(@PathVariable Long idDietaCompleta, @RequestBody DiaEnDietaDTO diaEnDietaDTO) {
-        try {
-            DiaEnDietaDTO nuevoDia = diaEnDietaService.crearDiaEnDieta(diaEnDietaDTO, idDietaCompleta);
-            if (nuevoDia == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dieta no encontrada");
-            }
-            return new ResponseEntity<>(nuevoDia,HttpStatus.CREATED);
-        } catch (DiaDietaYaCreadoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
+    public DiaEnDietaController(DiaEnDietaService diaEnDietaService) {
+        this.diaEnDietaService = diaEnDietaService;
     }
 
-    @GetMapping("/dietas/{idDietaCompleta}")
-    public ResponseEntity<?> obtenerDias(@PathVariable Long idDietaCompleta) {
-        List<DiaEnDietaDTO> dias = diaEnDietaService.listaDiaEnDieta(idDietaCompleta);
-        if (dias == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dieta no encontrada");
-        }
-        return ResponseEntity.ok(dias);
-    }
-
-    @PutMapping("/{idDiaDieta}/dietas/{idDietaCompleta}")
-    public ResponseEntity<?> actualizarDia(@PathVariable Long idDiaDieta, @PathVariable Long idDietaCompleta ,@RequestBody DiaEnDietaDTO diaEnDietaDTO) {
+    @PutMapping
+    public ResponseEntity<?> guardarDia(@PathVariable DiaDeLaSemana diaDeLaSemana, @PathVariable Long idDieta , @RequestBody DiaEnDietaDTO diaEnDietaDTO) {
         try {
-            DiaEnDietaDTO diaActualizado = diaEnDietaService.editarDiaEnDieta(diaEnDietaDTO, idDietaCompleta, idDiaDieta);
+            DiaEnDietaDTO diaActualizado = diaEnDietaService.guardarDiaEnDieta(diaEnDietaDTO, idDieta, diaDeLaSemana);
             if (diaActualizado == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dia no encontrado");
             }
@@ -54,10 +35,10 @@ public class DiaEnDietaController {
         }
     }
 
-    @DeleteMapping("/{idDiaDieta}/dietas/{idDietaCompleta}")
-    public ResponseEntity<?> borrarDia(@PathVariable Long idDiaDieta, @PathVariable Long idDietaCompleta) {
+    @DeleteMapping
+    public ResponseEntity<?> borrarDia(@PathVariable DiaDeLaSemana diaDeLaSemana, @PathVariable Long idDieta) {
         try {
-            boolean eliminado = diaEnDietaService.borrarDia(idDiaDieta, idDietaCompleta);
+            boolean eliminado = diaEnDietaService.borrarDia(diaDeLaSemana, idDieta);
             if (!eliminado) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Día no encontrado");
             }

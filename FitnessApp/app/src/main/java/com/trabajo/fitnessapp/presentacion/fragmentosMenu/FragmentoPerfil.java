@@ -1,5 +1,6 @@
 package com.trabajo.fitnessapp.presentacion.fragmentosMenu;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,11 +11,14 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.trabajo.fitnessapp.R;
 import com.trabajo.fitnessapp.datos.dto.UsuarioPerfilDTO;
+import com.trabajo.fitnessapp.presentacion.menu.Dietas.MenuAlimentosActivity;
+import com.trabajo.fitnessapp.presentacion.menu.Perfil.EditarPerfilActivity;
 import com.trabajo.fitnessapp.presentacion.menu.Perfil.PerfilViewModel;
 
 import java.time.LocalDate;
@@ -22,6 +26,7 @@ import java.time.Period;
 
 public class FragmentoPerfil extends Fragment {
 
+    private Button botonEditarPerfil;
     private Long idUsuario;
     private PerfilViewModel perfilViewModel;
     private TextView tvNombre, tvEdad, tvPeso, tvAltura, tvFechaDeNacimiento, tvObjetivo, tvActividad, tvEmail, tvTelefono, tvGenero;
@@ -44,13 +49,20 @@ public class FragmentoPerfil extends Fragment {
 
         perfilViewModel = new ViewModelProvider(this).get(PerfilViewModel.class);
 
+        configurarBotones();
         observarViewModel();
 
+
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         if (idUsuario != null && idUsuario != -1L) {
             perfilViewModel.cargarPerfil(idUsuario);
         }
-
-        return view;
     }
 
     private void enlazarVistas(View view) {
@@ -64,6 +76,18 @@ public class FragmentoPerfil extends Fragment {
         tvEmail = view.findViewById(R.id.tvEmail);
         tvTelefono = view.findViewById(R.id.tvTelefono);
         tvGenero = view.findViewById(R.id.tvGenero);
+        botonEditarPerfil = view.findViewById(R.id.btnEditarPerfil);
+    }
+
+    private void configurarBotones() {
+        botonEditarPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireContext(), EditarPerfilActivity.class);
+                intent.putExtra("ID_USUARIO", idUsuario);
+                startActivity(intent);
+            }
+        });
     }
 
     private void mostrarDatos(UsuarioPerfilDTO perfil) {

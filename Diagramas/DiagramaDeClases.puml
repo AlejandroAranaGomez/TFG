@@ -66,32 +66,51 @@ class Usuario {
 - fechaNacimiento : LocalDate
 - genero: Genero
 - peso : float
-- contrasenha : String
-- email : String
 - altura : int
 - telefono : String
 - nivelDeActividad : NivelDeActividad
 - objetivo : Objetivo
 }
 
+class Credenciales {
+- idCredenciales : Long
+- email : String
+- contrasenha : String
+}
+
+class HistorialPeso {
+- idHistorialPeso : Long
+- peso : float
+- fecha : LocalDate
+}
+
+class RegistroComidaDiaria {
+- idRegistroComidaDiaria : Long
+- fecha : LocalDate
+- /caloriasTotales : float
+- /proteinas : float
+- /carbohidratos : float
+- /grasas : float
+}
+
 class DietaCompleta {
-- idDieta : Long
+- idDietaCompleta : Long
 - nombre : String
 - descripcion : String [0..1]
-- caloriasTotales : float
-- proteinas : float
-- carbohidratos : float
-- grasas : float
+- /caloriasTotales : float
+- /proteinas : float
+- /carbohidratos : float
+- /grasas : float
 - activa : boolean
 }
 
 class DiaEnDieta {
 - idDiaEnDieta : Long
 - nombre : String
-- caloriasTotales : float
-- proteinas : float
-- carbohidratos : float
-- grasas : float
+- /caloriasTotales : float
+- /proteinas : float
+- /carbohidratos : float
+- /grasas : float
 - diaDeLaSemana : DiaDeLaSemana
 }
 
@@ -99,20 +118,20 @@ class DiaEnDieta {
 class Comida {
 - idComida : Long
 - nombre : String
-- caloriasTotales : float
-- proteinas : float
-- carbohidratos : float
-- grasas : float
+- /caloriasTotales : float
+- /proteinas : float
+- /carbohidratos : float
+- /grasas : float
 }
 
 class Ingrediente {
 - idIngrediente : Long
 - nombre : String
 - cantidadGramos : float
-- calorias : float
-- proteinas : float
-- carbohidratos : float
-- grasas : float
+- /calorias : float
+- /proteinas : float
+- /carbohidratos : float
+- /grasas : float
 }
 
 class Alimento {
@@ -125,7 +144,7 @@ class Alimento {
 }
 
 class RutinaCompleta {
-- idRutina : Long
+- idRutinaCompleta : Long
 - nombre : String
 - resumen : String [0..1]
 }
@@ -153,22 +172,30 @@ class Serie {
 ' ====== RELACIONES ======
 ' ========================
 
-Usuario "Usuarios 1"  -- "Dietas 0..*" DietaCompleta 
+Usuario "usuario 1"  --> "dietas 0..*" DietaCompleta 
 
-DietaCompleta "1" -- "1..*" DiaEnDieta
+Usuario "usuario 1" --> "credenciales 1" Credenciales
 
-Usuario "1"  -- "0..*" RutinaCompleta
+Usuario "usuario 1" --> "historialPeso 1..*" HistorialPeso
 
-DiaEnDieta "1"  -- "1..*" Comida
+Usuario "usuario 1" --> "registrosComidaDiaria 0..*" RegistroComidaDiaria
 
-Comida "1"  -- "1..*" Ingrediente
+Comida "comida 1" --> "registros 0..*" RegistroComidaDiaria
 
-Usuario "1" -- "0..*" Alimento
+DietaCompleta "dieta 1" --> "diasDeDieta 1..*" DiaEnDieta
 
-RutinaCompleta "1"  -- "1..*" DiaEnRutina
+Usuario "usuario 1"  --> "rutinas 0..*" RutinaCompleta
 
-DiaEnRutina "1..*" -- "1..*" Ejercicio
+DiaEnDieta "diaDeDieta 1"  --> "comidas 1..*" Comida
 
-Ejercicio "1"  -- "1..*" Serie
+Comida "comida 1"  --> "ingredientes 1..*" Ingrediente
 
-@enduml
+Usuario "usuario 1" --> "alimentosPersonales 0..*" Alimento
+
+RutinaCompleta "rutina 1"  --> "diasEnRutina 1..*" DiaEnRutina
+
+DiaEnRutina "diaEnRutina 1..*" --> "ejercicios 1..*" Ejercicio
+
+Ejercicio "ejercicio 1"  --> "series 1..*" Serie
+
+@enduml 

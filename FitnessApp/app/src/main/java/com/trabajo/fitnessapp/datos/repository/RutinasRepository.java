@@ -26,7 +26,7 @@ public class RutinasRepository {
     public LiveData<Result<List<RutinaCompletaDTO>>> obtenerRutinasUsuario(Long idUsuario) {
         MutableLiveData<Result<List<RutinaCompletaDTO>>> rutinas = new MutableLiveData<>();
 
-        rutinasService.obtenerRutinaUsuario(idUsuario).enqueue(new Callback<List<RutinaCompletaDTO>>() {
+        rutinasService.obtenerRutinasUsuario(idUsuario).enqueue(new Callback<List<RutinaCompletaDTO>>() {
             @Override
             public void onResponse(Call<List<RutinaCompletaDTO>> call, Response<List<RutinaCompletaDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -84,7 +84,7 @@ public class RutinasRepository {
     public LiveData<Result<RutinaCompletaDTO>> actualizarRutina(Long idUsuario, Long idRutinaCompleta, RutinaCompletaDTO rutinaCompletaDTO) {
         MutableLiveData<Result<RutinaCompletaDTO>> resultado = new MutableLiveData<>();
 
-        rutinasService.editarRutina(idUsuario, idRutinaCompleta, rutinaCompletaDTO).enqueue(new Callback<RutinaCompletaDTO>() {
+        rutinasService.actualizarRutina(idUsuario, idRutinaCompleta, rutinaCompletaDTO).enqueue(new Callback<RutinaCompletaDTO>() {
             @Override
             public void onResponse(Call<RutinaCompletaDTO> call, Response<RutinaCompletaDTO> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -134,6 +134,27 @@ public class RutinasRepository {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 resultado.setValue(new Result.Error<>("Error de conexión con la base de datos: " + t.getMessage()));
+            }
+        });
+        return resultado;
+    }
+
+    public LiveData<Result<RutinaCompletaDTO>> obtenerRutina(Long idUsuario, Long idRutina) {
+        MutableLiveData<Result<RutinaCompletaDTO>> resultado = new MutableLiveData<>();
+
+        rutinasService.obtenerRutina(idUsuario, idRutina).enqueue(new Callback<RutinaCompletaDTO>() {
+            @Override
+            public void onResponse(Call<RutinaCompletaDTO> call, Response<RutinaCompletaDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    resultado.setValue(new Result.Success<>(response.body()));
+                } else {
+                    resultado.setValue(new Result.Error<>("Error al obtener la rutina"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RutinaCompletaDTO> call, Throwable t) {
+                resultado.setValue(new Result.Error<>("Error de conexion: " + t.getMessage()));
             }
         });
         return resultado;

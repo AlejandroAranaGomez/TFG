@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import trabajo.aplicacionSaludable.Dominio.Comida;
 
+import java.util.List;
+
 @Getter
 @Setter
 

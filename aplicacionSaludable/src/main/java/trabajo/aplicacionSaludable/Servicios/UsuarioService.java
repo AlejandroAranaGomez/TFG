@@ -1,32 +1,30 @@
 package trabajo.aplicacionSaludable.Servicios;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import trabajo.aplicacionSaludable.Dominio.Credenciales;
+import trabajo.aplicacionSaludable.Dominio.HistorialPeso;
 import trabajo.aplicacionSaludable.Dominio.Usuario;
-import trabajo.aplicacionSaludable.Dtos.InicioSesionDTO;
-import trabajo.aplicacionSaludable.Dtos.RegistroDTO;
-import trabajo.aplicacionSaludable.Dtos.UsuarioDTO;
-import trabajo.aplicacionSaludable.Dtos.UsuarioPerfilDTO;
+import trabajo.aplicacionSaludable.Dtos.*;
 import trabajo.aplicacionSaludable.Repositorios.CredencialesRepository;
+import trabajo.aplicacionSaludable.Repositorios.HistorialPesoRepository;
 import trabajo.aplicacionSaludable.Repositorios.UsuarioRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final CredencialesRepository credencialesRepository;
+    private final HistorialPesoRepository historialPesoRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository,
-                          CredencialesRepository credencialesRepository,
-                          PasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepository usuarioRepository, CredencialesRepository credencialesRepository, HistorialPesoRepository historialPesoRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.credencialesRepository = credencialesRepository;
+        this.historialPesoRepository = historialPesoRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -39,7 +37,14 @@ public class UsuarioService {
 
         Usuario usuario = crearUsuarioDesdeDTO(registroDTO);
 
-        usuarioRepository.save(usuario);
+        Usuario usuarioGuardado = usuarioRepository.save(usuario);
+
+        HistorialPeso historial = new HistorialPeso();
+        historial.setPeso(usuarioGuardado.getPeso());
+        historial.setFecha(LocalDate.now());
+        historial.setUsuario(usuarioGuardado);
+
+        historialPesoRepository.save(historial);
 
         return new UsuarioDTO(
                 usuario.getIdUsuario(),
@@ -71,6 +76,38 @@ public class UsuarioService {
         );
     }
 
+    public UsuarioPerfilDTO actualizarPerfil(Long idUsuario, UsuarioActualizarDTO dto) {
+        Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
+
+        if (usuario == null) {
+            return null;
+        }
+
+        usuario.setNombre(dto.getNombre());
+        usuario.setApellido1(dto.getApellido1());
+        usuario.setApellido2(dto.getApellido2());
+        usuario.setFechaNacimiento(LocalDate.parse(dto.getFechaNacimiento()));
+        usuario.setAltura(dto.getAltura());
+        usuario.setTelefono(dto.getTelefono());
+        usuario.setObjetivo(dto.getObjetivo());
+        usuario.setNivelDeActividad(dto.getNivelDeActividad());
+
+        int calorias = CalculoCalorias.calcularCalorias(
+                usuario.getPeso(),
+                usuario.getAltura(),
+                usuario.getFechaNacimiento(),
+                usuario.getGenero(),
+                usuario.getNivelDeActividad(),
+                usuario.getObjetivo()
+        );
+
+        usuario.setCaloriasObjetivo(calorias);
+
+        usuarioRepository.save(usuario);
+
+        return obtenerPerfilUsuario(usuario.getIdUsuario());
+    }
+
     public UsuarioPerfilDTO obtenerPerfilUsuario(Long idUsuario) {
 
         Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
@@ -92,13 +129,72 @@ public class UsuarioService {
         dto.setObjetivo(usuario.getObjetivo());
         dto.setNivelDeActividad(usuario.getNivelDeActividad());
         dto.setEmail(usuario.getCredenciales().getEmail());
+        dto.setCaloriasObjetivo(usuario.getCaloriasObjetivo());
 
         return dto;
+    }
+
+    public UsuarioPerfilDTO actualizarPeso(Long idUsuario, float nuevoPeso) {
+
+        Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
+
+        if (usuario == null) {
+            return null;
+        }
+
+        if (usuario.getPeso() != nuevoPeso) {
+
+            usuario.setPeso(nuevoPeso);
+
+            int calorias = CalculoCalorias.calcularCalorias(
+                    usuario.getPeso(),
+                    usuario.getAltura(),
+                    usuario.getFechaNacimiento(),
+                    usuario.getGenero(),
+                    usuario.getNivelDeActividad(),
+                    usuario.getObjetivo()
+            );
+
+            usuario.setCaloriasObjetivo(calorias);
+
+            usuarioRepository.save(usuario);
+
+            HistorialPeso historial = new HistorialPeso();
+            historial.setPeso(nuevoPeso);
+            historial.setFecha(LocalDate.now());
+            historial.setUsuario(usuario);
+
+            historialPesoRepository.save(historial);
+        }
+
+        return obtenerPerfilUsuario(idUsuario);
+    }
+
+    public List<HistorialPesoDTO> obtenerHistorialPeso(Long idUsuario) {
+
+        Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
+
+        if (usuario == null) {
+            return null;
+        }
+
+        List<HistorialPeso> historial = historialPesoRepository.findByUsuarioIdUsuarioOrderByFechaAsc(idUsuario);
+
+        return historial.stream().map(h -> new HistorialPesoDTO(h.getPeso(), h.getFecha().toString())).toList();
     }
 
     private Usuario crearUsuarioDesdeDTO(RegistroDTO registroDTO) {
 
         LocalDate fechaNacimiento = LocalDate.parse(registroDTO.getFechaNacimiento());
+
+        int calorias = CalculoCalorias.calcularCalorias(
+                registroDTO.getPeso(),
+                registroDTO.getAltura(),
+                fechaNacimiento,
+                registroDTO.getGenero(),
+                registroDTO.getNivelDeActividad(),
+                registroDTO.getObjetivo()
+        );
 
         Usuario usuario = new Usuario(
                 registroDTO.getNombre(),
@@ -110,7 +206,8 @@ public class UsuarioService {
                 registroDTO.getAltura(),
                 registroDTO.getTelefono(),
                 registroDTO.getObjetivo(),
-                registroDTO.getNivelDeActividad()
+                registroDTO.getNivelDeActividad(),
+                calorias
         );
 
         Credenciales credenciales = new Credenciales(

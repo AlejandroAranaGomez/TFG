@@ -1,8 +1,12 @@
 package trabajo.aplicacionSaludable.Servicios;
 
 import org.springframework.stereotype.Service;
+import trabajo.aplicacionSaludable.Dominio.DiaEnDieta;
+import trabajo.aplicacionSaludable.Dominio.DiaEnRutina;
 import trabajo.aplicacionSaludable.Dominio.RutinaCompleta;
 import trabajo.aplicacionSaludable.Dominio.Usuario;
+import trabajo.aplicacionSaludable.Dtos.DiaEnDietaDTO;
+import trabajo.aplicacionSaludable.Dtos.DiaEnRutinaDTO;
 import trabajo.aplicacionSaludable.Dtos.RutinaCompletaDTO;
 import trabajo.aplicacionSaludable.Excepciones.ExcepcionesRutinas.RutinaDuplicadaException;
 import trabajo.aplicacionSaludable.Excepciones.ExcepcionesRutinas.RutinaOtroUsuarioException;
@@ -38,6 +42,14 @@ public class RutinaCompletaService {
         dto.setIdRutinaCompleta(rutina.getIdRutinaCompleta());
         dto.setResumen(rutina.getResumen());
         dto.setNombreRutinaCompleta(rutina.getNombreRutinaCompleta());
+        return dto;
+    }
+
+    private DiaEnRutinaDTO convertirDiaADTO(DiaEnRutina dia) {
+        DiaEnRutinaDTO dto = new DiaEnRutinaDTO();
+        dto.setIdDiaEnRutina(dia.getIdDiaEnRutina());
+        dto.setNombre(dia.getNombre());
+        dto.setDiaDeLaSemana(dia.getDiaDeLaSemana());
         return dto;
     }
 
@@ -109,5 +121,28 @@ public class RutinaCompletaService {
 
         rutinaCompletaRepository.deleteById(idRutina);
         return true;
+    }
+
+    public RutinaCompletaDTO obtenerRutina(Long idUsuario, Long idRutina) {
+        RutinaCompleta rutinaExiste = rutinaCompletaRepository.findById(idRutina).orElse(null);
+
+        if (rutinaExiste == null) {
+            return null;
+        }
+
+        if (!rutinaExiste.getUsuario().getIdUsuario().equals(idUsuario)) {
+            throw new RutinaOtroUsuarioException();
+        }
+
+        RutinaCompletaDTO dto = EntidadaDTO(rutinaExiste);
+
+        List<DiaEnRutinaDTO > dias = rutinaExiste.getDiaEnRutinas()
+                .stream()
+                .map(this::convertirDiaADTO)
+                .collect(Collectors.toList());
+
+        dto.setDias(dias);
+
+        return dto;
     }
 }

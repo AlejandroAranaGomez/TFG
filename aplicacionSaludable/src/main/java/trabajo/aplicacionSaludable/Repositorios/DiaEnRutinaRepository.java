@@ -9,7 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface DiaEnRutinaRepository extends JpaRepository<DiaEnRutina, Long> {
-    List<DiaEnRutina> findByRutinaCompleta(RutinaCompleta rutinaCompleta);
 
     Optional<DiaEnRutina> findByDiaDeLaSemanaAndRutinaCompleta(DiaDeLaSemana diaDeLaSemana, RutinaCompleta rutinaCompleta);
 }

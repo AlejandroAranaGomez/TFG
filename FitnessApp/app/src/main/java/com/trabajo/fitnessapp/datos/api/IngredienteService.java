@@ -15,15 +15,15 @@ import retrofit2.http.Path;
 
 public interface IngredienteService {
 
-    @GET("api/ingredientes/comidas/{idComida}")
+    @GET("/api/usuarios/{idUsuario}/dietas/{idDieta}/{diaDeLaSemana}/comidas/{idComida}/ingredientes")
     Call<List<IngredienteDTO>> obtenerIngredientes(@Path("idComida") Long idComida);
 
-    @POST("api/ingredientes/comidas/{idComida}")
+    @POST("/api/usuarios/{idUsuario}/dietas/{idDieta}/{diaDeLaSemana}/comidas/{idComida}/ingredientes")
     Call<IngredienteDTO> crearIngrediente(@Path("idComida") Long idComida, @Body IngredienteDTO ingredienteDTO);
 
-    @PUT("api/ingredientes/{idIngrediente}/comidas/{idComida}")
+    @PUT("/api/usuarios/{idUsuario}/dietas/{idDieta}/{diaDeLaSemana}/comidas/{idComida}/ingredientes/{idIngrediente}")
     Call<IngredienteDTO> editarIngrediente( @Path("idIngrediente") Long idIngrediente, @Path("idComida") Long idComida, @Body IngredienteDTO ingredienteDTO);
 
-    @DELETE("api/ingredientes/{idIngrediente}/comidas/{idComida}")
+    @DELETE("/api/usuarios/{idUsuario}/dietas/{idDieta}/{diaDeLaSemana}/comidas/{idComida}/ingredientes/{idIngrediente}")
     Call<Void> borrarIngrediente(@Path("idIngrediente") Long idIngrediente, @Path("idComida") Long idComida);
 }

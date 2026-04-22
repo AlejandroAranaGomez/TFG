@@ -11,9 +11,6 @@ import java.util.Optional;
 @Repository
 public interface AlimentoRepository extends JpaRepository<Alimento, Long> {
 
-    // Alimento global
-    Optional<Alimento> findByNombreAndUsuarioIsNull(String nombre);
-
     // alimento de un usuario
     Optional<Alimento> findByNombreAndUsuario(String nombre, Usuario usuario);
 

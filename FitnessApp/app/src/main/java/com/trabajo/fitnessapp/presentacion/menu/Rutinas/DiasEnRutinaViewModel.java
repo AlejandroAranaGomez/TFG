@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import com.trabajo.fitnessapp.datos.Utils.Result;
 import com.trabajo.fitnessapp.datos.dto.DiaEnRutinaDTO;
 import com.trabajo.fitnessapp.datos.repository.DiasEnRutinaRepository;
+import com.trabajo.fitnessapp.dominio.DiaDeLaSemana;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,51 +44,13 @@ public class DiasEnRutinaViewModel extends ViewModel {
         this.diasEnRutinaRepository = new DiasEnRutinaRepository();
     }
 
-    public void obtenerDias(Long idRutinaCompleta) {
+    public void guardaDia(DiaDeLaSemana diaDeLaSemana, Long idRutinaCompleta, DiaEnRutinaDTO diaEnRutinaDTO) {
         if (idRutinaCompleta == null) {
             mensajeError.setValue("Rutina no encontrada");
             return;
         }
 
-        diasEnRutinaRepository.obtenerDiasEnRutina(idRutinaCompleta).observeForever(result -> {
-            if (result instanceof Result.Success) {
-                List<DiaEnRutinaDTO> nuevaLista = new ArrayList<>(((Result.Success<List<DiaEnRutinaDTO>>) result).datos);
-                dias.setValue(nuevaLista);
-            } else if (result instanceof Result.Error) {
-                mensajeError.setValue(((Result.Error<List<DiaEnRutinaDTO>>) result).error);
-            }
-        });
-    }
-
-    public void crearDia(Long idRutinaCompleta, DiaEnRutinaDTO diaEnRutinaDTO) {
-        if (idRutinaCompleta == null) {
-            mensajeError.setValue("Rutina no encontrada");
-            return;
-        }
-
-        if (diaEnRutinaDTO.getNombre().isEmpty()) {
-            mensajeError.setValue("El nombre del dia no puede estar vacío");
-            return;
-        }
-
-        diasEnRutinaRepository.crearDia(idRutinaCompleta, diaEnRutinaDTO).observeForever(result -> {
-            if (result instanceof Result.Success) {
-                diaCreadoExito.setValue(true);
-                obtenerDias(idRutinaCompleta);
-            } else if (result instanceof Result.Error) {
-                mensajeError.setValue(((Result.Error<DiaEnRutinaDTO>) result).error);
-                diaCreadoExito.setValue(false);
-            }
-        });
-    }
-
-    public void editaDia(Long idDiaEnRutina, Long idRutinaCompleta, DiaEnRutinaDTO diaEnRutinaDTO) {
-        if (idRutinaCompleta == null) {
-            mensajeError.setValue("Rutina no encontrada");
-            return;
-        }
-
-        if(idDiaEnRutina == null) {
+        if(diaDeLaSemana == null) {
             mensajeError.setValue("Dia no encontrado");
             return;
         }
@@ -97,10 +60,9 @@ public class DiasEnRutinaViewModel extends ViewModel {
             return;
         }
 
-        diasEnRutinaRepository.editarDia(idDiaEnRutina, idRutinaCompleta, diaEnRutinaDTO).observeForever(result -> {
+        diasEnRutinaRepository.editarDia(diaDeLaSemana, idRutinaCompleta, diaEnRutinaDTO).observeForever(result -> {
             if (result instanceof Result.Success) {
                 diaActualizadoExito.setValue(true);
-                obtenerDias(idRutinaCompleta);
             } else if (result instanceof Result.Error) {
                 mensajeError.setValue(((Result.Error<DiaEnRutinaDTO>) result).error);
                 diaActualizadoExito.setValue(false);
@@ -108,21 +70,20 @@ public class DiasEnRutinaViewModel extends ViewModel {
         });
     }
 
-    public void borrarDia(Long idDiaEnRutina, Long idRutinaCompleta) {
+    public void borrarDia(DiaDeLaSemana diaDeLaSemana, Long idRutinaCompleta) {
         if (idRutinaCompleta == null) {
             mensajeError.setValue("Rutina no encontrada");
             return;
         }
 
-        if(idDiaEnRutina == null) {
+        if(diaDeLaSemana == null) {
             mensajeError.setValue("Dia no encontrado");
             return;
         }
 
-        diasEnRutinaRepository.borrarDia(idDiaEnRutina, idRutinaCompleta).observeForever(result -> {
+        diasEnRutinaRepository.borrarDia(diaDeLaSemana, idRutinaCompleta).observeForever(result -> {
             if (result instanceof Result.Success) {
                 diaBorradoExito.setValue(true);
-                obtenerDias(idRutinaCompleta);
             } else if (result instanceof Result.Error) {
                 mensajeError.setValue(((Result.Error<Boolean>) result).error);
                 diaBorradoExito.setValue(false);

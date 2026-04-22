@@ -139,4 +139,59 @@ public class DietasRepository {
         return resultado;
     }
 
+    public LiveData<Result<DietaCompletaDTO>> obtenerDieta(Long idUsuario, Long idDieta) {
+
+        MutableLiveData<Result<DietaCompletaDTO>> resultado = new MutableLiveData<>();
+
+        dietasService.obtenerDieta(idUsuario, idDieta)
+                .enqueue(new Callback<DietaCompletaDTO>() {
+                    @Override
+                    public void onResponse(Call<DietaCompletaDTO> call, Response<DietaCompletaDTO> response) {
+
+                        if (response.isSuccessful() && response.body() != null) {
+                            resultado.setValue(new Result.Success<>(response.body()));
+                        } else {
+                            resultado.setValue(new Result.Error<>("Error al obtener la dieta"));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<DietaCompletaDTO> call, Throwable t) {
+                        resultado.setValue(new Result.Error<>("Error de conexión: " + t.getMessage()));
+                    }
+                });
+
+        return resultado;
+    }
+
+    public LiveData<Result<Boolean>> activarDieta(Long idUsuario, Long idDieta) {
+        MutableLiveData<Result<Boolean>> resultado =new MutableLiveData<>();
+
+        dietasService.activarDieta(idUsuario, idDieta).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    resultado.setValue(new Result.Success<>(true));
+                } else {
+                    String error = "Error al borrar la dieta";
+                    try {
+                        if (response.errorBody() != null) {
+                            error = response.errorBody().string();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    resultado.setValue(new Result.Error<>(error));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                resultado.setValue(new Result.Error<>("Error de conexión con la base de datos: " + t.getMessage()));
+
+            }
+        });
+        return resultado;
+    }
+
 }

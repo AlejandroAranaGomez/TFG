@@ -21,10 +21,10 @@ public class ApiAlimentosRepository {
         this.apiAlimentosService = RetrofitClient.getClient().create(ApiAlimentosService.class);
     }
 
-    public LiveData<List<ApiAlimentosDTO>> buscarAlimentos(String query) {
+    public LiveData<List<ApiAlimentosDTO>> buscarAlimentos(String alimento) {
         MutableLiveData<List<ApiAlimentosDTO>> listaAlimentosConsulta = new MutableLiveData<>();
 
-        apiAlimentosService.buscarAlimentos(query).enqueue(new Callback<List<ApiAlimentosDTO>>() {
+        apiAlimentosService.buscarAlimentos(alimento).enqueue(new Callback<List<ApiAlimentosDTO>>() {
 
             @Override
             public void onResponse(Call<List<ApiAlimentosDTO>> call, Response<List<ApiAlimentosDTO>> response) {

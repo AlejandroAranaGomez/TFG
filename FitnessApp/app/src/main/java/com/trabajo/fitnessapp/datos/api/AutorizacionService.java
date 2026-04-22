@@ -10,7 +10,7 @@ import retrofit2.http.POST;
 
 public interface AutorizacionService {
 
-    @POST("api/usuarios/registrar")
+    @POST("api/usuarios")
     Call<UsuarioDTO> registrarUsuario(@Body RegistroDTO registroDTO);
 
     @POST("api/usuarios/login")

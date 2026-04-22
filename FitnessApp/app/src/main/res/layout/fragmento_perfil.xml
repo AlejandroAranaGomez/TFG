@@ -18,17 +18,17 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <Button
-        android:id="@+id/btnEditar"
+        android:id="@+id/btnEditarPerfil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="EDITAR"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorImparcial"
         android:background="@android:color/transparent"
         android:padding="8dp"
+        android:text="EDITAR"
+        android:textColor="@color/colorImparcial"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvNombre"

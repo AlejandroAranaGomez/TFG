@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.trabajo.fitnessapp.datos.Utils.Result;
 import com.trabajo.fitnessapp.datos.dto.DiaEnDietaDTO;
 import com.trabajo.fitnessapp.datos.repository.DiasEnDietaRepository;
+import com.trabajo.fitnessapp.dominio.DiaDeLaSemana;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,49 +44,14 @@ public class DiasEnDietaViewModel extends ViewModel {
     public DiasEnDietaViewModel() {
         this.diasEnDietaRepository = new DiasEnDietaRepository();
     }
-    public void obtenerLosDias(Long idDietaCompleta) {
+
+    public void editarDia(DiaDeLaSemana diaDeLaSemana, Long idDietaCompleta, DiaEnDietaDTO diaEnDietaDTO) {
         if (idDietaCompleta == null) {
             mensajeError.setValue("Dieta no encontrada");
             return;
         }
 
-        diasEnDietaRepository.obtenerDiasEnDieta(idDietaCompleta).observeForever(result -> {
-            if (result instanceof Result.Success) {
-                List<DiaEnDietaDTO> nuevaLista = new ArrayList<>(((Result.Success<List<DiaEnDietaDTO>>) result).datos);
-                dias.setValue(nuevaLista);
-            } else if (result instanceof Result.Error) {
-                mensajeError.setValue(((Result.Error<List<DiaEnDietaDTO>>) result).error);
-            }
-        });
-    }
-    public void crearDia(Long idDietaCompleta, DiaEnDietaDTO diaEnDietaDTO) {
-        if (idDietaCompleta == null) {
-            mensajeError.setValue("Dieta no encontrada");
-            return;
-        }
-
-        if (diaEnDietaDTO.getNombre().isEmpty()) {
-            mensajeError.setValue("El nombre del dia no puede estar vacío");
-            return;
-        }
-
-        diasEnDietaRepository.crearDia(idDietaCompleta, diaEnDietaDTO).observeForever(result -> {
-            if (result instanceof Result.Success) {
-                diaCreadoExito.setValue(true);
-                obtenerLosDias(idDietaCompleta);
-            } else if (result instanceof Result.Error) {
-                mensajeError.setValue(((Result.Error<DiaEnDietaDTO>) result).error);
-                diaCreadoExito.setValue(false);
-            }
-        });
-    }
-    public void editarDia(Long idDiaEnDieta, Long idDietaCompleta, DiaEnDietaDTO diaEnDietaDTO) {
-        if (idDietaCompleta == null) {
-            mensajeError.setValue("Dieta no encontrada");
-            return;
-        }
-
-        if (idDiaEnDieta == null) {
+        if (diaDeLaSemana == null) {
             mensajeError.setValue("Dia no encontrado");
             return;
         }
@@ -95,10 +61,9 @@ public class DiasEnDietaViewModel extends ViewModel {
             return;
         }
 
-        diasEnDietaRepository.editarDia(idDiaEnDieta, idDietaCompleta, diaEnDietaDTO).observeForever(result -> {
+        diasEnDietaRepository.editarDia(diaDeLaSemana, idDietaCompleta, diaEnDietaDTO).observeForever(result -> {
             if (result instanceof Result.Success) {
                 diaActualizadoExito.setValue(true);
-                obtenerLosDias(idDietaCompleta);
             } else if (result instanceof Result.Error) {
                 mensajeError.setValue(((Result.Error<DiaEnDietaDTO>) result).error);
                 diaActualizadoExito.setValue(false);
@@ -106,21 +71,20 @@ public class DiasEnDietaViewModel extends ViewModel {
         });
     }
 
-    public void borrarDia(Long idDiaEnDieta, Long idDietaCompleta) {
+    public void borrarDia(DiaDeLaSemana diaDeLaSemana, Long idDietaCompleta) {
         if (idDietaCompleta == null) {
             mensajeError.setValue("Dieta no encontrada");
             return;
         }
 
-        if (idDiaEnDieta == null) {
+        if (diaDeLaSemana == null) {
             mensajeError.setValue("Dia no encontrado");
             return;
         }
 
-        diasEnDietaRepository.borrarDia(idDiaEnDieta, idDietaCompleta).observeForever(result -> {
+        diasEnDietaRepository.borrarDia(idDietaCompleta, diaDeLaSemana).observeForever(result -> {
             if (result instanceof Result.Success) {
                 diaBorradoExito.setValue(true);
-                obtenerLosDias(idDietaCompleta);
             } else if (result instanceof Result.Error) {
                 mensajeError.setValue(((Result.Error<Boolean>) result).error);
                 diaBorradoExito.setValue(false);

@@ -12,13 +12,16 @@ import trabajo.aplicacionSaludable.Servicios.RutinaCompletaService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/rutinasCompletas")
+@RequestMapping("/api/usuarios/{idUsuario}/rutinas")
 public class RutinaCompletaController {
 
-    @Autowired
     private RutinaCompletaService rutinaCompletaService;
 
-    @PostMapping("/usuarios/{idUsuario}")
+    public RutinaCompletaController(RutinaCompletaService rutinaCompletaService) {
+        this.rutinaCompletaService = rutinaCompletaService;
+    }
+
+    @PostMapping
     public ResponseEntity<?> crearRutina(@PathVariable Long idUsuario, @RequestBody RutinaCompletaDTO rutinaCompletaDTO) {
         try {
             RutinaCompletaDTO rutina = rutinaCompletaService.crearRutina(idUsuario, rutinaCompletaDTO);
@@ -33,7 +36,7 @@ public class RutinaCompletaController {
         }
     }
 
-    @GetMapping("/usuarios/{idUsuario}")
+    @GetMapping
     public ResponseEntity<?> listaRutinas(@PathVariable Long idUsuario) {
         List<RutinaCompletaDTO> rutinas = rutinaCompletaService.listarRutinasUsuario(idUsuario);
 
@@ -43,10 +46,10 @@ public class RutinaCompletaController {
         return ResponseEntity.ok(rutinas);
     }
 
-    @PutMapping("/{idRutinaCompleta}/usuarios/{idUsuario}")
-    public ResponseEntity<?> actualizarRutina(@PathVariable Long idUsuario, @PathVariable Long idRutinaCompleta, @RequestBody RutinaCompletaDTO rutinaCompletaDTO) {
+    @PutMapping("/{idRutina}")
+    public ResponseEntity<?> actualizarRutina(@PathVariable Long idUsuario, @PathVariable Long idRutina, @RequestBody RutinaCompletaDTO rutinaCompletaDTO) {
         try {
-            RutinaCompletaDTO rutinaActualizada = rutinaCompletaService.actualizarRutina(idUsuario, idRutinaCompleta, rutinaCompletaDTO);
+            RutinaCompletaDTO rutinaActualizada = rutinaCompletaService.actualizarRutina(idUsuario, idRutina, rutinaCompletaDTO);
             if (rutinaActualizada == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Rutina no encontrada");
             }
@@ -58,14 +61,27 @@ public class RutinaCompletaController {
         }
     }
 
-    @DeleteMapping("/{idRutinaCompleta}/usuarios/{idUsuario}")
-    public ResponseEntity<?> borraRutina(@PathVariable Long idUsuario, @PathVariable Long idRutinaCompleta) {
+    @DeleteMapping("/{idRutina}")
+    public ResponseEntity<?> borraRutina(@PathVariable Long idUsuario, @PathVariable Long idRutina) {
         try {
-            boolean eliminada = rutinaCompletaService.borrarRutina(idUsuario, idRutinaCompleta);
+            boolean eliminada = rutinaCompletaService.borrarRutina(idUsuario, idRutina);
             if (!eliminada) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Rutina no encontrada");
             }
             return new ResponseEntity<>("Rutina borrada",HttpStatus.OK);
+        } catch (RutinaOtroUsuarioException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{idRutina}")
+    public ResponseEntity<?> obtenerRutina(@PathVariable Long idRutina, @PathVariable Long idUsuario) {
+        try {
+            RutinaCompletaDTO rutina = rutinaCompletaService.obtenerRutina(idUsuario, idRutina);
+            if (rutina == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Rutina no encontrada");
+            }
+            return ResponseEntity.ok(rutina);
         } catch (RutinaOtroUsuarioException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }

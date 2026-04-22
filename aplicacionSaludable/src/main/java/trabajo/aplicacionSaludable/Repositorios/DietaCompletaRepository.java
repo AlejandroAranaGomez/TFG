@@ -13,8 +13,7 @@ public interface DietaCompletaRepository extends JpaRepository<DietaCompleta, Lo
 
     List<DietaCompleta> findByUsuario(Usuario usuario);
 
-    Optional<DietaCompleta> findByUsuarioAndActivaTrue(Usuario usuario);
-
     Optional<DietaCompleta> findByNombreAndUsuario(String nombre, Usuario usuario);
 
+    DietaCompleta findByUsuarioIdUsuarioAndActivaTrue(Long idUsuario);
 }

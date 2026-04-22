@@ -4,46 +4,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import trabajo.aplicacionSaludable.Dominio.DiaDeLaSemana;
 import trabajo.aplicacionSaludable.Dtos.DiaEnRutinaDTO;
 import trabajo.aplicacionSaludable.Excepciones.ExcepcionesDiaEnRutina.DiaPerteneceAOtraRutinaException;
-import trabajo.aplicacionSaludable.Excepciones.ExcepcionesDiaEnRutina.DiaRutinaYaCreadoException;
 import trabajo.aplicacionSaludable.Servicios.DiaEnRutinaService;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/diasEnRutina")
+@RequestMapping("/api/usuarios/{idUsuario}/rutinas/{idRutina}/{diaDeLaSemana}")
 public class DiaEnRutinaController {
 
-    @Autowired
     private DiaEnRutinaService diaEnRutinaService;
 
-    @PostMapping("/rutinas/{idRutinaCompleta}")
-    public ResponseEntity<?> crearDiaEnRutina(@PathVariable Long idRutinaCompleta, @RequestBody DiaEnRutinaDTO diaEnRutinaDTO) {
-        try {
-            DiaEnRutinaDTO nuevoDia = diaEnRutinaService.crearDiaEnRutina(diaEnRutinaDTO, idRutinaCompleta);
-            if (nuevoDia == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Rutina no encontrada");
-            }
-            return new ResponseEntity<>(nuevoDia,HttpStatus.CREATED);
-        } catch (DiaRutinaYaCreadoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
+    public DiaEnRutinaController(DiaEnRutinaService diaEnRutinaService) {
+        this.diaEnRutinaService = diaEnRutinaService;
     }
 
-    @GetMapping("/rutinas/{idRutinaCompleta}")
-    public ResponseEntity<?> obtenerDias(@PathVariable Long idRutinaCompleta) {
-        List<DiaEnRutinaDTO> dias = diaEnRutinaService.listaDiaEnRutina(idRutinaCompleta);
-        if (dias == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Rutina no encontrada");
-        }
-        return ResponseEntity.ok(dias);
-    }
-
-    @PutMapping("/{idDiaEnRutina}/rutinas/{idRutinaCompleta}")
-    public ResponseEntity<?> actualizarDia(@PathVariable Long idDiaEnRutina, @PathVariable Long idRutinaCompleta, @RequestBody DiaEnRutinaDTO diaEnRutinaDTO) {
+    @PutMapping
+    public ResponseEntity<?> guardarDia(@PathVariable DiaDeLaSemana diaDeLaSemana, @PathVariable Long idRutina, @RequestBody DiaEnRutinaDTO diaEnRutinaDTO) {
         try {
-            DiaEnRutinaDTO diaActualizado = diaEnRutinaService.editarDiaEnRutina(diaEnRutinaDTO, idRutinaCompleta, idDiaEnRutina);
+            DiaEnRutinaDTO diaActualizado = diaEnRutinaService.guardarDiaEnRutina(diaEnRutinaDTO, idRutina, diaDeLaSemana);
             if (diaActualizado == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dia no encontrado");
             }
@@ -53,10 +32,10 @@ public class DiaEnRutinaController {
         }
     }
 
-    @DeleteMapping("/{idDiaEnRutina}/rutinas/{idRutinaCompleta}")
-    public  ResponseEntity<?> borrarDia(@PathVariable Long idDiaEnRutina, @PathVariable Long idRutinaCompleta) {
+    @DeleteMapping
+    public  ResponseEntity<?> borrarDia(@PathVariable DiaDeLaSemana diaDeLaSemana, @PathVariable Long idRutina) {
         try {
-            boolean eliminado = diaEnRutinaService.borrarDia(idDiaEnRutina, idRutinaCompleta);
+            boolean eliminado = diaEnRutinaService.borrarDia(diaDeLaSemana, idRutina);
             if (!eliminado) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dia no encontrado");
             }

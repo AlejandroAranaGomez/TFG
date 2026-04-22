@@ -7,6 +7,7 @@ import com.trabajo.fitnessapp.datos.Utils.Result;
 import com.trabajo.fitnessapp.datos.api.DiasEnRutinaService;
 import com.trabajo.fitnessapp.datos.api.RetrofitClient;
 import com.trabajo.fitnessapp.datos.dto.DiaEnRutinaDTO;
+import com.trabajo.fitnessapp.dominio.DiaDeLaSemana;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,68 +24,10 @@ public class DiasEnRutinaRepository {
         this.diasEnRutinaService = RetrofitClient.getClient().create(DiasEnRutinaService.class);
     }
 
-    public LiveData<Result<List<DiaEnRutinaDTO>>> obtenerDiasEnRutina(Long idRutinaCompleta) {
-        MutableLiveData<Result<List<DiaEnRutinaDTO>>> dias = new MutableLiveData<>();
-
-        diasEnRutinaService.obtenerDiasEnRutina(idRutinaCompleta).enqueue(new Callback<List<DiaEnRutinaDTO>>() {
-            @Override
-            public void onResponse(Call<List<DiaEnRutinaDTO>> call, Response<List<DiaEnRutinaDTO>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    dias.setValue(new Result.Success<>(response.body()));
-                } else {
-                    String error = "Error al cargar los días";
-                    try {
-                        if (response.errorBody() != null) {
-                            error = response.errorBody().string();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    dias.setValue(new Result.Error<>(error));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<DiaEnRutinaDTO>> call, Throwable t) {
-                dias.setValue(new Result.Error<>("Error de conexión con la base de datos: " + t.getMessage()));
-            }
-        });
-        return dias;
-    }
-
-    public LiveData<Result<DiaEnRutinaDTO>> crearDia(Long idRutinaCompleta, DiaEnRutinaDTO diaEnRutinaDTO) {
+    public LiveData<Result<DiaEnRutinaDTO>> editarDia(DiaDeLaSemana diaDeLaSemana, Long idRutinaCompleta, DiaEnRutinaDTO diaEnRutinaDTO) {
         MutableLiveData<Result<DiaEnRutinaDTO>> resultado = new MutableLiveData<>();
 
-        diasEnRutinaService.crearDia(idRutinaCompleta, diaEnRutinaDTO).enqueue(new Callback<DiaEnRutinaDTO>() {
-            @Override
-            public void onResponse(Call<DiaEnRutinaDTO> call, Response<DiaEnRutinaDTO> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    resultado.setValue(new Result.Success<>(response.body()));
-                } else {
-                    String error = "Error al crear el dia";
-                    try {
-                        if (response.errorBody() != null) {
-                            error = response.errorBody().string();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    resultado.setValue(new Result.Error<>(error));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<DiaEnRutinaDTO> call, Throwable t) {
-                resultado.setValue(new Result.Error<>("Error de conexión con la base de datos: " + t.getMessage()));
-            }
-        });
-        return resultado;
-    }
-
-    public LiveData<Result<DiaEnRutinaDTO>> editarDia(Long idDiaEnRutina, Long idRutinaCompleta, DiaEnRutinaDTO diaEnRutinaDTO) {
-        MutableLiveData<Result<DiaEnRutinaDTO>> resultado = new MutableLiveData<>();
-
-        diasEnRutinaService.editarDia(idDiaEnRutina, idRutinaCompleta, diaEnRutinaDTO).enqueue(new Callback<DiaEnRutinaDTO>() {
+        diasEnRutinaService.editarDia(diaDeLaSemana, idRutinaCompleta, diaEnRutinaDTO).enqueue(new Callback<DiaEnRutinaDTO>() {
             @Override
             public void onResponse(Call<DiaEnRutinaDTO> call, Response<DiaEnRutinaDTO> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -110,10 +53,10 @@ public class DiasEnRutinaRepository {
         return resultado;
     }
 
-    public LiveData<Result<Boolean>> borrarDia(Long idDiaEnRutina, Long idRutinaCompleta) {
+    public LiveData<Result<Boolean>> borrarDia(DiaDeLaSemana diaDeLaSemana, Long idRutinaCompleta) {
         MutableLiveData<Result<Boolean>> resultado = new MutableLiveData<>();
 
-        diasEnRutinaService.borrarDia(idDiaEnRutina, idRutinaCompleta).enqueue(new Callback<Void>() {
+        diasEnRutinaService.borrarDia(diaDeLaSemana, idRutinaCompleta).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {

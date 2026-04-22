@@ -9,8 +9,8 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface ApiAlimentosService {
-    @GET("api/alimentos/buscar")
+    @GET("api/alimentos")
     Call<List<ApiAlimentosDTO>> buscarAlimentos(
-            @Query("query") String query
+            @Query("alimento") String alimento
     );
 }

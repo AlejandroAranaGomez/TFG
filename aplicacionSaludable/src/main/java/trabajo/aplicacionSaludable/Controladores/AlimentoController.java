@@ -13,13 +13,16 @@ import trabajo.aplicacionSaludable.Servicios.AlimentoService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/alimentos")
+@RequestMapping("/api/usuarios/{idUsuario}/alimentos")
 public class AlimentoController {
 
-    @Autowired
     private AlimentoService alimentoService;
 
-    @PostMapping("/usuarios/{idUsuario}")
+    public AlimentoController(AlimentoService alimentoService) {
+        this.alimentoService = alimentoService;
+    }
+
+    @PostMapping
     public ResponseEntity<?> crearAlimento(@PathVariable Long idUsuario, @RequestBody AlimentoDTO alimentoDTO) {
         try {
             AlimentoDTO nuevoAlimento = alimentoService.creaAlimento(alimentoDTO, idUsuario);
@@ -34,7 +37,7 @@ public class AlimentoController {
         }
     }
 
-    @PutMapping("/{idAlimento}/usuarios/{idUsuario}")
+    @PutMapping("/{idAlimento}")
     public ResponseEntity<?> actualizarAlimento(@PathVariable Long idAlimento, @PathVariable Long idUsuario, @RequestBody AlimentoDTO alimentoDTO) {
         try {
             AlimentoDTO alimentoActualizado = alimentoService.actualizaAlimento(idAlimento, alimentoDTO, idUsuario);
@@ -51,7 +54,7 @@ public class AlimentoController {
         }
     }
 
-    @GetMapping("/usuarios/{idUsuario}")
+    @GetMapping
     public ResponseEntity<?> obtenerAlimentosUsuario(@PathVariable Long idUsuario) {
 
             List<AlimentoDTO> listaAlimentos = alimentoService.listaAlimentosUsuario(idUsuario);
@@ -61,7 +64,7 @@ public class AlimentoController {
             return ResponseEntity.ok(listaAlimentos);
     }
 
-    @DeleteMapping("/{idAlimento}/usuarios/{idUsuario}")
+    @DeleteMapping("/{idAlimento}")
     public ResponseEntity<?> borrarAlimento(@PathVariable Long idAlimento, @PathVariable Long idUsuario) {
         try {
             boolean eliminado = alimentoService.borraAlimento(idAlimento, idUsuario);

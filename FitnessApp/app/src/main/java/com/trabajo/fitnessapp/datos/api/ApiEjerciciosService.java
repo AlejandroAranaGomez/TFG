@@ -13,6 +13,6 @@ import retrofit2.http.Headers;
 import retrofit2.http.Query;
 
 public interface ApiEjerciciosService {
-    @GET("api/ejercicios/buscar")
+    @GET("api/ejercicios")
     Call<List<ApiEjercicioDTO>> buscarEjercicios();
 }

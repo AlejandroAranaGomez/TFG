@@ -1,134 +1,294 @@
-
 @startuml
 allow_mixing
 left to right direction
 skinparam linetype polyline
 
 package "Arquitectura de Componentes" {
-    
 
+    ' --- COMPONENTES CONTROLLERS ---
     component "AutentificationController" 
     component "AlimentoController" 
     component "DietaCompletaController"
     component "DiaEnDietaController"
     component "ComidaController"
     component "IngredienteController"
+    component "UsuarioController"
+    component "BuscarAlimentosController"
+    component "BuscarEjerciciosController"
+    component "RutinaCompletaController"
+    component "DiaEnRutinaController"
+    component "EjercicioController"
+    component "SerieController"
+    component "SeguimientoController"
     
+    ' --- COMPONENTES SERVICES ---
     component "UsuarioService" 
     component "AlimentoService"
     component "DietaCompletaService"
     component "DiaEnDietaService"
     component "ComidaService"  
     component "IngredienteService"
+    component "EjercicioService"
+    component "DiaEnRutinaService"
+    component "RutinaCompletaService"
+    component "SerieService"
+    component "RegistroComidaDiariaService"
 
+    ' --- COMPONENTES REPOSITORIES ---
     component "UsuarioRepository" 
     component "AlimentoRepository" 
     component "DietaCompletaRepository"
     component "DiaEnDietaRepository"
     component "ComidaRepository"
     component "IngredienteRepository"
+    component "CredencialesRepository"
+    component "RutinaCompletaRepository"
+    component "DiaEnRutinaRepository"
+    component "EjercicioRepository"
+    component "SerieRepository"
+    component "HistorialPesoRepository"
+    component "RegistroComidaRepository"
 
+    ' --- INTERFACES COMO PUNTOS DE UNION (BOLAS UNICAS) ---
+    () "IUsuarioRepository" as Ball_UserRepo
+    () "IDietaCompletaRepository" as Ball_DietaRepo
+    () "IDiaEnDietaRepository" as Ball_DiaDietaRepo
+    () "IComidaRepository" as Ball_ComidaRepo
+    () "IAlimentoRepository" as Ball_AlimentoRepo
+    () "IIngredienteRepository" as Ball_IngredienteRepo
+    () "ICredencialesRepository" as Ball_CredencialesRepo
+    () "IRutinaCompletaRepository" as Ball_RutinaRepo
+    () "IDiaEnRutinaRepository" as Ball_DiaRutinaRepo
+    () "IEjercicioRepository" as Ball_EjercicioRepo
+    () "ISerieRepository" as Ball_SerieRepo
+    () "IHistorialPesoRepository" as Ball_HistorialPesoRepo
+    () "IRegistroComidaDiariaRepository" as Ball_ComidaDiariaRepo
+
+    () "IUsuarioService" as Ball_UserService
+    () "IAlimentoService" as Ball_AlimentoService
+    () "IDietaCompletaService" as Ball_DietaService
+    () "IDiaEnDietaService" as Ball_DiaDietaService
+    () "IComidaService" as Ball_ComidaService
+    () "IIngredienteService" as Ball_IngredienteService
+    () "IRutinaCompletaService" as Ball_RutinaService
+    () "IDiaEnRutinaService" as Ball_DiaRutinaService
+    () "IEjercicioService" as Ball_EjercicioService
+    () "ISerieService" as Ball_SerieService
+    () "IRegistroComidaDiariaService" as Ball_ComidaDiariaService
+
+    ' De Controller a IService
+    AutentificationController -- Ball_UserService
+    UsuarioController -- Ball_UserService
+    AlimentoController -- Ball_AlimentoService
+    DietaCompletaController -- Ball_DietaService
+    DiaEnDietaController -- Ball_DiaDietaService
+    ComidaController -- Ball_ComidaService
+    IngredienteController -- Ball_IngredienteService
+    RutinaCompletaController -- Ball_RutinaService
+    DiaEnRutinaController -- Ball_DiaRutinaService
+    EjercicioController -- Ball_EjercicioService
+    SerieController -- Ball_SerieService
+    BuscarAlimentosController -- Ball_AlimentoService
+    BuscarEjerciciosController -- Ball_EjercicioService
+    SeguimientoController -- Ball_ComidaService
+    SeguimientoController -- Ball_ComidaDiariaService
+
+
+    ' De IService a Service
+    Ball_UserService -- UsuarioService
+    Ball_AlimentoService -- AlimentoService
+    Ball_DietaService -- DietaCompletaService
+    Ball_DiaDietaService -- DiaEnDietaService
+    Ball_ComidaService -- ComidaService
+    Ball_IngredienteService -- IngredienteService
+    Ball_RutinaService -- RutinaCompletaService
+    Ball_DiaRutinaService -- DiaEnRutinaService
+    Ball_EjercicioService -- EjercicioService
+    Ball_SerieService -- SerieService
+    Ball_ComidaDiariaService -- RegistroComidaDiariaService
+
+    ' De Service a IRepository
+    UsuarioService -- Ball_UserRepo
+    UsuarioService -- Ball_CredencialesRepo
+    UsuarioService -- Ball_HistorialPesoRepo
+    AlimentoService -- Ball_UserRepo
+    DietaCompletaService -- Ball_UserRepo
+    DietaCompletaService -- Ball_DietaRepo
+    DiaEnDietaService -- Ball_DietaRepo
+    ComidaService -- Ball_ComidaRepo
+    ComidaService -- Ball_DiaDietaRepo
+    ComidaService -- Ball_DietaRepo
+    ComidaService -- Ball_ComidaDiariaRepo
+    IngredienteService -- Ball_ComidaRepo
+    AlimentoService -- Ball_AlimentoRepo
+    DiaEnDietaService -- Ball_DiaDietaRepo
+    IngredienteService -- Ball_IngredienteRepo
+    RutinaCompletaService -- Ball_UserRepo
+    RutinaCompletaService -- Ball_RutinaRepo
+    EjercicioService -- Ball_EjercicioRepo
+    EjercicioService -- Ball_DiaRutinaRepo
+    EjercicioService -- Ball_RutinaRepo
+    DiaEnRutinaService -- Ball_RutinaRepo
+    DiaEnRutinaService -- Ball_DiaRutinaRepo
+    SerieService -- Ball_EjercicioRepo
+    SerieService -- Ball_SerieRepo
+    RegistroComidaDiariaService -- Ball_ComidaDiariaRepo
+    RegistroComidaDiariaService -- Ball_ComidaRepo
+    RegistroComidaDiariaService -- Ball_UserRepo
+
+    ' De IRepository a Repository
+    Ball_UserRepo -- UsuarioRepository
+    Ball_CredencialesRepo -- CredencialesRepository
+    Ball_DietaRepo -- DietaCompletaRepository
+    Ball_ComidaRepo -- ComidaRepository
+    Ball_AlimentoRepo -- AlimentoRepository
+    Ball_DiaDietaRepo -- DiaEnDietaRepository
+    Ball_IngredienteRepo -- IngredienteRepository
+    Ball_DiaRutinaRepo -- DiaEnRutinaRepository
+    Ball_EjercicioRepo -- EjercicioRepository
+    Ball_RutinaRepo -- RutinaCompletaRepository
+    Ball_SerieRepo -- SerieRepository
+    Ball_ComidaDiariaRepo -- RegistroComidaRepository
+    Ball_HistorialPesoRepo -- HistorialPesoRepository
     
-    AutentificationController -(0- UsuarioService : IUsuarioService
-    UsuarioService -(0- UsuarioRepository : IUsuarioRepository
-
-    AlimentoController -(0- AlimentoService : IAlimentoService
-    AlimentoService -(0- AlimentoRepository : IAlimentoRepository
-    AlimentoService -(0- UsuarioRepository : IUsuarioRepository
-
-    DietaCompletaController -(0- DietaCompletaService : IDietaCompletaService
-    DietaCompletaService -(0- DietaCompletaRepository : IDietaCompletaRepository
-    DietaCompletaService -(0- UsuarioRepository : IUsuarioRepository
-
-    DiaEnDietaController -(0- DiaEnDietaService : IDiaEnDietaService
-    DiaEnDietaService -(0- DiaEnDietaRepository : IDiaEnDietaRepository
-    DiaEnDietaService -(0- DietaCompletaRepository : IDietaCompletaRepository
-
-    ComidaController -(0- ComidaService : IComidaService
-    ComidaService -(0- ComidaRepository : IComidaRepository
-    ComidaService -(0- DiaEnDietaRepository : IDiaEnDietaRepository
-
-    IngredienteController -(0- IngredienteService : IIngredienteService
-    IngredienteService -(0- IngredienteRepository : IIngredienteRepository
-    IngredienteService -(0- ComidaRepository : IComidaRepository
-
 }
 
-
-package "Especificación de Interfaces" {
+package "Especificacion de Interfaces" {
     
     interface "IUsuarioService" {
-        + registrarUsuario(RegistroDTO) : UsuarioDTO
-        + iniciarSesion(InicioSesionDTO) : UsuarioDTO
+        + registrarUsuario(RegistroDTO registroDTO) : UsuarioDTO
+        + iniciarSesion(InicioSesionDTO inicioSesionDTO) : UsuarioDTO
+        + obtenerPerfilUsuario(Long idUsuario) : UsuarioPerfilDTO
+        + actualizarPerfil(Long idUsuario, UsuarioActualizarDTO usuarioActualizarDTO) : UsuarioPerfilDTO
+        + actualizarPeso(Long idUsuario, float nuevoPeso) : UsuarioPerfilDTO
+        + obtenerHistorialPeso(Long idUsuario) : List<HistorialPesoDTO>
     }
 
     interface "IAlimentoService" {
-        + creaAlimento(AlimentoDTO, Long) : AlimentoDTO
-        + actualizaAlimento(Long, AlimentoDTO, Long) : AlimentoDTO
+        + buscarAlimentos(String alimento) : List<ApiAlimentosDTO>
+        + creaAlimento(AlimentoDTO alimentoDTO, Long idUsuario) : AlimentoDTO
+        + actualizaAlimento(Long idAlimento, AlimentoDTO alimentoDTO, Long idUsuario) : AlimentoDTO
         + listaAlimentosUsuario(Long idUsuario) : List<AlimentoDTO>
-        + borraAlimento(Long, Long) : void
-    }
+        + borraAlimento(Long idAlimento, Long idUsuario) : boolean
+    }   
 
     interface "IDietaCompletaService" {
-        + creaDietaCompleta(Long, DietaCompletaDTO) : DietaCompletaDTO
-        + actualizarDietaCompleta(DietaCompletaDTO, Long, Long) : DietaCompletaDTO
-        + borrarDietaCompleta(Long, Long) : void
-        + listaDietaCompletaUsuario(Long) : List<DietaCompletaDTO>
+        + creaDietaCompleta(Long idUsuario, DietaCompletaDTO dietaCompletaDTO) : DietaCompletaDTO
+        + actualizarDietaCompleta(DietaCompletaDTO dietaCompletaDTO, Long idUsuario, Long idDietaCompleta) : DietaCompletaDTO
+        + borrarDietaCompleta(Long idUsuario, Long idDietaCompleta) : boolean
+        + listaDietaCompletaUsuario(Long idUsuario) : List<DietaCompletaDTO>
+        + obtenerDieta(Long idUsuario, Long idDietaCompleta) : DietaCompletaDTO
+        + activarDieta(Long idUsuario, Long idDieta) : boolean
     }
 
     interface "IDiaEnDietaService" {
-        + listaDiaEnDieta(Long) : List<DiaEnDietaDTO>
-        + crearDiaEnDieta(Long, DiaEnDietaDTO) : DiaEnDietaDTO
-        + editarDiaEnDieta(DiaEnDietaDTO, Long, Long) : DiaEnDietaDTO
-        + borrarDiaEnDieta(Long, Long) : void
+        + guardarDiaEnDieta(DiaEnDietaDTO diaEnDietaDTO, Long idDietaCompleta, DiaDeLaSemana diaDeLaSemana) : DiaEnDietaDTO
+        + borrarDiaEnDieta(DiaDeLaSemana diaDeLaSemana, Long idDietaCompleta) : boolean
     }
 
     interface "IComidaService" {
-        + listaComidas(Long) : List<ComidaDTO>
-        + crearComida(Long, ComidaDTO) : ComidaDTO
-        + editarComida(Long, Long, ComidaDTO) : ComidaDTO
-        + borrarComida(Long, Long) : void
+        + listaComidas(Long idDieta, DiaDeLaSemana diaDeLaSemana) : List<ComidaDTO>
+        + crearComida(Long idDieta, DiaDeLaSemana diaDeLaSemana, ComidaDTO comidaDTO) : ComidaDTO
+        + editarComida(Long idDieta, DiaDeLaSemana diaDeLaSemana, Long idComida, ComidaDTO comidaDTO) : ComidaDTO
+        + borrarComida(Long idDieta, DiaDeLaSemana diaDeLaSemana, Long idComida) : boolean
+        + obtenerComidasHoy(Long idUsuario) : List<ComidaSeguimientoDTO>
     }
 
     interface "IIngredienteService" {
-        + listaIngrediente(Long) : List<IngredienteDTO>
-        + crearIngrediente(Long, IngredienteDTO) : IngredienteDTO
-        + editarIngrediente(Long, Long, IngredienteDTO) : IngredienteDTO
-        + borraAlimento(Long, Long) : IngredienteDTO
+        + listaIngrediente(Long idComida) : List<IngredienteDTO>
+        + crearIngrediente(Long idComida, IngredienteDTO ingredienteDTO) : IngredienteDTO
+        + editarIngrediente(Long idComida, Long idIngrediente, IngredienteDTO ingredienteDTO) : IngredienteDTO
+        + borraAlimento(Long idIngrediente, Long idComida) : IngredienteDTO
+    }
+
+    interface "IRutinaCompletaService" {
+        + listarRutinasUsuario(Long idUsuario) : List<RutinaCompletaDTO>
+        + crearRutina(Long idUsuario, RutinaCompletaDTO rutinaCompletaDTO) : RutinaCompletaDTO
+        + actualizarRutina(Long idUsuario, Long idRutina, RutinaCompletaDTO rutinaCompletaDTO) : RutinaCompletaDTO
+        + borrarRutina(Long idUsuario, Long idRutina) : boolean
+        + obtenerRutina(Long idUsuario, Long idRutina) : RutinaCompletaDTO
+    }
+
+    interface "IDiaEnRutinaService" {
+        + guardarDiaEnRutina(DiaEnRutinaDTO diaEnRutinaDTO, Long idRutinaCompleta, DiaDeLaSemana diaDeLaSemana) : DiaEnRutinaDTO
+        + borrarDia(DiaDeLaSemana diaDeLaSemana, Long idRutinaCompleta) : boolean
+    }
+
+    interface "IEjercicioService" {
+        + listaEjercicios(Long idRutina, DiaDeLaSemana diaDeLaSemana) : List<EjercicioDTO>
+        + anhadirEjercicio(Long idRutina, DiaDeLaSemana diaDeLaSemana, EjercicioDTO ejercicioDTO) : void
+        + borrarEjercicio(Long idRutina, DiaDeLaSemana diaDeLaSemana, Long idEjercicio) : boolean
+    }
+
+    interface "ISerieService" {
+        + listaSeries(Long idEjercicio) : List<SerieDTO>
+        + crearSerie(Long idEjercicio, SerieDTO serieDTO) : SerieDTO
+        + actualizarSerie(Long idSerie, SerieDTO serieDTO) : SerieDTO
+        + borrarSerie(Long idSerie) : boolean
+    }
+
+    interface "IRegistroComidaDiariaService" {
+        + registrarComidaHoy(Long idUsuario, Long idComida) : RegistroComidaDiariaDTO
+        + eliminarComidaHoy(Long idUsuario, Long idComida) : boolean
     }
 
     interface "IUsuarioRepository" {
-        + findByEmail(String) : Usuario
-        + findByIdUsuario(Long) : Usuario
     }
 
     interface "IAlimentoRepository" {
-        + findByNombreAndUsuarioIsNull(String) : Alimento
-        + findByNombreAndUsuario(String, Usuario) : Alimento
-        + findByUsuarioOrUsuarioIsNull(Usuario) : List<Alimento>
+        + findByNombreAndUsuario(String nombre, Usuario usuario ) : Alimento
+        + findByUsuarioOrUsuarioIsNull(Usuario usuario) : List<Alimento>
     }
 
     interface "IDietaCompletaRepository" {
-        + findByUsuario(Usuario) : List<DietaCompleta>
-        + finsByUsuarioAndActiveTrue(Usuario) : DietaCompleta
-        + findByNombreAndUsuario(String, Usuario) : DietaCompleta
-        + findByIdDietaCompleta(Long) : DietaCompleta
+        + findByUsuario(Usuario usuario) : List<DietaCompleta>
+        + findByUsuarioIdUsuarioAndActiveTrue(Long idUsuario) : DietaCompleta
+        + findByNombreAndUsuario(String nombre, Usuario usuario) : DietaCompleta
     }
 
     interface "IDiaEnDietaRepository" {
-        + findByDietaCompleta(DietaCompleta) : List<DiaEnDieta>
-        + findByDiaDeLaSemanaAndDietaCompleta(DiaDeLaSemana, DietaCompleta) : DiaEnDieta
+        + findByDiaDeLaSemanaAndDietaCompleta(DiaDeLaSemana diaDeLaSemana, DietaCompleta dietaCompleta) : DiaEnDieta
     }
 
     interface "IComidaRepository" {
-        + findByDiaEnDieta(DiaEnDieta) : List<Comida>
-        + findByNombreAndDiaEnDieta(String, DiaEnDieta) : Comida
+        + findByDiaEnDieta(DiaEnDieta diaEnDieta) : List<Comida>
+        + findByNombreAndDiaEnDieta(String nombre, DiaEnDieta diaEnDieta) : Comida
     }
 
     interface "IIngredienteRepository" {
         + findByNombreAndComida(String nombre, Comida comida) : Ingrediente
     }
-}
 
+    interface "ICredencialesRepository" {
+        + findByEmail(String email) : Credenciales
+    }
+
+    interface "IRutinaCompletaRepository" {
+        + findByUsuario(Usuario usuario) : List<RutinaCompleta>
+        + findByNombreRutinaCompletaAndUsuario(String nombreRutinaCompleta, Usuario usuario) : RutinaCompleta
+    }
+
+    interface "IDiaEnRutinaRepository" {
+        + findByDiaDeLaSemanaAndRutinaCompleta(DiaDeLaSemana diaDeLaSemana, RutinaCompleta rutinaCompleta) : DiaEnRutina
+    }
+
+    interface "IEjercicioRepository" {
+        + findByIdApi(String idApi) : Ejercicio
+    }
+
+    interface "ISerieRepository" {
+        + findByEjercicioOrderByIdSerieAsc(Ejercicio ejercicio) : List<Serie>
+    }
+
+    interface "IRegistroComidaRepository" {
+        + existsByUsuarioAndComidaAndFecha(Usuario usuario, Comida comida, LocalDate fecha) : boolean
+        + findByUsuarioIdUsuarioAndFecha(Long idUsuario, LocalDate fecha) : List<RegistroComidaDiaria>
+        + findByUsuarioAndComidaAndFecha(Usuario usuario, Comida comida, LocalDate) : RegistroComidaDiaria
+    }
+
+    interface "IHistorialPesoRepository" {
+        + findByUsuarioIdUsuarioOrderByFechaAsc(Long idUsuario) : List<HistorialPeso>
+    }
+}
 
 @enduml

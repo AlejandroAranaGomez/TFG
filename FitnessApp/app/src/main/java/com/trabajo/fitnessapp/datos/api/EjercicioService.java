@@ -1,6 +1,7 @@
 package com.trabajo.fitnessapp.datos.api;
 
 import com.trabajo.fitnessapp.datos.dto.EjercicioDTO;
+import com.trabajo.fitnessapp.dominio.DiaDeLaSemana;
 
 import java.util.List;
 
@@ -13,13 +14,13 @@ import retrofit2.http.Path;
 
 public interface EjercicioService {
 
-    @GET("api/ejercicios/dias/{idDiaEnRutina}")
-    Call<List<EjercicioDTO>> obtenerEjercicios(@Path("idDiaEnRutina") Long idDiaEnRutina);
+    @GET("/api/usuarios/{idUsuario}/rutinas/{idRutina}/{diaDeLaSemana}/ejercicios")
+    Call<List<EjercicioDTO>> obtenerEjercicios(@Path("idRutina") Long idRutina, @Path("diaDeLaSemana")DiaDeLaSemana diaDeLaSemana);
 
-   @POST("api/ejercicios/dias/{idDiaEnRutina}")
-   Call<Void> anhadirEjercicio(@Path("idDiaEnRutina") Long idDiaEnRutina, @Body EjercicioDTO ejercicioDTO);
+   @POST("/api/usuarios/{idUsuario}/rutinas/{idRutina}/{diaDeLaSemana}/ejercicios")
+   Call<Void> anhadirEjercicio(@Path("idRutina") Long idRutina, @Path("diaDeLaSemana")DiaDeLaSemana diaDeLaSemana, @Body EjercicioDTO ejercicioDTO);
 
-   @DELETE("api/ejercicios/{idEjercicio}/dias/{idDiaEnRutina}")
-    Call<Void> borrarEjercicio(@Path("idEjercicio") Long idEjercicio, @Path("idDiaEnRutina") Long idDiaEnRutina);
+   @DELETE("/api/usuarios/{idUsuario}/rutinas/{idRutina}/{diaDeLaSemana}/ejercicios/{idEjercicio}")
+    Call<Void> borrarEjercicio(@Path("idRutina") Long idRutina, @Path("diaDeLaSemana")DiaDeLaSemana diaDeLaSemana, @Path("idEjercicio") Long idEjercicio);
 
 }

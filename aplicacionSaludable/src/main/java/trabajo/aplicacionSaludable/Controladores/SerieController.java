@@ -10,13 +10,16 @@ import trabajo.aplicacionSaludable.Servicios.SerieService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/series")
+@RequestMapping("/api/usuarios/{idUsuario}/rutinas/{idRutina}/{diaDeLaSemana}/ejercicios/{idEjercicio}/series")
 public class SerieController {
 
-    @Autowired
     private SerieService serieService;
 
-    @GetMapping("/ejercicios/{idEjercicio}")
+    public SerieController(SerieService serieService) {
+        this.serieService = serieService;
+    }
+
+    @GetMapping
     public ResponseEntity<?> listaSeries(@PathVariable Long idEjercicio) {
         List<SerieDTO> series = serieService.listaSeries(idEjercicio);
 
@@ -26,7 +29,7 @@ public class SerieController {
         return ResponseEntity.ok(series);
     }
 
-    @PostMapping("/ejercicios/{idEjercicio}")
+    @PostMapping
     public ResponseEntity<?> crearSerie(@PathVariable Long idEjercicio, @RequestBody SerieDTO serieDTO) {
         SerieDTO serie = serieService.crearSerie(idEjercicio, serieDTO);
 

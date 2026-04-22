@@ -1,22 +1,241 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/fondoPantalla">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Menu Principal"
-        android:textColor="@color/white"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/fondoPantalla"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.03"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="¡Hola, Bienvenido de nuevo! 👋"
+                android:textColor="@color/white"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp"/>
+
+            <Spinner
+                android:id="@+id/spinnerDietas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/fondoBarraMenu"
+                android:padding="10dp"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- CARD PRINCIPAL -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardBackgroundColor="@color/fondoBarraMenu"
+                android:layout_marginBottom="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <!-- IZQUIERDA -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="CALORÍAS TOTALES"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txtCaloriasResumen"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1,420 / 2,400 kcal"
+                                android:textColor="@color/white"
+                                android:textSize="20sp"
+                                android:textStyle="bold"/>
+                        </LinearLayout>
+
+                        <!-- DERECHA -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="end">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="CALORÍAS OBJETIVO"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txtCaloriasObjetivo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2500 kcal"
+                                android:textColor="@color/white"
+                                android:textSize="20sp"
+                                android:textStyle="bold"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ProgressBar
+                                android:id="@+id/progresoProteinas"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:progressDrawable="@drawable/ic_circulo_progreso"
+                                android:indeterminate="false"
+                                android:max="100"
+                                android:progress="0"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Proteína"
+                                android:textColor="@color/white"
+                                android:textSize="12sp"/>
+
+                            <TextView
+                                android:id="@+id/txtProteinasResumen"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="110/160g"
+                                android:textColor="@color/white"
+                                android:textSize="12sp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ProgressBar
+                                android:id="@+id/progresoCarbohidratos"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:progressDrawable="@drawable/ic_circulo_progreso"
+                                android:indeterminate="false"
+                                android:max="100"
+                                android:progress="0"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Carbs"
+                                android:textColor="@color/white"
+                                android:textSize="12sp"/>
+
+                            <TextView
+                                android:id="@+id/txtCarbohidratosResumen"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="135/300g"
+                                android:textColor="@color/white"
+                                android:textSize="12sp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ProgressBar
+                                android:id="@+id/progresoGrasas"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:progressDrawable="@drawable/ic_circulo_progreso"
+                                android:indeterminate="false"
+                                android:max="100"
+                                android:progress="0"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Grasas"
+                                android:textColor="@color/white"
+                                android:textSize="12sp"/>
+
+                            <TextView
+                                android:id="@+id/txtGrasasResumen"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="32/80g"
+                                android:textColor="@color/white"
+                                android:textSize="12sp"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Plan de Alimentación"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerComidas"
+                android:layout_width="match_parent"
+                android:layout_height="310dp"
+                android:nestedScrollingEnabled="false"/>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

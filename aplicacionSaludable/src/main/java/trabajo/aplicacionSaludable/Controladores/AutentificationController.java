@@ -17,10 +17,13 @@ import trabajo.aplicacionSaludable.Servicios.UsuarioService;
 @RequestMapping("/api/usuarios")
 public class AutentificationController {
 
-    @Autowired
     private UsuarioService usuarioService;
 
-    @PostMapping("/registrar")
+    public AutentificationController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
+
+    @PostMapping
     public ResponseEntity<?> registrarUsuario(@RequestBody RegistroDTO registroDTO) {
 
         UsuarioDTO usuarioDTO = usuarioService.registrarUsuario(registroDTO);

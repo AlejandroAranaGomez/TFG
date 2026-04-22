@@ -4,9 +4,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.service.spi.InjectService;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -40,6 +41,8 @@ public class Comida {
 
     @OneToMany(mappedBy = "comida", cascade = CascadeType.ALL,  orphanRemoval = true)
     private Set<Ingrediente> ingredientes = new HashSet<>();
+    @OneToMany(mappedBy = "comida", cascade = CascadeType.ALL,  orphanRemoval = true)
+    private List<RegistroComidaDiaria> registros = new ArrayList<>();
 
     public Comida(String nombre,  float caloriasTotales, float proteinas, float carbohidratos, float grasas,  DiaEnDieta diaEnDieta) {
         this.nombre = nombre;

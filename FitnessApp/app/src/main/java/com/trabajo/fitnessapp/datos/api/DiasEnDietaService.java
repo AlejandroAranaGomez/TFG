@@ -1,6 +1,7 @@
 package com.trabajo.fitnessapp.datos.api;
 
 import com.trabajo.fitnessapp.datos.dto.DiaEnDietaDTO;
+import com.trabajo.fitnessapp.dominio.DiaDeLaSemana;
 
 import java.util.List;
 
@@ -14,20 +15,17 @@ import retrofit2.http.Path;
 
 public interface DiasEnDietaService {
 
-    @GET("api/diasEnDieta/dietas/{idDietaCompleta}")
-    Call<List<DiaEnDietaDTO>> obtenerDiasDeDieta(@Path("idDietaCompleta") Long idDietaCompleta);
+    @PUT("api/usuarios/{idUsuario}/dietas/{idDieta}/{diaDeLaSemana}")
+    Call<DiaEnDietaDTO> guardarDia(
+            @Path("idDieta") Long idDietaCompleta,
+            @Path("diaDeLaSemana") DiaDeLaSemana diaDeLaSemana,
+            @Body DiaEnDietaDTO diaEnDietaDTO
+    );
 
-    @PUT("api/diasEnDieta/{idDiaDieta}/dietas/{idDietaCompleta}")
-    Call<DiaEnDietaDTO> editarDia(@Path("idDiaDieta") Long idDiaDieta,
-                         @Path("idDietaCompleta") Long idDietaCompleta,
-                         @Body DiaEnDietaDTO diaEnDietaDTO);
-
-    @POST("api/diasEnDieta/dietas/{idDietaCompleta}")
-    Call<DiaEnDietaDTO> crearDia(@Path("idDietaCompleta") Long idDietaCompleta,
-                        @Body DiaEnDietaDTO diaEnDietaDTO);
-
-    @DELETE("api/diasEnDieta/{idDiaDieta}/dietas/{idDietaCompleta}")
-    Call<Void> borrarDia(@Path("idDiaDieta") Long idDiaDieta,
-                         @Path("idDietaCompleta") Long idDietaCompleta);
+    @DELETE("api/usuarios/{idUsuario}/dietas/{idDieta}/{diaDeLaSemana}")
+    Call<Void> borrarDia(
+            @Path("idDieta") Long idDietaCompleta,
+            @Path("diaDeLaSemana") DiaDeLaSemana diaDeLaSemana
+    );
 
 }

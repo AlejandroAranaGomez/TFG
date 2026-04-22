@@ -9,6 +9,7 @@ import com.trabajo.fitnessapp.datos.dto.ApiEjercicioDTO;
 import com.trabajo.fitnessapp.datos.dto.EjercicioDTO;
 import com.trabajo.fitnessapp.datos.repository.ApiEjerciciosRepository;
 import com.trabajo.fitnessapp.datos.repository.EjercicioRepository;
+import com.trabajo.fitnessapp.dominio.DiaDeLaSemana;
 
 import java.util.List;
 
@@ -43,19 +44,19 @@ public class EjerciciosViewModel extends ViewModel {
         ejercicioRepository = new EjercicioRepository();
     }
 
-    public LiveData<List<ApiEjercicioDTO>> getEjerciciosGlobales() {
+    public LiveData<List<ApiEjercicioDTO>> ejerciciosGlobales() {
         if (ejercicios == null) {
             ejercicios = apiEjerciciosRepository.obtenerEjercicios();
         }
         return ejercicios;
     }
 
-    public void obtenerLosEjercicios(Long idDiaEnRutina) {
-        if (idDiaEnRutina == null) {
+    public void obtenerLosEjercicios(Long idRutina, DiaDeLaSemana diaDeLaSemana) {
+        if (diaDeLaSemana == null) {
             mensajeError.setValue("Dia no encontrado");
         }
 
-        ejercicioRepository.obtenerEjercicios(idDiaEnRutina).observeForever(result -> {
+        ejercicioRepository.obtenerEjercicios(idRutina, diaDeLaSemana).observeForever(result -> {
             if (result instanceof Result.Success) {
                 ejerciciosRutina.setValue(((Result.Success<List<EjercicioDTO>>) result).datos);
             } else if (result instanceof Result.Error) {
@@ -64,15 +65,15 @@ public class EjerciciosViewModel extends ViewModel {
         });
     }
 
-    public void anhadirEjercicio(Long idDiaEnRutina, EjercicioDTO ejercicioDTO) {
-        if (idDiaEnRutina == null) {
+    public void anhadirEjercicio(Long idRutina, DiaDeLaSemana diaDeLaSemana, EjercicioDTO ejercicioDTO) {
+        if (diaDeLaSemana == null) {
             mensajeError.setValue("Dia no encontrado");
         }
 
-        ejercicioRepository.anhadirEjercicio(idDiaEnRutina, ejercicioDTO).observeForever(result -> {
+        ejercicioRepository.anhadirEjercicio(idRutina, diaDeLaSemana, ejercicioDTO).observeForever(result -> {
             if (result instanceof Result.Success) {
                 ejercicioAnhadido.postValue(true);
-                obtenerLosEjercicios(idDiaEnRutina);
+                obtenerLosEjercicios(idRutina, diaDeLaSemana);
             } else if (result instanceof Result.Error) {
                 mensajeError.setValue(((Result.Error<Boolean>) result).error);
                 ejercicioAnhadido.postValue(false);
@@ -80,8 +81,8 @@ public class EjerciciosViewModel extends ViewModel {
         });
     }
 
-    public void borrarEjercicio(Long idDiaEnRutina, Long idEjercicio) {
-        if (idDiaEnRutina == null) {
+    public void borrarEjercicio(Long idRutina, DiaDeLaSemana diaDeLaSemana, Long idEjercicio) {
+        if (diaDeLaSemana == null) {
             mensajeError.setValue("Dia no encontrado");
         }
 
@@ -89,10 +90,10 @@ public class EjerciciosViewModel extends ViewModel {
             mensajeError.setValue("Ejercicio no encontrado");
         }
 
-        ejercicioRepository.borrarEjercicio(idEjercicio, idDiaEnRutina).observeForever(result -> {
+        ejercicioRepository.borrarEjercicio(idRutina, diaDeLaSemana, idEjercicio).observeForever(result -> {
             if (result instanceof Result.Success) {
                 ejercicioBorrado.setValue(true);
-                obtenerLosEjercicios(idDiaEnRutina);
+                obtenerLosEjercicios(idRutina, diaDeLaSemana);
             } else if (result instanceof Result.Error) {
                 mensajeError.setValue(((Result.Error<Boolean>) result).error);
                 ejercicioBorrado.setValue(false);
