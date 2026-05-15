@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 public class ApiAlimentosDTO {
 
+    private String idApi;
     private String nombre;
     private float calorias;
     private float proteinas;

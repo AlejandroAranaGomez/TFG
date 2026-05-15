@@ -55,6 +55,7 @@ public class MenuIngredientesActivity extends AppCompatActivity {
         idComida = getIntent().getLongExtra("ID_COMIDA", -1L);
         idUsuario = getIntent().getLongExtra("ID_USUARIO", -1L);
 
+
         enlazarVistas();
 
         recyclerViewIngredientes.setLayoutManager(new LinearLayoutManager(this));
@@ -93,6 +94,7 @@ public class MenuIngredientesActivity extends AppCompatActivity {
 
     private void configurarBotones() {
         botonAnhadirIngrediente.setOnClickListener(v -> {
+
             Intent intent = new Intent(MenuIngredientesActivity.this, AnhadirIngredienteActivity.class);
             intent.putExtra("ID_COMIDA", idComida);
             intent.putExtra("ID_USUARIO", idUsuario);

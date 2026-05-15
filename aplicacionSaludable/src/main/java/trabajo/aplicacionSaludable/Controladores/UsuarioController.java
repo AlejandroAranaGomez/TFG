@@ -61,7 +61,7 @@ public class UsuarioController {
         return ResponseEntity.ok(historial);
     }
 
-    @PutMapping("/{idUsuario}/historialPeso")
+    @PostMapping("/{idUsuario}/historialPeso")
     public ResponseEntity<?> actualizarPeso(@PathVariable Long idUsuario, @RequestBody PesoDTO nuevoPeso) {
 
         UsuarioPerfilDTO usuario = usuarioService.actualizarPeso(idUsuario, nuevoPeso.getPeso());

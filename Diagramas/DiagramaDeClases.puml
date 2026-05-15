@@ -126,7 +126,6 @@ class Comida {
 
 class Ingrediente {
 - idIngrediente : Long
-- nombre : String
 - cantidadGramos : float
 - /calorias : float
 - /proteinas : float
@@ -161,6 +160,10 @@ class Ejercicio {
 - musculoEnfocado : Musculo
 }
 
+class EjercicioEnDiaRutina {
+- idEjercicioEnDiaRutina : Long
+}
+
 class Serie {
 - idSerie : Long
 - serieAnterior : String [0..1]
@@ -172,30 +175,34 @@ class Serie {
 ' ====== RELACIONES ======
 ' ========================
 
-Usuario "usuario 1"  --> "dietas 0..*" DietaCompleta 
+Usuario *-- "0..*" DietaCompleta : dietas
 
-Usuario "usuario 1" --> "credenciales 1" Credenciales
+Usuario *--  Credenciales : credenciales
 
-Usuario "usuario 1" --> "historialPeso 1..*" HistorialPeso
+Usuario *-- "1..*" HistorialPeso : historialPeso
 
-Usuario "usuario 1" --> "registrosComidaDiaria 0..*" RegistroComidaDiaria
+Usuario *-- "0..*" RegistroComidaDiaria : registrosComidaDiaria
 
-Comida "comida 1" --> "registros 0..*" RegistroComidaDiaria
+Comida "comida" --> "registros 0..*" RegistroComidaDiaria
 
-DietaCompleta "dieta 1" --> "diasDeDieta 1..*" DiaEnDieta
+DietaCompleta "dieta" --> "diasDeDieta 1..*" DiaEnDieta
 
-Usuario "usuario 1"  --> "rutinas 0..*" RutinaCompleta
+Usuario *-- "0..*" RutinaCompleta : rutinas
 
-DiaEnDieta "diaDeDieta 1"  --> "comidas 1..*" Comida
+DiaEnDieta "diaDeDieta"  --> "comidas 1..*" Comida
 
-Comida "comida 1"  --> "ingredientes 1..*" Ingrediente
+Comida "comida"  --> "ingredientes 1..*" Ingrediente
 
-Usuario "usuario 1" --> "alimentosPersonales 0..*" Alimento
+Ingrediente "ingredientes 0..*" --> "alimento 1" Alimento
 
-RutinaCompleta "rutina 1"  --> "diasEnRutina 1..*" DiaEnRutina
+Usuario *-- "0..*" Alimento : alimentosPersonales
 
-DiaEnRutina "diaEnRutina 1..*" --> "ejercicios 1..*" Ejercicio
+RutinaCompleta "rutina"  --> "diasEnRutina 1..*" DiaEnRutina
 
-Ejercicio "ejercicio 1"  --> "series 1..*" Serie
+DiaEnRutina "diaEnRutina" --> "ejerciciosAsignados 1..*" EjercicioEnDiaRutina
+
+EjercicioEnDiaRutina "ejercicioUsuario 0..*" --> Ejercicio : ejercicio
+
+EjercicioEnDiaRutina "ejercicioAsignado" --> "series 0..*" Serie
 
 @enduml 

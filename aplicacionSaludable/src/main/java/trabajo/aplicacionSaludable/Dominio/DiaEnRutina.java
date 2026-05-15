@@ -34,14 +34,8 @@ public class    DiaEnRutina {
     private RutinaCompleta rutinaCompleta;
 
 
-    @ManyToMany
-            @JoinTable(
-            name = "diaRutinaEjercicio",
-            joinColumns = @JoinColumn(name = "idDiaEnRutina"),
-                    inverseJoinColumns = @JoinColumn(name = "idEjercicio")
-
-    )
-    private List<Ejercicio> ejercicios = new ArrayList<>();
+    @OneToMany(mappedBy = "diaEnRutina", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EjercicioEnDiaRutina> ejerciciosAsignados = new ArrayList<>();
 
     public DiaEnRutina(String nombre, DiaDeLaSemana diaDeLaSemana, RutinaCompleta rutinaCompleta) {
         this.nombre = nombre;

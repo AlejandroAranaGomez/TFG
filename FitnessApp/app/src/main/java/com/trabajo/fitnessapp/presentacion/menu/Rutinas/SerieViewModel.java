@@ -44,13 +44,13 @@ public class SerieViewModel extends ViewModel {
         this.serieRepository = new SerieRepository();
     }
 
-    public void obtenerSeries(Long idEjercicio) {
-        if (idEjercicio == null) {
+    public void obtenerSeries(Long idEjercicioEnDiaRutina) {
+        if (idEjercicioEnDiaRutina == null) {
             mensajeError.setValue("Ejercicio no encontrado");
             return;
         }
 
-        serieRepository.obtenerSeries(idEjercicio).observeForever(result -> {
+        serieRepository.obtenerSeries(idEjercicioEnDiaRutina).observeForever(result -> {
             if (result instanceof Result.Success) {
                 List<SerieDTO> lista = ((Result.Success<List<SerieDTO>>) result).datos;
                 if (lista != null && !lista.isEmpty()) {
@@ -64,23 +64,23 @@ public class SerieViewModel extends ViewModel {
         });
     }
 
-    public void crearSerie(Long idEjercicio, SerieDTO serieDTO) {
-        if (idEjercicio == null) {
+    public void crearSerie(Long idEjercicioEnDiaRutina, SerieDTO serieDTO) {
+        if (idEjercicioEnDiaRutina == null) {
             mensajeError.setValue("Ejercicio no encontrado");
             return;
         }
 
-        serieRepository.crearSerie(idEjercicio, serieDTO).observeForever(result -> {
+        serieRepository.crearSerie(idEjercicioEnDiaRutina, serieDTO).observeForever(result -> {
             if (result instanceof Result.Success) {
                 serieCreada.setValue(((Result.Success<SerieDTO>) result).datos);
-                obtenerSeries(idEjercicio);
+                obtenerSeries(idEjercicioEnDiaRutina);
             } else if (result instanceof Result.Error) {
                 mensajeError.setValue(((Result.Error<SerieDTO>) result).error);
             }
         });
     }
 
-    public void actualizarSerie(Long idSerie, Long idEjercicio, SerieDTO serieDTO) {
+    public void actualizarSerie(Long idSerie, Long idEjercicioEnDiaRutina, SerieDTO serieDTO) {
         if (idSerie == null) {
             mensajeError.setValue("Serie no encontrada");
         }
@@ -88,14 +88,14 @@ public class SerieViewModel extends ViewModel {
         serieRepository.actualizarSerie(idSerie, serieDTO).observeForever(result -> {
             if (result instanceof Result.Success) {
                 serieActualizada.setValue(((Result.Success<SerieDTO>) result).datos);
-                obtenerSeries(idEjercicio);
+                obtenerSeries(idEjercicioEnDiaRutina);
             } else if (result instanceof Result.Error) {
                 mensajeError.setValue(((Result.Error<SerieDTO>) result).error);
             }
         });
     }
 
-    public void borrarSerie(Long idSerie, Long idEjercicio) {
+    public void borrarSerie(Long idSerie, Long idEjercicioEnDiaRutina) {
         if (idSerie == null) {
             mensajeError.setValue("Serie no encontrada");
         }
@@ -103,7 +103,7 @@ public class SerieViewModel extends ViewModel {
         serieRepository.borrarSerie(idSerie).observeForever(result -> {
             if (result instanceof Result.Success) {
                 serieBorrada.setValue(true);
-                obtenerSeries(idEjercicio);
+                obtenerSeries(idEjercicioEnDiaRutina);
             } else if (result instanceof Result.Error) {
                 mensajeError.setValue(((Result.Error<Boolean>) result).error);
                 serieBorrada.setValue(false);

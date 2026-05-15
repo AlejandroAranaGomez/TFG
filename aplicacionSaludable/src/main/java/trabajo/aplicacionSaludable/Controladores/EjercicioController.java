@@ -8,6 +8,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import trabajo.aplicacionSaludable.Dominio.DiaDeLaSemana;
 import trabajo.aplicacionSaludable.Dtos.EjercicioDTO;
+import trabajo.aplicacionSaludable.Excepciones.ExcepcionesEjercicios.EjercicioDuplicadoException;
 import trabajo.aplicacionSaludable.Servicios.EjercicioService;
 
 import java.util.List;
@@ -32,9 +33,13 @@ public class EjercicioController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> anhadirEjercicio(@PathVariable Long idRutina, @PathVariable DiaDeLaSemana diaDeLaSemana, @RequestBody EjercicioDTO ejercicioDTO) {
-        ejercicioService.anhadirEjercicio(idRutina, diaDeLaSemana, ejercicioDTO);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> anhadirEjercicio(@PathVariable Long idRutina, @PathVariable DiaDeLaSemana diaDeLaSemana, @RequestBody EjercicioDTO ejercicioDTO) {
+        try {
+            ejercicioService.anhadirEjercicio(idRutina, diaDeLaSemana, ejercicioDTO);
+            return ResponseEntity.ok().build();
+        } catch (EjercicioDuplicadoException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{idEjercicio}")

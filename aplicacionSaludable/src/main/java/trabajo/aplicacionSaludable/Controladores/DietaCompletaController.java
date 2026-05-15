@@ -85,7 +85,7 @@ public class DietaCompletaController {
         }
     }
 
-    @PutMapping("/{idDieta}/activar")
+    @PutMapping("/{idDieta}/estado")
     public ResponseEntity<?> activarDieta(@PathVariable Long idUsuario, @PathVariable Long idDieta) {
         try {
             boolean activar = dietaCompletaService.activarDieta(idUsuario, idDieta);

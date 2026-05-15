@@ -33,11 +33,8 @@ public class Ejercicio {
     @Column(unique = true)
     private String idApi;
 
-    @ManyToMany(mappedBy = "ejercicios")
-    private Set<DiaEnRutina> rutinasDelEjercicio = new HashSet<>();
-
-    @OneToMany(mappedBy = "ejercicio", cascade = CascadeType.ALL,  orphanRemoval = true)
-    private List<Serie> series = new ArrayList<>();
+    @OneToMany(mappedBy = "ejercicio", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EjercicioEnDiaRutina> ejerciciosUsuarios = new ArrayList<>();
 
     public Ejercicio(String nombre, Musculo musculoEnfocado) {
         this.nombre = nombre;

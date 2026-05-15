@@ -526,17 +526,17 @@ public class FragmentoRutinas extends Fragment {
         recyclerSeries.setAdapter(seriesAdapter);
 
         seriesAdapter.setLista(new ArrayList<>());
-        serieViewModel.obtenerSeries(ejercicioDTO.getIdEjercicio());
+        serieViewModel.obtenerSeries(ejercicioDTO.getIdEjercicioEnDiaRutina());
 
         seriesAdapter.setListener(new SeriesAdapter.OnSerieClickListener() {
             @Override
             public void onEditar(SerieDTO serieDTO) {
-                serieViewModel.actualizarSerie(serieDTO.getIdSerie(), ejercicioActual.getIdEjercicio(), serieDTO);
+                serieViewModel.actualizarSerie(serieDTO.getIdSerie(), ejercicioActual.getIdEjercicioEnDiaRutina(), serieDTO);
             }
 
             @Override
             public void onBorrar(SerieDTO serieDTO) {
-                serieViewModel.borrarSerie(serieDTO.getIdSerie(), ejercicioActual.getIdEjercicio());
+                serieViewModel.borrarSerie(serieDTO.getIdSerie(), ejercicioActual.getIdEjercicioEnDiaRutina());
             }
         });
 
@@ -546,7 +546,7 @@ public class FragmentoRutinas extends Fragment {
             nuevaSerie.setRepeticiones(0);
             nuevaSerie.setSerieAnterior(null);
 
-            serieViewModel.crearSerie(ejercicioDTO.getIdEjercicio(), nuevaSerie);
+            serieViewModel.crearSerie(ejercicioDTO.getIdEjercicioEnDiaRutina(), nuevaSerie);
         });
 
         dialog.show();

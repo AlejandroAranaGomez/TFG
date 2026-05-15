@@ -19,9 +19,9 @@ public class Ingrediente {
     private Long idIngrediente;
 
     @Column(nullable = false)
-    private float cantidadEnGramos;
-    @Column(nullable = false)
     private String nombre;
+    @Column(nullable = false)
+    private float cantidadEnGramos;
     @Column(nullable = false)
     private float caloriasTotales;
     @Column(nullable = false)
@@ -35,14 +35,19 @@ public class Ingrediente {
     @JoinColumn(name = "idComida",  nullable = false)
     private Comida comida;
 
-    public Ingrediente(float cantidadEnGramos, String nombre, float caloriasTotales, float proteinas, float carbohidratos, float grasas, Comida comida) {
-        this.cantidadEnGramos = cantidadEnGramos;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idAlimento", nullable = false)
+    private Alimento alimento;
+
+    public Ingrediente(String nombre, float cantidadEnGramos, float caloriasTotales, float proteinas, float carbohidratos, float grasas, Comida comida, Alimento alimento) {
         this.nombre = nombre;
+        this.cantidadEnGramos = cantidadEnGramos;
         this.caloriasTotales = caloriasTotales;
         this.proteinas = proteinas;
         this.carbohidratos = carbohidratos;
         this.grasas = grasas;
         this.comida = comida;
+        this.alimento = alimento;
     }
 
 }

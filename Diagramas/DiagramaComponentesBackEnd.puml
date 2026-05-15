@@ -48,6 +48,7 @@ package "Arquitectura de Componentes" {
     component "SerieRepository"
     component "HistorialPesoRepository"
     component "RegistroComidaRepository"
+    component "EjercicioEnDiaRutinaRepository"
 
     ' --- INTERFACES COMO PUNTOS DE UNION (BOLAS UNICAS) ---
     () "IUsuarioRepository" as Ball_UserRepo
@@ -63,6 +64,7 @@ package "Arquitectura de Componentes" {
     () "ISerieRepository" as Ball_SerieRepo
     () "IHistorialPesoRepository" as Ball_HistorialPesoRepo
     () "IRegistroComidaDiariaRepository" as Ball_ComidaDiariaRepo
+    () "IEjercicioEnDiaRutinaRepository" as Ball_EjercicioEnDiaRutinaRepo
 
     () "IUsuarioService" as Ball_UserService
     () "IAlimentoService" as Ball_AlimentoService
@@ -128,10 +130,11 @@ package "Arquitectura de Componentes" {
     EjercicioService -- Ball_EjercicioRepo
     EjercicioService -- Ball_DiaRutinaRepo
     EjercicioService -- Ball_RutinaRepo
+    EjercicioService -- Ball_EjercicioEnDiaRutinaRepo
     DiaEnRutinaService -- Ball_RutinaRepo
     DiaEnRutinaService -- Ball_DiaRutinaRepo
-    SerieService -- Ball_EjercicioRepo
     SerieService -- Ball_SerieRepo
+    SerieService -- Ball_EjercicioEnDiaRutinaRepo
     RegistroComidaDiariaService -- Ball_ComidaDiariaRepo
     RegistroComidaDiariaService -- Ball_ComidaRepo
     RegistroComidaDiariaService -- Ball_UserRepo
@@ -150,6 +153,7 @@ package "Arquitectura de Componentes" {
     Ball_SerieRepo -- SerieRepository
     Ball_ComidaDiariaRepo -- RegistroComidaRepository
     Ball_HistorialPesoRepo -- HistorialPesoRepository
+    Ball_EjercicioEnDiaRutinaRepo -- EjercicioEnDiaRutinaRepository
     
 }
 
@@ -215,14 +219,15 @@ package "Especificacion de Interfaces" {
     }
 
     interface "IEjercicioService" {
+        + obtenerEjercicios() : List<ApiEjercicioDTO>
         + listaEjercicios(Long idRutina, DiaDeLaSemana diaDeLaSemana) : List<EjercicioDTO>
         + anhadirEjercicio(Long idRutina, DiaDeLaSemana diaDeLaSemana, EjercicioDTO ejercicioDTO) : void
         + borrarEjercicio(Long idRutina, DiaDeLaSemana diaDeLaSemana, Long idEjercicio) : boolean
     }
 
     interface "ISerieService" {
-        + listaSeries(Long idEjercicio) : List<SerieDTO>
-        + crearSerie(Long idEjercicio, SerieDTO serieDTO) : SerieDTO
+        + listaSeries(Long idEjercicioEnDiaRutina) : List<SerieDTO>
+        + crearSerie(Long idEjercicioEnDiaRutina, SerieDTO serieDTO) : SerieDTO
         + actualizarSerie(Long idSerie, SerieDTO serieDTO) : SerieDTO
         + borrarSerie(Long idSerie) : boolean
     }

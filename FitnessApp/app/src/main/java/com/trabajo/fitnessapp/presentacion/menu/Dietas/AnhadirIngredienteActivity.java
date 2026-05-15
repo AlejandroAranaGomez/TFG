@@ -46,6 +46,8 @@ public class AnhadirIngredienteActivity extends AppCompatActivity {
     private float carbohidratos = 0f;
     private float grasas = 0f;
     private String nombreAlimento;
+    private String idAlimentoApi;
+    private Long idAlimento;
     private float gramosSeleccionados = 0f;
 
 
@@ -98,6 +100,8 @@ public class AnhadirIngredienteActivity extends AppCompatActivity {
 
         alimentosAdapter.setOnItemClickListener(alimento -> {
             seleccionarAlimento(
+                    alimento.getIdApi(),
+                    null,
                     alimento.getNombre(),
                     alimento.getCalorias(),
                     alimento.getProteinas(),
@@ -110,6 +114,8 @@ public class AnhadirIngredienteActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AlimentoDTO alimento) {
                 seleccionarAlimento(
+                        alimento.getIdApi(),
+                        alimento.getIdAlimento(),
                         alimento.getNombre(),
                         alimento.getCalorias(),
                         alimento.getProteinas(),
@@ -183,18 +189,15 @@ public class AnhadirIngredienteActivity extends AppCompatActivity {
             }
             gramosSeleccionados = Float.parseFloat(editCantidad.getText().toString());
 
-            float calFinal = redondear2Decimales((calorias * gramosSeleccionados) / 100f);
-            float proFinal = redondear2Decimales((proteinas * gramosSeleccionados) / 100f);
-            float carbFinal = redondear2Decimales((carbohidratos * gramosSeleccionados) / 100f);
-            float grasaFinal = redondear2Decimales((grasas * gramosSeleccionados) / 100f);
-
             IngredienteDTO ingrediente = new IngredienteDTO();
+            ingrediente.setIdAlimento(idAlimento);
+            ingrediente.setIdAlimentoApi(idAlimentoApi);
             ingrediente.setNombre(nombreAlimento);
             ingrediente.setCantidadEnGramos(gramosSeleccionados);
-            ingrediente.setCaloriasTotales(calFinal);
-            ingrediente.setProteinas(proFinal);
-            ingrediente.setCarbohidratos(carbFinal);
-            ingrediente.setGrasas(grasaFinal);
+            ingrediente.setCaloriasTotales(calorias);
+            ingrediente.setProteinas(proteinas);
+            ingrediente.setCarbohidratos(carbohidratos);
+            ingrediente.setGrasas(grasas);
 
             ingredientesViewModel.crearIngrediente(idComida, ingrediente);
         });
@@ -253,9 +256,11 @@ public class AnhadirIngredienteActivity extends AppCompatActivity {
         textPropiedades.setText(texto);
     }
 
-    private void seleccionarAlimento(String nombre, float cal, float pro, float carb, float grasa) {
+    private void seleccionarAlimento(String idApi, Long idAlimentoSeleccionado, String nombre, float cal, float pro, float carb, float grasa) {
 
+        idAlimentoApi = idApi;
         nombreAlimento = nombre;
+        idAlimento = idAlimentoSeleccionado;
 
         calorias = cal;
         proteinas = pro;

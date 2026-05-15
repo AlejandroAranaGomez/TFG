@@ -11,6 +11,9 @@ public class IngredienteDTO {
 
     private Long idIngrediente;
 
+    private Long idAlimento;
+    private String idAlimentoApi;
+
     private float cantidadEnGramos;
     private String nombre;
     private float caloriasTotales;
@@ -22,8 +25,10 @@ public class IngredienteDTO {
 
     }
 
-    public IngredienteDTO(Long idIngrediente, float cantidadEnGramos, String nombre,  float carbohidratos, float grasas,  float caloriasTotales, float proteinas) {
+    public IngredienteDTO(Long idIngrediente, Long idAlimento, String idAlimentoApi, float cantidadEnGramos, String nombre,  float carbohidratos, float grasas,  float caloriasTotales, float proteinas) {
         this.idIngrediente = idIngrediente;
+        this.idAlimento = idAlimento;
+        this.idAlimentoApi = idAlimentoApi;
         this.cantidadEnGramos = cantidadEnGramos;
         this.nombre = nombre;
         this.carbohidratos = carbohidratos;

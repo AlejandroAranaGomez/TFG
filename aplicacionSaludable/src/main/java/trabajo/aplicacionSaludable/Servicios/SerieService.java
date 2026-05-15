@@ -1,9 +1,12 @@
 package trabajo.aplicacionSaludable.Servicios;
 
 import org.springframework.stereotype.Service;
+import trabajo.aplicacionSaludable.Assemblers.SerieAssembler;
 import trabajo.aplicacionSaludable.Dominio.Ejercicio;
+import trabajo.aplicacionSaludable.Dominio.EjercicioEnDiaRutina;
 import trabajo.aplicacionSaludable.Dominio.Serie;
 import trabajo.aplicacionSaludable.Dtos.SerieDTO;
+import trabajo.aplicacionSaludable.Repositorios.EjercicioEnDiaRutinaRepository;
 import trabajo.aplicacionSaludable.Repositorios.EjercicioRepository;
 import trabajo.aplicacionSaludable.Repositorios.SerieRepository;
 
@@ -13,53 +16,36 @@ import java.util.stream.Collectors;
 @Service
 public class SerieService {
     private final SerieRepository serieRepository;
-    private final EjercicioRepository ejercicioRepository;
+    private final EjercicioEnDiaRutinaRepository ejercicioEnDiaRutinaRepository;
+    private final SerieAssembler serieAssembler;
 
-    public SerieService(SerieRepository serieRepository, EjercicioRepository ejercicioRepository) {
+    public SerieService(SerieRepository serieRepository, EjercicioEnDiaRutinaRepository ejercicioEnDiaRutinaRepository, SerieAssembler serieAssembler) {
         this.serieRepository = serieRepository;
-        this.ejercicioRepository = ejercicioRepository;
+        this.ejercicioEnDiaRutinaRepository = ejercicioEnDiaRutinaRepository;
+        this.serieAssembler = serieAssembler;
     }
 
-    private Serie DTOaEntidad(SerieDTO dto, Ejercicio ejercicio) {
-        Serie serie = new Serie();
-        serie.setIdSerie(dto.getIdSerie());
-        serie.setSerieAnterior(dto.getSerieAnterior());
-        serie.setRepeticiones(dto.getRepeticiones());
-        serie.setPeso(dto.getPeso());
-        serie.setEjercicio(ejercicio);
-        return serie;
-    }
+    public List<SerieDTO> listaSeries(Long idEjercicioEnDiaRutina) {
+        EjercicioEnDiaRutina ejercicioEnDiaRutina = ejercicioEnDiaRutinaRepository.findById(idEjercicioEnDiaRutina).orElse(null);
 
-    private SerieDTO EntidadaDTO(Serie serie) {
-        return new SerieDTO(
-                serie.getIdSerie(),
-                serie.getSerieAnterior(),
-                serie.getRepeticiones(),
-                serie.getPeso()
-        );
-    }
-
-    public List<SerieDTO> listaSeries(Long idEjercicio) {
-        Ejercicio ejercicio = ejercicioRepository.findById(idEjercicio).orElse(null);
-
-        if (ejercicio == null) {
+        if (ejercicioEnDiaRutina == null) {
             return null;
         }
 
-        return  serieRepository.findByEjercicioOrderByIdSerieAsc(ejercicio).stream().map(this::EntidadaDTO).collect(Collectors.toList());
+        return serieRepository.findByEjercicioEnDiaRutinaOrderByIdSerieAsc(ejercicioEnDiaRutina).stream().map(serieAssembler::entidadADTO).collect(Collectors.toList());
     }
 
-    public SerieDTO crearSerie(Long idEjercicio, SerieDTO serieDTO) {
-        Ejercicio ejercicio = ejercicioRepository.findById(idEjercicio).orElse(null);
+    public SerieDTO crearSerie(Long idEjercicioEnDiaRutina, SerieDTO serieDTO) {
+        EjercicioEnDiaRutina ejercicioEnDiaRutina = ejercicioEnDiaRutinaRepository.findById(idEjercicioEnDiaRutina).orElse(null);
 
-        if (ejercicio == null) {
+        if (ejercicioEnDiaRutina == null) {
             return null;
         }
 
-        Serie serie = DTOaEntidad(serieDTO, ejercicio);
+        Serie serie = serieAssembler.dtoAEntidad(serieDTO, ejercicioEnDiaRutina);
         Serie guardada = serieRepository.save(serie);
 
-        return EntidadaDTO(guardada);
+        return serieAssembler.entidadADTO(guardada);
     }
 
     public SerieDTO actualizarSerie(Long idSerie, SerieDTO serieDTO) {
@@ -78,7 +64,7 @@ public class SerieService {
         serie.setRepeticiones(serieDTO.getRepeticiones());
         Serie actualizada = serieRepository.save(serie);
 
-        return EntidadaDTO(actualizada);
+        return serieAssembler.entidadADTO(actualizada);
     }
 
     public  boolean borrarSerie(Long idSerie) {

@@ -243,10 +243,10 @@ package "Especificacion de Interfaces" {
     }
 
     interface ISerieViewModel {
-        + obtenerSeries(Long idEjercicio) : void
-        + crearSerie(Long idEjercicio, SerieDTO serieDTO) : void
-        + actualizarSerie(Long idSerie, Long idEjercicio, SerieDTO serieDTO) : void
-        + vorrarSerie(Long idSerie, Long idEjercicio) : void
+        + obtenerSeries(Long idEjeidEjercicioEnDiaRutinarcicio) : void
+        + crearSerie(Long idEjercicioEnDiaRutina, SerieDTO serieDTO) : void
+        + actualizarSerie(Long idSerie, Long idEjercicioEnDiaRutina, SerieDTO serieDTO) : void
+        + vorrarSerie(Long idSerie, Long idEjercicioEnDiaRutina) : void
     }
 
     interface IDiasEnRutinaViewModel {
@@ -321,8 +321,8 @@ package "Especificacion de Interfaces" {
     }
 
     interface ISerieRepository {
-        + obtenerSeries(Long idEjercicio) : List<SerieDTO>
-        + crearSerie(Long idEjercicio, SerieDTO serieDTO) : SerieDTO
+        + obtenerSeries(Long idEjercicioEnDiaRutina) : List<SerieDTO>
+        + crearSerie(Long idEjercicioEnDiaRutina, SerieDTO serieDTO) : SerieDTO
         + actualizarSerie(Long idSerie, SerieDTO serieDTO) : SerieDTO
         + borrarSerie(Long idSerie) : Boolean
     }

@@ -7,6 +7,7 @@ import org.springframework.web.client.RestTemplate;
 import trabajo.aplicacionSaludable.ApisExternas.ApiAlimentosResponse;
 import trabajo.aplicacionSaludable.ApisExternas.ApiFood;
 import trabajo.aplicacionSaludable.ApisExternas.ApiHints;
+import trabajo.aplicacionSaludable.Assemblers.AlimentoAssembler;
 import trabajo.aplicacionSaludable.Dominio.Alimento;
 import trabajo.aplicacionSaludable.Dominio.Usuario;
 import trabajo.aplicacionSaludable.Dtos.AlimentoDTO;
@@ -35,10 +36,12 @@ public class AlimentoService {
     private final RestTemplate restTemplate;
     private final AlimentoRepository alimentoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final AlimentoAssembler alimentoAssembler;
 
-    public AlimentoService(AlimentoRepository alimentoRepository,  UsuarioRepository usuarioRepository, RestTemplate restTemplate) {
+    public AlimentoService(AlimentoRepository alimentoRepository,  UsuarioRepository usuarioRepository, AlimentoAssembler alimentoAssembler, RestTemplate restTemplate) {
         this.alimentoRepository = alimentoRepository;
         this.usuarioRepository = usuarioRepository;
+        this.alimentoAssembler = alimentoAssembler;
         this.restTemplate = restTemplate;
     }
 
@@ -64,6 +67,7 @@ public class AlimentoService {
             if (food == null || food.getNutrients() == null) continue;
 
             ApiAlimentosDTO dto = new ApiAlimentosDTO();
+            dto.setIdApi(food.getFoodId());
             dto.setNombre(food.getLabel());
             dto.setCalorias(food.getNutrients().getCalorias().floatValue());
             dto.setProteinas(food.getNutrients().getProteinas().floatValue());
@@ -74,28 +78,6 @@ public class AlimentoService {
         }
 
         return resultado;
-    }
-
-    private Alimento DTOaEntidad(AlimentoDTO alimentoDTO, Usuario usuario) {
-        return new Alimento(
-                alimentoDTO.getNombre(),
-                alimentoDTO.getCalorias(),
-                alimentoDTO.getProteinas(),
-                alimentoDTO.getCarbohidratos(),
-                alimentoDTO.getGrasas(),
-                usuario
-        );
-    }
-
-    private AlimentoDTO EntidadaDTO(Alimento alimento) {
-        AlimentoDTO alimentoDTO = new AlimentoDTO();
-        alimentoDTO.setIdAlimento(alimento.getIdAlimento());
-        alimentoDTO.setNombre(alimento.getNombre());
-        alimentoDTO.setCalorias(alimento.getCalorias());
-        alimentoDTO.setProteinas(alimento.getProteinas());
-        alimentoDTO.setCarbohidratos(alimento.getCarbohidratos());
-        alimentoDTO.setGrasas(alimento.getGrasas());
-        return alimentoDTO;
     }
 
     public AlimentoDTO creaAlimento(AlimentoDTO alimentoDTO, Long idUsuario) {
@@ -115,12 +97,12 @@ public class AlimentoService {
             throw new PropiedadesNegativasException();
         }
 
-        Alimento nuevoAlimento = DTOaEntidad(alimentoDTO, usuario);
+        Alimento nuevoAlimento = alimentoAssembler.dtoAEntidad(alimentoDTO, usuario);
 
         Alimento alimentoGuardado = alimentoRepository.save(nuevoAlimento);
 
 
-        return EntidadaDTO(alimentoGuardado);
+        return alimentoAssembler.entidadADTO(alimentoGuardado);
     }
 
     public AlimentoDTO actualizaAlimento(Long idAlimento, AlimentoDTO alimentoDTO, Long idUsuario) {
@@ -154,7 +136,7 @@ public class AlimentoService {
         alimentoExistente.setGrasas(alimentoDTO.getGrasas());
 
         Alimento alimentoActualizado = alimentoRepository.save(alimentoExistente);
-        return EntidadaDTO(alimentoActualizado);
+        return alimentoAssembler.entidadADTO(alimentoActualizado);
     }
 
     public List<AlimentoDTO> listaAlimentosUsuario(Long idUsuario) {
@@ -165,9 +147,9 @@ public class AlimentoService {
             return null;
         }
 
-        List<Alimento> alimentos = alimentoRepository.findByUsuarioOrUsuarioIsNull(usuario);
+        List<Alimento> alimentos = alimentoRepository.findByUsuario(usuario);
 
-        return alimentos.stream().map(this::EntidadaDTO).collect(Collectors.toList());
+        return alimentos.stream().map(alimentoAssembler::entidadADTO).collect(Collectors.toList());
     }
 
     public boolean borraAlimento(Long idAlimento, Long idUsuario) {

@@ -2,6 +2,7 @@ package trabajo.aplicacionSaludable.Servicios;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import trabajo.aplicacionSaludable.Assemblers.ComidaAssembler;
 import trabajo.aplicacionSaludable.Dominio.*;
 import trabajo.aplicacionSaludable.Dtos.ComidaDTO;
 import trabajo.aplicacionSaludable.Dtos.ComidaSeguimientoDTO;
@@ -26,68 +27,16 @@ public class ComidaService {
     private final DiaEnDietaRepository diaEnDietaRepository;
     private final DietaCompletaRepository dietaCompletaRepository;
     private final RegistroComidaDiariaRepository registroComidaDiariaRepository;
+    private final ComidaAssembler comidaAssembler;
 
-    public ComidaService(ComidaRepository comidaRepository, DiaEnDietaRepository diaEnDietaRepository, DietaCompletaRepository dietaCompletaRepository, RegistroComidaDiariaRepository registroComidaDiariaRepository) {
+    public ComidaService(ComidaRepository comidaRepository, DiaEnDietaRepository diaEnDietaRepository, DietaCompletaRepository dietaCompletaRepository, RegistroComidaDiariaRepository registroComidaDiariaRepository, ComidaAssembler comidaAssembler) {
         this.comidaRepository = comidaRepository;
         this.diaEnDietaRepository = diaEnDietaRepository;
         this.dietaCompletaRepository = dietaCompletaRepository;
         this.registroComidaDiariaRepository = registroComidaDiariaRepository;
+        this.comidaAssembler = comidaAssembler;
     }
 
-    private Comida DTOaEntidad(ComidaDTO comidaDTO, DiaEnDieta diaEnDieta) {
-        Comida comida = new Comida();
-        comida.setNombre(comidaDTO.getNombre());
-        comida.setCaloriasTotales(comidaDTO.getCaloriasTotales());
-        comida.setProteinas(comidaDTO.getProteinas());
-        comida.setCarbohidratos(comidaDTO.getCarbohidratos());
-        comida.setGrasas(comidaDTO.getGrasas());
-        comida.setDiaEnDieta(diaEnDieta);
-        return comida;
-    }
-
-    private ComidaDTO EntidadaDTO(Comida comida) {
-        ComidaDTO comidaDTO = new ComidaDTO();
-        comidaDTO.setIdComida(comida.getIdComida());
-        comidaDTO.setNombre(comida.getNombre());
-        comidaDTO.setCaloriasTotales(comida.getCaloriasTotales());
-        comidaDTO.setProteinas(comida.getProteinas());
-        comidaDTO.setCarbohidratos(comida.getCarbohidratos());
-        comidaDTO.setGrasas(comida.getGrasas());
-        return comidaDTO;
-    }
-
-    private ComidaSeguimientoDTO EntidadaSeguimientoDTO(Comida comida, boolean realizada) {
-        ComidaSeguimientoDTO comidaDTO = new ComidaSeguimientoDTO();
-        comidaDTO.setIdComida(comida.getIdComida());
-        comidaDTO.setNombre(comida.getNombre());
-        comidaDTO.setCaloriasTotales(comida.getCaloriasTotales());
-        comidaDTO.setProteinas(comida.getProteinas());
-        comidaDTO.setCarbohidratos(comida.getCarbohidratos());
-        comidaDTO.setGrasas(comida.getGrasas());
-        comidaDTO.setRegistrada(realizada);
-
-        if (comida.getIngredientes() != null) {
-            comidaDTO.setIngredientes(
-                    comida.getIngredientes()
-                            .stream()
-                            .map(this::EntidadIngredienteDTO)
-                            .collect(Collectors.toList())
-            );
-        }
-
-        return comidaDTO;
-    }
-
-    private IngredienteDTO EntidadIngredienteDTO(Ingrediente ingrediente) {
-        IngredienteDTO ingredienteDTO = new IngredienteDTO();
-        ingredienteDTO.setIdIngrediente(ingrediente.getIdIngrediente());
-        ingredienteDTO.setNombre(ingrediente.getNombre());
-        ingredienteDTO.setCaloriasTotales(ingrediente.getCaloriasTotales());
-        ingredienteDTO.setProteinas(ingrediente.getProteinas());
-        ingredienteDTO.setCarbohidratos(ingrediente.getCarbohidratos());
-        ingredienteDTO.setGrasas(ingrediente.getGrasas());
-        return ingredienteDTO;
-    }
 
     private void recalcularTotales(DiaEnDieta dia) {
 
@@ -145,7 +94,7 @@ public class ComidaService {
             return null;
         }
 
-        return comidaRepository.findByDiaEnDieta(diaExiste).stream().map(this::EntidadaDTO).collect(Collectors.toList());
+        return comidaRepository.findByDiaEnDieta(diaExiste).stream().map(comidaAssembler::entidadADTO).collect(Collectors.toList());
     }
 
     public ComidaDTO crearComida(Long idDieta, DiaDeLaSemana diaDeLaSemana, ComidaDTO comidaDTO) {
@@ -159,10 +108,10 @@ public class ComidaService {
             throw new ComidaYaExisteException();
         }
 
-        Comida nuevaComida = DTOaEntidad(comidaDTO, dia);
+        Comida nuevaComida = comidaAssembler.dtoAEntidad(comidaDTO, dia);
         Comida comidaGuardada = comidaRepository.save(nuevaComida);
 
-        return EntidadaDTO(comidaGuardada);
+        return comidaAssembler.entidadADTO(comidaGuardada);
 
     }
 
@@ -191,7 +140,7 @@ public class ComidaService {
         comida.setNombre(comidaDTO.getNombre());
 
         Comida comidaActualizada = comidaRepository.save(comida);
-        return EntidadaDTO(comidaActualizada);
+        return comidaAssembler.entidadADTO(comidaActualizada);
 
     }
 
@@ -241,7 +190,7 @@ public class ComidaService {
             boolean realizada = registrosHoy.stream()
                     .anyMatch(r -> r.getComida().getIdComida().equals(comida.getIdComida()));
 
-            return EntidadaSeguimientoDTO(comida, realizada);
+            return comidaAssembler.entidadASeguimientoDTO(comida, realizada);
 
         }).collect(Collectors.toList());
     }

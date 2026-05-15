@@ -32,9 +32,11 @@ public class Alimento {
     private float carbohidratos;
     @Column(nullable = false)
     private float grasas;
+    @Column(unique = true)
+    private String idApi;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idUsuario", nullable = false)
+    @JoinColumn(name = "idUsuario", nullable = true)
     private Usuario usuario;
 
     public Alimento(String nombre, float calorias,float proteinas, float carbohidratos, float grasas,  Usuario usuario) {

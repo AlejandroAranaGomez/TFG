@@ -1,6 +1,7 @@
 package trabajo.aplicacionSaludable.Servicios;
 
 import org.springframework.stereotype.Service;
+import trabajo.aplicacionSaludable.Assemblers.RutinaCompletaAssembler;
 import trabajo.aplicacionSaludable.Dominio.DiaEnDieta;
 import trabajo.aplicacionSaludable.Dominio.DiaEnRutina;
 import trabajo.aplicacionSaludable.Dominio.RutinaCompleta;
@@ -20,37 +21,14 @@ import java.util.stream.Collectors;
 @Service
 public class RutinaCompletaService {
 
-    private RutinaCompletaRepository rutinaCompletaRepository;
-    private UsuarioRepository usuarioRepository;
+    private final RutinaCompletaRepository rutinaCompletaRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final RutinaCompletaAssembler rutinaCompletaAssembler;
 
-    public RutinaCompletaService(RutinaCompletaRepository rutinaCompletaRepository, UsuarioRepository usuarioRepository) {
+    public RutinaCompletaService(RutinaCompletaRepository rutinaCompletaRepository, RutinaCompletaAssembler rutinaCompletaAssembler, UsuarioRepository usuarioRepository) {
         this.rutinaCompletaRepository = rutinaCompletaRepository;
         this.usuarioRepository = usuarioRepository;
-    }
-
-    private RutinaCompleta DTOaEntidad(RutinaCompletaDTO dto, Usuario usuario) {
-        RutinaCompleta rutina = new RutinaCompleta();
-        rutina.setIdRutinaCompleta(dto.getIdRutinaCompleta());
-        rutina.setNombreRutinaCompleta(dto.getNombreRutinaCompleta());
-        rutina.setResumen(dto.getResumen());
-        rutina.setUsuario(usuario);
-        return rutina;
-    }
-
-    private RutinaCompletaDTO EntidadaDTO(RutinaCompleta rutina) {
-        RutinaCompletaDTO dto = new RutinaCompletaDTO();
-        dto.setIdRutinaCompleta(rutina.getIdRutinaCompleta());
-        dto.setResumen(rutina.getResumen());
-        dto.setNombreRutinaCompleta(rutina.getNombreRutinaCompleta());
-        return dto;
-    }
-
-    private DiaEnRutinaDTO convertirDiaADTO(DiaEnRutina dia) {
-        DiaEnRutinaDTO dto = new DiaEnRutinaDTO();
-        dto.setIdDiaEnRutina(dia.getIdDiaEnRutina());
-        dto.setNombre(dia.getNombre());
-        dto.setDiaDeLaSemana(dia.getDiaDeLaSemana());
-        return dto;
+        this.rutinaCompletaAssembler = rutinaCompletaAssembler;
     }
 
     public List<RutinaCompletaDTO> listarRutinasUsuario(Long idUsuario) {
@@ -61,7 +39,7 @@ public class RutinaCompletaService {
             return null;
         }
 
-        return rutinaCompletaRepository.findByUsuario(usuario).stream().map(this::EntidadaDTO).collect(Collectors.toList());
+        return rutinaCompletaRepository.findByUsuario(usuario).stream().map(rutinaCompletaAssembler::entidadADTO).collect(Collectors.toList());
     }
 
     public RutinaCompletaDTO crearRutina(Long idUsuario, RutinaCompletaDTO rutinaCompletaDTO) {
@@ -76,10 +54,10 @@ public class RutinaCompletaService {
             throw new RutinaDuplicadaException();
         }
 
-        RutinaCompleta rutina = DTOaEntidad(rutinaCompletaDTO, usuario);
+        RutinaCompleta rutina = rutinaCompletaAssembler.dtoAEntidad(rutinaCompletaDTO, usuario);
         RutinaCompleta guardada = rutinaCompletaRepository.save(rutina);
 
-        return EntidadaDTO(guardada);
+        return rutinaCompletaAssembler.entidadADTO(guardada);
 
     }
 
@@ -105,7 +83,7 @@ public class RutinaCompletaService {
         rutinaExiste.setResumen(rutinaCompletaDTO.getResumen());
 
         RutinaCompleta actualizada = rutinaCompletaRepository.save(rutinaExiste);
-        return EntidadaDTO(actualizada);
+        return rutinaCompletaAssembler.entidadADTO(actualizada);
     }
 
     public boolean borrarRutina(Long idUsuario, Long idRutina) {
@@ -134,15 +112,6 @@ public class RutinaCompletaService {
             throw new RutinaOtroUsuarioException();
         }
 
-        RutinaCompletaDTO dto = EntidadaDTO(rutinaExiste);
-
-        List<DiaEnRutinaDTO > dias = rutinaExiste.getDiaEnRutinas()
-                .stream()
-                .map(this::convertirDiaADTO)
-                .collect(Collectors.toList());
-
-        dto.setDias(dias);
-
-        return dto;
+        return rutinaCompletaAssembler.entidadADTOConDias(rutinaExiste);
     }
 }

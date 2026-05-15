@@ -2,6 +2,7 @@ package trabajo.aplicacionSaludable.Servicios;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import trabajo.aplicacionSaludable.Assemblers.DiaEnDietaAssembler;
 import trabajo.aplicacionSaludable.Dominio.DiaDeLaSemana;
 import trabajo.aplicacionSaludable.Dominio.DiaEnDieta;
 import trabajo.aplicacionSaludable.Dominio.DietaCompleta;
@@ -16,22 +17,12 @@ public class DiaEnDietaService {
 
     private final DietaCompletaRepository dietaCompletaRepository;
     private final DiaEnDietaRepository diaEnDietaRepository;
+    private final DiaEnDietaAssembler diaEnDietaAssembler;
 
-    public DiaEnDietaService(DiaEnDietaRepository diaEnDietaRepository, DietaCompletaRepository dietaCompletaRepository) {
+    public DiaEnDietaService(DiaEnDietaRepository diaEnDietaRepository, DietaCompletaRepository dietaCompletaRepository, DiaEnDietaAssembler diaEnDietaAssembler) {
         this.diaEnDietaRepository = diaEnDietaRepository;
         this.dietaCompletaRepository = dietaCompletaRepository;
-    }
-
-    private DiaEnDietaDTO EntidadaDTO(DiaEnDieta diaEnDieta) {
-        DiaEnDietaDTO diaEnDietaDTO = new DiaEnDietaDTO();
-        diaEnDietaDTO.setIdDiaEnDieta(diaEnDieta.getIdDiaEnDieta());
-        diaEnDietaDTO.setNombre(diaEnDieta.getNombre());
-        diaEnDietaDTO.setCaloriasTotales(diaEnDieta.getCaloriasTotales());
-        diaEnDietaDTO.setProteinas(diaEnDieta.getProteinas());
-        diaEnDietaDTO.setCarbohidratos(diaEnDieta.getCarbohidratos());
-        diaEnDietaDTO.setGrasas(diaEnDieta.getGrasas());
-        diaEnDietaDTO.setDiaDeLaSemana(diaEnDieta.getDiaDeLaSemana());
-        return diaEnDietaDTO;
+        this.diaEnDietaAssembler = diaEnDietaAssembler;
     }
 
     private void recalcularTotales(DietaCompleta dieta) {
@@ -83,7 +74,7 @@ public class DiaEnDietaService {
 
         recalcularTotales(dieta);
 
-        return EntidadaDTO(guardado);
+        return diaEnDietaAssembler.entidadADTO(guardado);
     }
 
     public boolean borrarDia(DiaDeLaSemana diaDeLaSemana, Long idDietaCompleta) {

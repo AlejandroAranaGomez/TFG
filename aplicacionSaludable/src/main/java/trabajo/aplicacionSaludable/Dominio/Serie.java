@@ -27,14 +27,14 @@ public class Serie {
     private float peso;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idEjercicio",  nullable = false)
-    private Ejercicio ejercicio;
+    @JoinColumn(name = "idEjercicioEnDiaRutina", nullable = false)
+    private EjercicioEnDiaRutina ejercicioEnDiaRutina;
 
-    public Serie(String serieAnterior, int repeticiones, float peso, Ejercicio ejercicio) {
+    public Serie(String serieAnterior, int repeticiones, float peso, EjercicioEnDiaRutina ejercicioEnDiaRutina) {
         this.serieAnterior = serieAnterior;
         this.repeticiones = repeticiones;
         this.peso = peso;
-        this.ejercicio = ejercicio;
+        this.ejercicioEnDiaRutina = ejercicioEnDiaRutina;
     }
 
 }

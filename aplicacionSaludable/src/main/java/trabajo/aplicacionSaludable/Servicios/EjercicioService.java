@@ -3,14 +3,14 @@ package trabajo.aplicacionSaludable.Servicios;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-import trabajo.aplicacionSaludable.Dominio.DiaDeLaSemana;
-import trabajo.aplicacionSaludable.Dominio.DiaEnRutina;
-import trabajo.aplicacionSaludable.Dominio.Ejercicio;
-import trabajo.aplicacionSaludable.Dominio.RutinaCompleta;
+import trabajo.aplicacionSaludable.Assemblers.EjercicioAssembler;
+import trabajo.aplicacionSaludable.Dominio.*;
 import trabajo.aplicacionSaludable.Dtos.ApiEjercicioDTO;
 import trabajo.aplicacionSaludable.Dtos.EjercicioDTO;
 import trabajo.aplicacionSaludable.Dtos.RespuestaEjerciciosDTO;
+import trabajo.aplicacionSaludable.Excepciones.ExcepcionesEjercicios.EjercicioDuplicadoException;
 import trabajo.aplicacionSaludable.Repositorios.DiaEnRutinaRepository;
+import trabajo.aplicacionSaludable.Repositorios.EjercicioEnDiaRutinaRepository;
 import trabajo.aplicacionSaludable.Repositorios.EjercicioRepository;
 import trabajo.aplicacionSaludable.Repositorios.RutinaCompletaRepository;
 
@@ -26,11 +26,15 @@ public class EjercicioService {
     private final EjercicioRepository ejercicioRepository;
     private final DiaEnRutinaRepository diaEnRutinaRepository;
     private final RutinaCompletaRepository rutinaCompletaRepository;
+    private final EjercicioEnDiaRutinaRepository ejercicioEnDiaRutinaRepository;
+    private final EjercicioAssembler ejercicioAssembler;
 
-    public EjercicioService(DiaEnRutinaRepository diaEnRutinaRepository, EjercicioRepository ejercicioRepository, RutinaCompletaRepository rutinaCompletaRepository, RestTemplate restTemplate) {
+    public EjercicioService(DiaEnRutinaRepository diaEnRutinaRepository, EjercicioRepository ejercicioRepository, RutinaCompletaRepository rutinaCompletaRepository, EjercicioEnDiaRutinaRepository ejercicioEnDiaRutinaRepository, EjercicioAssembler ejercicioAssembler,  RestTemplate restTemplate) {
         this.diaEnRutinaRepository = diaEnRutinaRepository;
         this.ejercicioRepository = ejercicioRepository;
         this.rutinaCompletaRepository = rutinaCompletaRepository;
+        this.ejercicioEnDiaRutinaRepository = ejercicioEnDiaRutinaRepository;
+        this.ejercicioAssembler = ejercicioAssembler;
         this.restTemplate = restTemplate;
     }
 
@@ -62,15 +66,6 @@ public class EjercicioService {
         return response.getData();
     }
 
-    private EjercicioDTO EntidadaDTO(Ejercicio ejercicio) {
-        EjercicioDTO dto = new EjercicioDTO();
-        dto.setIdEjercicio(ejercicio.getIdEjercicio());
-        dto.setNombre(ejercicio.getNombre());
-        dto.setMusculoEnfocado(ejercicio.getMusculoEnfocado());
-        dto.setIdApi(ejercicio.getIdApi());
-        return dto;
-    }
-
     @Transactional(readOnly = true)
     public List<EjercicioDTO> listaEjercicios(Long idRutina, DiaDeLaSemana diaDeLaSemana) {
         DiaEnRutina dia = obtenerDia(idRutina, diaDeLaSemana);
@@ -79,7 +74,9 @@ public class EjercicioService {
             return null;
         }
 
-        return dia.getEjercicios().stream().map(this::EntidadaDTO).collect(Collectors.toList());
+        return dia.getEjerciciosAsignados().stream()
+                .map(ejercicioAssembler::entidadADTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -90,20 +87,32 @@ public class EjercicioService {
             return;
         }
 
+        System.out.println("ID API RECIBIDO: " + ejercicioDTO.getIdApi());
+
         Optional<Ejercicio> ejercicioExiste = ejercicioRepository.findByIdApi(ejercicioDTO.getIdApi());
+
+        if (ejercicioExiste.isPresent()) {
+            System.out.println("EJERCICIO ENCONTRADO: " + ejercicioExiste.get().getIdEjercicio()
+                    + " - " + ejercicioExiste.get().getNombre());
+        }
 
         Ejercicio ejercicio;
         if (ejercicioExiste.isPresent()) {
             ejercicio = ejercicioExiste.get();
         } else {
-            ejercicio = new Ejercicio();
-            ejercicio.setNombre(ejercicioDTO.getNombre());
-            ejercicio.setIdApi(ejercicioDTO.getIdApi());
-            ejercicio.setMusculoEnfocado(ejercicioDTO.getMusculoEnfocado());
+            ejercicio = ejercicioAssembler.dtoAEntidad(ejercicioDTO);
             ejercicio = ejercicioRepository.save(ejercicio);
         }
-        dia.getEjercicios().add(ejercicio);
 
+        if (ejercicioEnDiaRutinaRepository.findByDiaEnRutinaAndEjercicio(dia, ejercicio).isPresent()) {
+            throw new EjercicioDuplicadoException();
+        }
+
+        EjercicioEnDiaRutina ejercicioAsignado = new EjercicioEnDiaRutina();
+        ejercicioAsignado.setDiaEnRutina(dia);
+        ejercicioAsignado.setEjercicio(ejercicio);
+
+        ejercicioEnDiaRutinaRepository.save(ejercicioAsignado);
     }
 
     @Transactional
@@ -116,7 +125,14 @@ public class EjercicioService {
             return false;
         }
 
-        dia.getEjercicios().remove(ejercicio);
+        EjercicioEnDiaRutina ejercicioAsignado = ejercicioEnDiaRutinaRepository.findByDiaEnRutinaAndEjercicio(dia, ejercicio).orElse(null);
+
+        if (ejercicioAsignado == null) {
+            return false;
+        }
+
+        ejercicioEnDiaRutinaRepository.delete(ejercicioAsignado);
+
         return true;
     }
 

@@ -23,10 +23,10 @@ public class SerieRepository {
         this.serieService= RetrofitClient.getClient().create(SerieService.class);
     }
 
-    public LiveData<Result<List<SerieDTO>>> obtenerSeries(Long idEjercicio) {
+    public LiveData<Result<List<SerieDTO>>> obtenerSeries(Long idEjercicioEnDiaRutina) {
         MutableLiveData<Result<List<SerieDTO>>> series = new MutableLiveData<>();
 
-        serieService.obtenerSeries(idEjercicio).enqueue(new Callback<List<SerieDTO>>() {
+        serieService.obtenerSeries(idEjercicioEnDiaRutina).enqueue(new Callback<List<SerieDTO>>() {
             @Override
             public void onResponse(Call<List<SerieDTO>> call, Response<List<SerieDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -52,10 +52,10 @@ public class SerieRepository {
         return series;
     }
 
-    public LiveData<Result<SerieDTO>> crearSerie(Long idEjercicio, SerieDTO serieDTO) {
+    public LiveData<Result<SerieDTO>> crearSerie(Long idEjercicioEnDiaRutina, SerieDTO serieDTO) {
         MutableLiveData<Result<SerieDTO>> resultado = new MutableLiveData<>();
 
-        serieService.crearSerie(idEjercicio, serieDTO).enqueue(new Callback<SerieDTO>() {
+        serieService.crearSerie(idEjercicioEnDiaRutina, serieDTO).enqueue(new Callback<SerieDTO>() {
             @Override
             public void onResponse(Call<SerieDTO> call, Response<SerieDTO> response) {
                 if (response.isSuccessful() && response.body() != null) {

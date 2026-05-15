@@ -42,7 +42,7 @@ public interface DietasService {
             @Path("idDieta") Long idDieta
     );
 
-    @PUT("api/usuarios/{idUsuario}/dietas/{idDieta}/activar")
+    @PUT("api/usuarios/{idUsuario}/dietas/{idDieta}/estado")
     Call<Void> activarDieta(
             @Path("idUsuario") Long idUsuario,
             @Path("idDieta") Long idDieta

@@ -1,6 +1,8 @@
 package trabajo.aplicacionSaludable.Servicios;
 
 import org.springframework.stereotype.Service;
+import trabajo.aplicacionSaludable.Assemblers.DiaEnDietaAssembler;
+import trabajo.aplicacionSaludable.Assemblers.DiaEnRutinaAssembler;
 import trabajo.aplicacionSaludable.Dominio.DiaDeLaSemana;
 import trabajo.aplicacionSaludable.Dominio.DiaEnRutina;
 import trabajo.aplicacionSaludable.Dominio.RutinaCompleta;
@@ -15,18 +17,12 @@ public class DiaEnRutinaService {
 
     private final RutinaCompletaRepository rutinaCompletaRepository;
     private final DiaEnRutinaRepository diaEnRutinaRepository;
+    private final DiaEnRutinaAssembler diaEnRutinaAssembler;
 
-    public DiaEnRutinaService(DiaEnRutinaRepository diaEnRutinaRepository, RutinaCompletaRepository rutinaCompletaRepository) {
+    public DiaEnRutinaService(DiaEnRutinaRepository diaEnRutinaRepository, RutinaCompletaRepository rutinaCompletaRepository, DiaEnRutinaAssembler diaEnRutinaAssembler) {
         this.diaEnRutinaRepository = diaEnRutinaRepository;
         this.rutinaCompletaRepository = rutinaCompletaRepository;
-    }
-
-    private DiaEnRutinaDTO EntidadaDTO(DiaEnRutina diaEnRutina) {
-        DiaEnRutinaDTO diaEnRutinaDTO = new DiaEnRutinaDTO();
-        diaEnRutinaDTO.setIdDiaEnRutina(diaEnRutina.getIdDiaEnRutina());
-        diaEnRutinaDTO.setNombre(diaEnRutina.getNombre());
-        diaEnRutinaDTO.setDiaDeLaSemana(diaEnRutina.getDiaDeLaSemana());
-        return diaEnRutinaDTO;
+        this.diaEnRutinaAssembler = diaEnRutinaAssembler;
     }
 
     public DiaEnRutinaDTO guardarDiaEnRutina(DiaEnRutinaDTO diaEnRutinaDTO, Long idRutinaCompleta, DiaDeLaSemana diaDeLaSemana) {
@@ -47,7 +43,7 @@ public class DiaEnRutinaService {
 
         dia.setNombre(diaEnRutinaDTO.getNombre());
         DiaEnRutina guardado = diaEnRutinaRepository.save(dia);
-        return EntidadaDTO(guardado);
+        return diaEnRutinaAssembler.entidadADTO(guardado);
     }
 
     public boolean borrarDia(DiaDeLaSemana diaDeLaSemana, Long idRutinaCompleta) {

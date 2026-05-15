@@ -3,6 +3,10 @@ package trabajo.aplicacionSaludable.ApisExternas;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ApiFood {
+
+    @JsonProperty("foodId")
+    private String foodId;
+
     @JsonProperty("label")
     private String label;
 
@@ -12,6 +16,7 @@ public class ApiFood {
     @JsonProperty("nutrients")
     private ApiNutrients nutrients;
 
+    public String getFoodId() {return foodId;}
     public String getLabel() {
         return label;
     }

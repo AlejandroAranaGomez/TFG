@@ -1,6 +1,7 @@
 package trabajo.aplicacionSaludable.Servicios;
 
 import org.springframework.stereotype.Service;
+import trabajo.aplicacionSaludable.Assemblers.RegistroComidaDiariaAssembler;
 import trabajo.aplicacionSaludable.Dominio.Comida;
 import trabajo.aplicacionSaludable.Dominio.RegistroComidaDiaria;
 import trabajo.aplicacionSaludable.Dominio.Usuario;
@@ -20,25 +21,13 @@ public class RegistroComidaDiariaService {
     private final RegistroComidaDiariaRepository registroComidaDiariaRepository;
     private final ComidaRepository comidaRepository;
     private final UsuarioRepository usuarioRepository;
+    private final RegistroComidaDiariaAssembler registroComidaDiariaAssembler;
 
-    public RegistroComidaDiariaService(RegistroComidaDiariaRepository registroComidaDiariaRepository, ComidaRepository comidaRepository, UsuarioRepository usuarioRepository) {
+    public RegistroComidaDiariaService(RegistroComidaDiariaRepository registroComidaDiariaRepository, ComidaRepository comidaRepository, RegistroComidaDiariaAssembler registroComidaDiariaAssembler, UsuarioRepository usuarioRepository) {
         this.registroComidaDiariaRepository = registroComidaDiariaRepository;
         this.comidaRepository = comidaRepository;
         this.usuarioRepository = usuarioRepository;
-    }
-
-    private RegistroComidaDiariaDTO EntidadADTORegistro(RegistroComidaDiaria registro) {
-        RegistroComidaDiariaDTO dto = new RegistroComidaDiariaDTO();
-
-        dto.setIdRegistroComidaDiaria(registro.getIdRegistroComidaDiaria());
-        dto.setFecha(registro.getFecha().toString());
-
-        dto.setCaloriasTotales(registro.getComida().getCaloriasTotales());
-        dto.setProteinas(registro.getComida().getProteinas());
-        dto.setCarbohidratos(registro.getComida().getCarbohidratos());
-        dto.setGrasas(registro.getComida().getGrasas());
-
-        return dto;
+        this.registroComidaDiariaAssembler = registroComidaDiariaAssembler;
     }
 
     public RegistroComidaDiariaDTO registrarComidaHoy(Long idUsuario, Long idComida) {
@@ -73,7 +62,7 @@ public class RegistroComidaDiariaService {
 
         RegistroComidaDiaria registroGuardado = registroComidaDiariaRepository.save(registro);
 
-        return EntidadADTORegistro(registroGuardado);
+        return registroComidaDiariaAssembler.entidadADTO(registroGuardado);
     }
 
     public boolean eliminarComidaHoy(Long idUsuario, Long idComida) {

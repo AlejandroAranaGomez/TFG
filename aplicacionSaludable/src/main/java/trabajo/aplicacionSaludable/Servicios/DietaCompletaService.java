@@ -2,6 +2,7 @@ package trabajo.aplicacionSaludable.Servicios;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import trabajo.aplicacionSaludable.Assemblers.DietaCompletaAssembler;
 import trabajo.aplicacionSaludable.Dominio.DiaEnDieta;
 import trabajo.aplicacionSaludable.Dominio.DietaCompleta;
 import trabajo.aplicacionSaludable.Dominio.Usuario;
@@ -19,50 +20,14 @@ import java.util.stream.Collectors;
 @Service
 public class DietaCompletaService {
 
-    private DietaCompletaRepository dietaCompletaRepository;
-    private UsuarioRepository usuarioRepository;
+    private final DietaCompletaRepository dietaCompletaRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final DietaCompletaAssembler dietaCompletaAssembler;
 
-    public DietaCompletaService(DietaCompletaRepository dietaCompletaRepository, UsuarioRepository usuarioRepository) {
+    public DietaCompletaService(DietaCompletaRepository dietaCompletaRepository, UsuarioRepository usuarioRepository, DietaCompletaAssembler dietaCompletaAssembler) {
         this.dietaCompletaRepository = dietaCompletaRepository;
         this.usuarioRepository = usuarioRepository;
-    }
-
-    private DietaCompleta DTOaEntidad(DietaCompletaDTO dietaCompletaDTO, Usuario usuario) {
-        DietaCompleta dieta = new DietaCompleta();
-        dieta.setNombre(dietaCompletaDTO.getNombre());
-        dieta.setDescripcion(dietaCompletaDTO.getDescripcion());
-        dieta.setCaloriasTotales(dietaCompletaDTO.getCaloriasTotales());
-        dieta.setProteinas(dietaCompletaDTO.getProteinas());
-        dieta.setCarbohidratos(dietaCompletaDTO.getCarbohidratos());
-        dieta.setGrasas(dietaCompletaDTO.getGrasas());
-        dieta.setActiva(dietaCompletaDTO.isActiva());
-        dieta.setUsuario(usuario);
-        return dieta;
-    }
-
-    private DietaCompletaDTO EntidadaDTO(DietaCompleta dietaCompleta) {
-        DietaCompletaDTO dietaCompletaDTO = new DietaCompletaDTO();
-        dietaCompletaDTO.setIdDietaCompleta(dietaCompleta.getIdDietaCompleta());
-        dietaCompletaDTO.setNombre(dietaCompleta.getNombre());
-        dietaCompletaDTO.setDescripcion(dietaCompleta.getDescripcion());
-        dietaCompletaDTO.setCaloriasTotales(dietaCompleta.getCaloriasTotales());
-        dietaCompletaDTO.setProteinas(dietaCompleta.getProteinas());
-        dietaCompletaDTO.setCarbohidratos(dietaCompleta.getCarbohidratos());
-        dietaCompletaDTO.setGrasas(dietaCompleta.getGrasas());
-        dietaCompletaDTO.setActiva(dietaCompleta.isActiva());
-        return dietaCompletaDTO;
-    }
-
-    private DiaEnDietaDTO convertirDiaADTO(DiaEnDieta dia) {
-        DiaEnDietaDTO dto = new DiaEnDietaDTO();
-        dto.setIdDiaEnDieta(dia.getIdDiaEnDieta());
-        dto.setNombre(dia.getNombre());
-        dto.setDiaDeLaSemana(dia.getDiaDeLaSemana());
-        dto.setCaloriasTotales(dia.getCaloriasTotales());
-        dto.setProteinas(dia.getProteinas());
-        dto.setCarbohidratos(dia.getCarbohidratos());
-        dto.setGrasas(dia.getGrasas());
-        return dto;
+        this.dietaCompletaAssembler = dietaCompletaAssembler;
     }
 
     private void desactivarTodasLasDietas(Usuario usuario) {
@@ -91,10 +56,10 @@ public class DietaCompletaService {
             desactivarTodasLasDietas(usuario);
         }
 
-        DietaCompleta nuevaDietaCompleta = DTOaEntidad(dietaCompletaDTO, usuario);
+        DietaCompleta nuevaDietaCompleta = dietaCompletaAssembler.dtoAEntidad(dietaCompletaDTO, usuario);
         DietaCompleta dietaGuardada = dietaCompletaRepository.save(nuevaDietaCompleta);
 
-        return EntidadaDTO(dietaGuardada);
+        return dietaCompletaAssembler.entidadADTO(dietaGuardada);
     }
 
     public DietaCompletaDTO actualizaDietaCompleta(DietaCompletaDTO dietaCompletaDTO, Long idUsuario, Long idDietaCompleta) {
@@ -124,7 +89,7 @@ public class DietaCompletaService {
         dietaExistente.setActiva(dietaCompletaDTO.isActiva());
 
         DietaCompleta dietaActualizada = dietaCompletaRepository.save(dietaExistente);
-        return EntidadaDTO(dietaActualizada);
+        return dietaCompletaAssembler.entidadADTO(dietaActualizada);
     }
 
     public boolean borraDietaCompleta(Long idUsuario, Long idDietaCompleta) {
@@ -149,7 +114,7 @@ public class DietaCompletaService {
             return null;
         }
 
-        return dietaCompletaRepository.findByUsuario(usuario).stream().map(this::EntidadaDTO).collect(Collectors.toList());
+        return dietaCompletaRepository.findByUsuario(usuario).stream().map(dietaCompletaAssembler::entidadADTO).collect(Collectors.toList());
     }
 
     public DietaCompletaDTO obtenerDieta(Long idUsuario, Long idDietaCompleta) {
@@ -164,11 +129,11 @@ public class DietaCompletaService {
             throw new DietaDeOtroUsuarioException();
         }
 
-        DietaCompletaDTO dto = EntidadaDTO(dieta);
+        DietaCompletaDTO dto = dietaCompletaAssembler.entidadADTO(dieta);
 
         List<DiaEnDietaDTO> dias = dieta.getDiasDeDieta()
                 .stream()
-                .map(this::convertirDiaADTO)
+                .map(dietaCompletaAssembler::diaADTO)
                 .collect(Collectors.toList());
 
         dto.setDias(dias);

@@ -10,7 +10,7 @@ import trabajo.aplicacionSaludable.Servicios.SerieService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/usuarios/{idUsuario}/rutinas/{idRutina}/{diaDeLaSemana}/ejercicios/{idEjercicio}/series")
+@RequestMapping("/api/usuarios/{idUsuario}/rutinas/{idRutina}/{diaDeLaSemana}/ejercicios/{idEjercicioEnDiaRutina}/series")
 public class SerieController {
 
     private SerieService serieService;
@@ -20,8 +20,8 @@ public class SerieController {
     }
 
     @GetMapping
-    public ResponseEntity<?> listaSeries(@PathVariable Long idEjercicio) {
-        List<SerieDTO> series = serieService.listaSeries(idEjercicio);
+    public ResponseEntity<?> listaSeries(@PathVariable Long idEjercicioEnDiaRutina) {
+        List<SerieDTO> series = serieService.listaSeries(idEjercicioEnDiaRutina);
 
         if (series == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ejercicio no encontrado");
@@ -30,8 +30,8 @@ public class SerieController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crearSerie(@PathVariable Long idEjercicio, @RequestBody SerieDTO serieDTO) {
-        SerieDTO serie = serieService.crearSerie(idEjercicio, serieDTO);
+    public ResponseEntity<?> crearSerie(@PathVariable Long idEjercicioEnDiaRutina, @RequestBody SerieDTO serieDTO) {
+        SerieDTO serie = serieService.crearSerie(idEjercicioEnDiaRutina, serieDTO);
 
         if (serie == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ejercicio no encontrado");
