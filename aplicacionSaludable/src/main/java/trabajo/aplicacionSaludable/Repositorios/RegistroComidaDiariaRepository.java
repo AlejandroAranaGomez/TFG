@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 import trabajo.aplicacionSaludable.Dominio.Comida;
 import trabajo.aplicacionSaludable.Dominio.RegistroComidaDiaria;
 import trabajo.aplicacionSaludable.Dominio.Usuario;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;

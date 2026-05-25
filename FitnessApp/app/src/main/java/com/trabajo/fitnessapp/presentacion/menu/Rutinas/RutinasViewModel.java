@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.trabajo.fitnessapp.datos.Utils.Result;
-import com.trabajo.fitnessapp.datos.dto.DietaCompletaDTO;
 import com.trabajo.fitnessapp.datos.dto.RutinaCompletaDTO;
 import com.trabajo.fitnessapp.datos.repository.RutinasRepository;
 

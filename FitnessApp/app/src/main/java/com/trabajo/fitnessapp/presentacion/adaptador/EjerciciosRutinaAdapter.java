@@ -1,6 +1,5 @@
 package com.trabajo.fitnessapp.presentacion.adaptador;
 
-import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

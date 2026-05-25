@@ -12,7 +12,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.trabajo.fitnessapp.R;
-import com.trabajo.fitnessapp.presentacion.menu.MenuPrincipalActivity;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -16,7 +16,6 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.trabajo.fitnessapp.R;
-import com.trabajo.fitnessapp.datos.dto.DietaCompletaDTO;
 import com.trabajo.fitnessapp.datos.dto.RutinaCompletaDTO;
 
 public class CrearRutinaActivity extends AppCompatActivity {

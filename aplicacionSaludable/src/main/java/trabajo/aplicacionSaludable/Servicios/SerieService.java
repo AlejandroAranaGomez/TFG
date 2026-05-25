@@ -2,14 +2,11 @@ package trabajo.aplicacionSaludable.Servicios;
 
 import org.springframework.stereotype.Service;
 import trabajo.aplicacionSaludable.Assemblers.SerieAssembler;
-import trabajo.aplicacionSaludable.Dominio.Ejercicio;
 import trabajo.aplicacionSaludable.Dominio.EjercicioEnDiaRutina;
 import trabajo.aplicacionSaludable.Dominio.Serie;
 import trabajo.aplicacionSaludable.Dtos.SerieDTO;
 import trabajo.aplicacionSaludable.Repositorios.EjercicioEnDiaRutinaRepository;
-import trabajo.aplicacionSaludable.Repositorios.EjercicioRepository;
 import trabajo.aplicacionSaludable.Repositorios.SerieRepository;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

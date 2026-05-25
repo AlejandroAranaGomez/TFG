@@ -1,11 +1,8 @@
 package trabajo.aplicacionSaludable.Controladores;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import trabajo.aplicacionSaludable.Dominio.HistorialPeso;
-import trabajo.aplicacionSaludable.Dominio.Usuario;
 import trabajo.aplicacionSaludable.Dtos.HistorialPesoDTO;
 import trabajo.aplicacionSaludable.Dtos.PesoDTO;
 import trabajo.aplicacionSaludable.Dtos.UsuarioActualizarDTO;

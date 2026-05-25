@@ -1,7 +1,6 @@
 package trabajo.aplicacionSaludable.Servicios;
 
 import org.springframework.stereotype.Service;
-import trabajo.aplicacionSaludable.Assemblers.DiaEnDietaAssembler;
 import trabajo.aplicacionSaludable.Assemblers.DiaEnRutinaAssembler;
 import trabajo.aplicacionSaludable.Dominio.DiaDeLaSemana;
 import trabajo.aplicacionSaludable.Dominio.DiaEnRutina;
@@ -9,7 +8,6 @@ import trabajo.aplicacionSaludable.Dominio.RutinaCompleta;
 import trabajo.aplicacionSaludable.Dtos.DiaEnRutinaDTO;
 import trabajo.aplicacionSaludable.Repositorios.DiaEnRutinaRepository;
 import trabajo.aplicacionSaludable.Repositorios.RutinaCompletaRepository;
-
 import java.util.Optional;
 
 @Service

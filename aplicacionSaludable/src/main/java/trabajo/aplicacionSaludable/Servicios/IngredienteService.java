@@ -1,7 +1,6 @@
 package trabajo.aplicacionSaludable.Servicios;
 
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import trabajo.aplicacionSaludable.Assemblers.IngredienteAssembler;
 import trabajo.aplicacionSaludable.Dominio.*;
@@ -12,7 +11,6 @@ import trabajo.aplicacionSaludable.Excepciones.ExcepcionesIngredientes.Ingredien
 import trabajo.aplicacionSaludable.Repositorios.AlimentoRepository;
 import trabajo.aplicacionSaludable.Repositorios.ComidaRepository;
 import trabajo.aplicacionSaludable.Repositorios.IngredienteRepository;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

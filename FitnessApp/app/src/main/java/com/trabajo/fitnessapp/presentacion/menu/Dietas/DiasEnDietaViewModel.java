@@ -9,7 +9,6 @@ import com.trabajo.fitnessapp.datos.dto.DiaEnDietaDTO;
 import com.trabajo.fitnessapp.datos.repository.DiasEnDietaRepository;
 import com.trabajo.fitnessapp.dominio.DiaDeLaSemana;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DiasEnDietaViewModel extends ViewModel {

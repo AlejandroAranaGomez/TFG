@@ -13,7 +13,6 @@ import trabajo.aplicacionSaludable.Repositorios.DiaEnRutinaRepository;
 import trabajo.aplicacionSaludable.Repositorios.EjercicioEnDiaRutinaRepository;
 import trabajo.aplicacionSaludable.Repositorios.EjercicioRepository;
 import trabajo.aplicacionSaludable.Repositorios.RutinaCompletaRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

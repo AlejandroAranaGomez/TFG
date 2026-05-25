@@ -7,13 +7,11 @@ import com.trabajo.fitnessapp.datos.api.ApiAlimentosService;
 import com.trabajo.fitnessapp.datos.api.RetrofitClient;
 import com.trabajo.fitnessapp.datos.dto.ApiAlimentosDTO;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import android.util.Log;
 
 public class ApiAlimentosRepository {
     private final ApiAlimentosService apiAlimentosService;

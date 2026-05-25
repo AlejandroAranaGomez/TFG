@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.trabajo.fitnessapp.datos.api.ApiEjerciciosService;
 import com.trabajo.fitnessapp.datos.api.RetrofitClient;
 import com.trabajo.fitnessapp.datos.dto.ApiEjercicioDTO;
-import com.trabajo.fitnessapp.datos.dto.RespuestaEjerciciosDTO;
 
 import java.util.List;
 

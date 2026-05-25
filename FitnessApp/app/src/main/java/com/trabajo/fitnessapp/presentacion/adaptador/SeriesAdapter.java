@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.trabajo.fitnessapp.R;
 import com.trabajo.fitnessapp.datos.dto.SerieDTO;
-import com.trabajo.fitnessapp.presentacion.menu.Rutinas.SerieViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.trabajo.fitnessapp.R;
 import com.trabajo.fitnessapp.datos.dto.UsuarioPerfilDTO;
-import com.trabajo.fitnessapp.presentacion.menu.Dietas.MenuAlimentosActivity;
 import com.trabajo.fitnessapp.presentacion.menu.Perfil.EditarPerfilActivity;
 import com.trabajo.fitnessapp.presentacion.menu.Perfil.PerfilViewModel;
 

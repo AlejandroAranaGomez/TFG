@@ -7,10 +7,10 @@ import trabajo.aplicacionSaludable.Dominio.Credenciales;
 import trabajo.aplicacionSaludable.Dominio.HistorialPeso;
 import trabajo.aplicacionSaludable.Dominio.Usuario;
 import trabajo.aplicacionSaludable.Dtos.*;
+import trabajo.aplicacionSaludable.Excepciones.ExcepcionesUsuarios.UsuarioYaRegistradoException;
 import trabajo.aplicacionSaludable.Repositorios.CredencialesRepository;
 import trabajo.aplicacionSaludable.Repositorios.HistorialPesoRepository;
 import trabajo.aplicacionSaludable.Repositorios.UsuarioRepository;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class UsuarioService {
 
         // Comprobar si ya existe el email
         if (credencialesRepository.findByEmail(registroDTO.getEmail()).isPresent()) {
-            return null;
+            throw new UsuarioYaRegistradoException();
         }
 
         Usuario usuario = usuarioAssembler.dtoAEntidadRegistro(registroDTO);

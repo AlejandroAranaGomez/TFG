@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 import trabajo.aplicacionSaludable.Dominio.DiaEnRutina;
 import trabajo.aplicacionSaludable.Dominio.Ejercicio;
 import trabajo.aplicacionSaludable.Dominio.EjercicioEnDiaRutina;
-
 import java.util.Optional;
 
 @Repository

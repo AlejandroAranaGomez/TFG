@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 import trabajo.aplicacionSaludable.Dominio.Alimento;
 import trabajo.aplicacionSaludable.Dominio.Comida;
 import trabajo.aplicacionSaludable.Dominio.Ingrediente;
-
 import java.util.Optional;
 
 @Repository

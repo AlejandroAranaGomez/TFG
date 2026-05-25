@@ -1,6 +1,5 @@
 package trabajo.aplicacionSaludable.Controladores;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import trabajo.aplicacionSaludable.Dtos.ApiAlimentosDTO;
 import trabajo.aplicacionSaludable.Servicios.AlimentoService;

@@ -1,6 +1,5 @@
 package com.trabajo.fitnessapp.datos.api;
 
-import com.trabajo.fitnessapp.datos.dto.ComidaDTO;
 import com.trabajo.fitnessapp.datos.dto.IngredienteDTO;
 
 import java.util.List;

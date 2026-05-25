@@ -2,7 +2,6 @@ package trabajo.aplicacionSaludable.Dtos;
 
 import lombok.Getter;
 import lombok.Setter;
-import trabajo.aplicacionSaludable.Dominio.HistorialPeso;
 
 @Getter
 @Setter

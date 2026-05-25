@@ -11,7 +11,6 @@ import trabajo.aplicacionSaludable.Excepciones.ExcepcionesSeguimiento.ComidaYaRe
 import trabajo.aplicacionSaludable.Repositorios.ComidaRepository;
 import trabajo.aplicacionSaludable.Repositorios.RegistroComidaDiariaRepository;
 import trabajo.aplicacionSaludable.Repositorios.UsuarioRepository;
-
 import java.time.LocalDate;
 import java.util.Optional;
 

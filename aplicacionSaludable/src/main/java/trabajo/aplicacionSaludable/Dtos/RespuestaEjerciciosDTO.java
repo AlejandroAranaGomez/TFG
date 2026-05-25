@@ -5,8 +5,6 @@ import java.util.List;
 public class RespuestaEjerciciosDTO {
 
     private int total;
-    private int page;
-    private int limit;
     private List<ApiEjercicioDTO> data;
 
     public List<ApiEjercicioDTO> getData() {

@@ -1,6 +1,5 @@
 package com.trabajo.fitnessapp.presentacion.adaptador;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.trabajo.fitnessapp.R;
-import com.trabajo.fitnessapp.datos.dto.AlimentoDTO;
 import com.trabajo.fitnessapp.datos.dto.DietaCompletaDTO;
 
 import java.util.ArrayList;

@@ -2,18 +2,13 @@ package trabajo.aplicacionSaludable.Servicios;
 
 import org.springframework.stereotype.Service;
 import trabajo.aplicacionSaludable.Assemblers.RutinaCompletaAssembler;
-import trabajo.aplicacionSaludable.Dominio.DiaEnDieta;
-import trabajo.aplicacionSaludable.Dominio.DiaEnRutina;
 import trabajo.aplicacionSaludable.Dominio.RutinaCompleta;
 import trabajo.aplicacionSaludable.Dominio.Usuario;
-import trabajo.aplicacionSaludable.Dtos.DiaEnDietaDTO;
-import trabajo.aplicacionSaludable.Dtos.DiaEnRutinaDTO;
 import trabajo.aplicacionSaludable.Dtos.RutinaCompletaDTO;
 import trabajo.aplicacionSaludable.Excepciones.ExcepcionesRutinas.RutinaDuplicadaException;
 import trabajo.aplicacionSaludable.Excepciones.ExcepcionesRutinas.RutinaOtroUsuarioException;
 import trabajo.aplicacionSaludable.Repositorios.RutinaCompletaRepository;
 import trabajo.aplicacionSaludable.Repositorios.UsuarioRepository;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

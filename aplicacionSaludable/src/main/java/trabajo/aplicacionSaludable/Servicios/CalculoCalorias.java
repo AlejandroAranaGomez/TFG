@@ -3,7 +3,6 @@ package trabajo.aplicacionSaludable.Servicios;
 import trabajo.aplicacionSaludable.Dominio.Genero;
 import trabajo.aplicacionSaludable.Dominio.NivelDeActividad;
 import trabajo.aplicacionSaludable.Dominio.Objetivo;
-
 import java.time.LocalDate;
 import java.time.Period;
 

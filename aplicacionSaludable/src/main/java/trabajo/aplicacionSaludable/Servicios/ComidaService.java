@@ -1,12 +1,10 @@
 package trabajo.aplicacionSaludable.Servicios;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import trabajo.aplicacionSaludable.Assemblers.ComidaAssembler;
 import trabajo.aplicacionSaludable.Dominio.*;
 import trabajo.aplicacionSaludable.Dtos.ComidaDTO;
 import trabajo.aplicacionSaludable.Dtos.ComidaSeguimientoDTO;
-import trabajo.aplicacionSaludable.Dtos.IngredienteDTO;
 import trabajo.aplicacionSaludable.Excepciones.ExcepcionesComidas.ComidaPerteneceAOtroDiaException;
 import trabajo.aplicacionSaludable.Excepciones.ExcepcionesComidas.ComidaYaExisteException;
 import trabajo.aplicacionSaludable.Repositorios.ComidaRepository;

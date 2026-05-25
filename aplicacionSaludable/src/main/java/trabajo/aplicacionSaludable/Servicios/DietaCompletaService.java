@@ -1,9 +1,7 @@
 package trabajo.aplicacionSaludable.Servicios;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import trabajo.aplicacionSaludable.Assemblers.DietaCompletaAssembler;
-import trabajo.aplicacionSaludable.Dominio.DiaEnDieta;
 import trabajo.aplicacionSaludable.Dominio.DietaCompleta;
 import trabajo.aplicacionSaludable.Dominio.Usuario;
 import trabajo.aplicacionSaludable.Dtos.DiaEnDietaDTO;
@@ -12,7 +10,6 @@ import trabajo.aplicacionSaludable.Excepciones.ExcepcionesDietas.DietaDeOtroUsua
 import trabajo.aplicacionSaludable.Excepciones.ExcepcionesDietas.DietaDuplicadaException;
 import trabajo.aplicacionSaludable.Repositorios.DietaCompletaRepository;
 import trabajo.aplicacionSaludable.Repositorios.UsuarioRepository;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
