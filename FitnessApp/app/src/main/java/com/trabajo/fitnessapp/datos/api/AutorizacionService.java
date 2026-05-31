@@ -13,7 +13,7 @@ public interface AutorizacionService {
     @POST("api/usuarios")
     Call<UsuarioDTO> registrarUsuario(@Body RegistroDTO registroDTO);
 
-    @POST("api/usuarios/login")
+    @POST("api/usuarios/token")
     Call<UsuarioDTO> iniciarSesion(@Body InicioSesionDTO inicioSesionDTO);
 
 }

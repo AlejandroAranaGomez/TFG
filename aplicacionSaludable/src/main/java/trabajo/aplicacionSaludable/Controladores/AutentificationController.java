@@ -34,7 +34,7 @@ public class AutentificationController {
 
     }
 
-    @PostMapping("/login")
+    @PostMapping("/token")
     public ResponseEntity<?> iniciarSesion(@RequestBody InicioSesionDTO inicioSesionDTO) {
         UsuarioDTO usuarioDTO = usuarioService.iniciarSesion(inicioSesionDTO);
 
