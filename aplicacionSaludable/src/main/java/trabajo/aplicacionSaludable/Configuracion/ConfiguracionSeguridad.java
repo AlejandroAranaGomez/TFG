@@ -9,6 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+// Esta clase se encarga de controlar el acceso de los usuarios a la API manteniendo asi la seguridad.
+
 @Configuration
 @EnableWebSecurity
 public class ConfiguracionSeguridad {

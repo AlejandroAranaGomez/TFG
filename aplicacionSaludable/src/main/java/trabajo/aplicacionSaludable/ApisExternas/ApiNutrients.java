@@ -2,6 +2,8 @@ package trabajo.aplicacionSaludable.ApisExternas;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+// Clases para conseguir los alimentos de la api
+
 public class ApiNutrients {
 
     @JsonProperty("ENERC_KCAL")

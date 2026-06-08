@@ -11,6 +11,8 @@ import trabajo.aplicacionSaludable.Servicios.AlimentoService;
 
 import java.util.List;
 
+// En estas clases reciben y gestionan las peticiones HTTP de los clientes.
+
 @RestController
 @RequestMapping("/api/usuarios/{idUsuario}/alimentos")
 public class AlimentoController {

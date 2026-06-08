@@ -54,7 +54,7 @@ public class UsuarioIntegracionTest {
         dto.setFechaNacimiento("2000-01-01");
 
         return dto;
-    }
+    }   
 
 
     @Test

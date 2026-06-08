@@ -3,6 +3,8 @@ package trabajo.aplicacionSaludable.Dtos;
 import lombok.Getter;
 import lombok.Setter;
 
+// Estas clases se utilizan para transportar datos que nosotros querramos entre el backend y el frontend.
+
 @Getter
 @Setter
 

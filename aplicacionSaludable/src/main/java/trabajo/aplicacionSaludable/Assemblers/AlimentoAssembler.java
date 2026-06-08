@@ -5,6 +5,8 @@ import trabajo.aplicacionSaludable.Dominio.Alimento;
 import trabajo.aplicacionSaludable.Dominio.Usuario;
 import trabajo.aplicacionSaludable.Dtos.AlimentoDTO;
 
+// Estas clases sirven para transformar los datos del dominio a DTOs y viceversa.
+
 @Component
 public class AlimentoAssembler {
 
