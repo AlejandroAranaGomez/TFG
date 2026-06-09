@@ -10,6 +10,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
@@ -24,7 +25,7 @@ public interface UsuarioService {
     @GET("api/usuarios/{idUsuario}/historialPeso")
     Call<List<HistorialPesoDTO>> obtenerHistorialPeso(@Path("idUsuario") Long idUsuario);
 
-    @PUT("api/usuarios/{idUsuario}/historialPeso")
+    @POST("api/usuarios/{idUsuario}/historialPeso")
     Call<UsuarioPerfilDTO> actualizarPeso(@Path("idUsuario") Long idUsuario, @Body PesoDTO nuevoPeso);
 
 }
