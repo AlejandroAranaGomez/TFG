@@ -17,7 +17,9 @@ public class DiaEnRutinaService {
     private final DiaEnRutinaRepository diaEnRutinaRepository;
     private final DiaEnRutinaAssembler diaEnRutinaAssembler;
 
-    public DiaEnRutinaService(DiaEnRutinaRepository diaEnRutinaRepository, RutinaCompletaRepository rutinaCompletaRepository, DiaEnRutinaAssembler diaEnRutinaAssembler) {
+    public DiaEnRutinaService(DiaEnRutinaRepository diaEnRutinaRepository,
+                              RutinaCompletaRepository rutinaCompletaRepository,
+                              DiaEnRutinaAssembler diaEnRutinaAssembler) {
         this.diaEnRutinaRepository = diaEnRutinaRepository;
         this.rutinaCompletaRepository = rutinaCompletaRepository;
         this.diaEnRutinaAssembler = diaEnRutinaAssembler;

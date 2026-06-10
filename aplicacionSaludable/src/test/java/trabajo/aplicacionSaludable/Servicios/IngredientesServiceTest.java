@@ -50,7 +50,7 @@ public class IngredientesServiceTest {
     }
 
     @Test
-    void crearIngredienteValido() {
+    void crearIngredienteValidoTest() {
 
         DietaCompleta dieta = new DietaCompleta();
         dieta.setDiasDeDieta(new ArrayList<>());
@@ -102,7 +102,7 @@ public class IngredientesServiceTest {
     }
 
     @Test
-    void anhadeIngredienteDuplicado() {
+    void anhadeIngredienteDuplicadoTest() {
         Comida comida = new Comida();
         comida.setIdComida(1L);
 
@@ -135,7 +135,7 @@ public class IngredientesServiceTest {
     }
 
     @Test
-    void CreaIngredienteGramosNegativos() {
+    void CreaIngredienteGramosNegativosTest() {
 
         Comida comida = new Comida();
         comida.setIdComida(1L);
@@ -153,7 +153,7 @@ public class IngredientesServiceTest {
     }
 
     @Test
-    void editarIngredienteCorrecto() {
+    void editarIngredienteCorrectoTest() {
         DietaCompleta dieta = new DietaCompleta();
         dieta.setDiasDeDieta(new ArrayList<>());
 
@@ -200,7 +200,7 @@ public class IngredientesServiceTest {
     }
 
     @Test
-    void eliminarIngredienteValido() {
+    void eliminarIngredienteValidoTest() {
         DietaCompleta dieta = new DietaCompleta();
         dieta.setDiasDeDieta(new ArrayList<>());
 
@@ -232,7 +232,7 @@ public class IngredientesServiceTest {
     }
 
     @Test
-    void eliminarIngredienteDeOtraComida() {
+    void eliminarIngredienteDeOtraComidaTest() {
 
         Comida comidaReal = new Comida();
         comidaReal.setIdComida(1L);

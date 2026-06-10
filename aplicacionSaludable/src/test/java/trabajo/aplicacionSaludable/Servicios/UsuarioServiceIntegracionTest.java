@@ -57,7 +57,7 @@ public class UsuarioServiceIntegracionTest {
 
 
     @Test
-    void registraUsuarioValido() {
+    void registraUsuarioValidoTest() {
 
         RegistroDTO dto = crearRegistroDTO();
 
@@ -80,7 +80,7 @@ public class UsuarioServiceIntegracionTest {
     }
 
     @Test
-    void registrarUsuarioYaExistente() {
+    void registrarUsuarioYaExistenteTest() {
 
         RegistroDTO dto = crearRegistroDTO();
 
@@ -96,7 +96,7 @@ public class UsuarioServiceIntegracionTest {
     }
 
     @Test
-    void contrasenhaEncriptada() {
+    void contrasenhaEncriptadaTest() {
         RegistroDTO dto = crearRegistroDTO();
 
         UsuarioDTO resultado =
@@ -114,7 +114,7 @@ public class UsuarioServiceIntegracionTest {
     }
 
     @Test
-    void inicioSesionValido() {
+    void inicioSesionValidoTest() {
         RegistroDTO registro = crearRegistroDTO();
 
         registro.setEmail("login@gmail.com");
@@ -135,7 +135,7 @@ public class UsuarioServiceIntegracionTest {
     }
 
     @Test
-    void inicioSesionIncorrecto() {
+    void inicioSesionIncorrectoTest() {
         RegistroDTO registro = crearRegistroDTO();
 
         registro.setEmail("login@gmail.com");
