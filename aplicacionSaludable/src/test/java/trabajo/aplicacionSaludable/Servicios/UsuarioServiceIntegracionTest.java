@@ -1,4 +1,4 @@
-package trabajo.aplicacionSaludable;
+package trabajo.aplicacionSaludable.Servicios;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +14,12 @@ import trabajo.aplicacionSaludable.Dtos.RegistroDTO;
 import trabajo.aplicacionSaludable.Dtos.UsuarioDTO;
 import trabajo.aplicacionSaludable.Excepciones.ExcepcionesUsuarios.UsuarioYaRegistradoException;
 import trabajo.aplicacionSaludable.Repositorios.UsuarioRepository;
-import trabajo.aplicacionSaludable.Servicios.UsuarioService;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-public class UsuarioIntegracionTest {
+public class UsuarioServiceIntegracionTest {
 
     @Autowired
     private UsuarioService usuarioService;

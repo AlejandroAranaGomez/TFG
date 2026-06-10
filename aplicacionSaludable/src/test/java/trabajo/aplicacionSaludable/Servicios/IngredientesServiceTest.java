@@ -1,4 +1,4 @@
-package trabajo.aplicacionSaludable;
+package trabajo.aplicacionSaludable.Servicios;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,6 @@ import trabajo.aplicacionSaludable.Excepciones.ExcepcionesIngredientes.Ingredien
 import trabajo.aplicacionSaludable.Repositorios.AlimentoRepository;
 import trabajo.aplicacionSaludable.Repositorios.ComidaRepository;
 import trabajo.aplicacionSaludable.Repositorios.IngredienteRepository;
-import trabajo.aplicacionSaludable.Servicios.IngredienteService;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,11 +23,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class IngredientesServiceUnitariasTest {
+public class IngredientesServiceTest {
 
     @Mock
     private ComidaRepository comidaRepository;
-
+    
     @Mock
     private IngredienteRepository ingredienteRepository;
 
