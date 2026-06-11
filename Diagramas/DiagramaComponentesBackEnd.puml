@@ -6,7 +6,7 @@ skinparam linetype polyline
 package "Arquitectura de Componentes" {
 
     ' --- COMPONENTES CONTROLLERS ---
-    component "AutentificationController" 
+    component "AuthenticationController" 
     component "AlimentoController" 
     component "DietaCompletaController"
     component "DiaEnDietaController"
@@ -79,7 +79,7 @@ package "Arquitectura de Componentes" {
     () "IRegistroComidaDiariaService" as Ball_ComidaDiariaService
 
     ' De Controller a IService
-    AutentificationController -- Ball_UserService
+    AuthenticationController -- Ball_UserService
     UsuarioController -- Ball_UserService
     AlimentoController -- Ball_AlimentoService
     DietaCompletaController -- Ball_DietaService

@@ -1,4 +1,4 @@
-package com.trabajo.fitnessapp.presentacion.autentification;
+package com.trabajo.fitnessapp.presentacion.authentication;
 
 import android.content.Intent;
 import android.graphics.Color;

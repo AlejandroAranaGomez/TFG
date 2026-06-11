@@ -39,7 +39,7 @@ package "Arquitectura de Componentes" {
     component "ProgresoViewModel"
 
     ' -- COMPONENTES REPOSITORY --
-    component "AutentificationRepository" 
+    component "AuthenticationRepository" 
     component "AlimentosRepository"
     component "ApiAlimentosRepository"
     component "DietasRepository"
@@ -72,7 +72,7 @@ package "Arquitectura de Componentes" {
     () "IProgresoViewModel" as Ball_ProgresoVM
     () "ISeguimientoViewModel" as Ball_SeguimientoVM
 
-    () "IAutentificationRepository" as Ball_AuthRepo
+    () "IAuthenticationRepository" as Ball_AuthRepo
     () "IApiAlimentosRepository" as Ball_ApiAlimentosRepo
     () "IAlimentosRepository" as Ball_AlimentosRepo
     () "IDietasRepository" as Ball_DietasRepo
@@ -147,7 +147,7 @@ package "Arquitectura de Componentes" {
     ProgresoViewModel -- Ball_UsuarioRepo
 
     ' -- De IRepository a Repository
-    Ball_AuthRepo -- AutentificationRepository
+    Ball_AuthRepo -- AuthenticationRepository
     Ball_AlimentosRepo -- AlimentosRepository
     Ball_ApiAlimentosRepo -- ApiAlimentosRepository
     Ball_DietasRepo -- DietasRepository
@@ -162,7 +162,7 @@ package "Arquitectura de Componentes" {
     Ball_RutinasRepo -- RutinasRepository
     Ball_SeguimientoRepo -- SeguimientoRepository
 
-    AutentificationRepository --> RestAPI
+    AuthenticationRepository --> RestAPI
     AlimentosRepository --> RestAPI
     ApiAlimentosRepository --> RestAPI
     DietasRepository --> RestAPI
@@ -182,7 +182,7 @@ package "Arquitectura de Componentes" {
 package "Especificacion de Interfaces" {
 
     interface IRegisterViewModel {
-        + registar(RegistroDTO registroDTO) : void
+        + registrar(RegistroDTO registroDTO) : void
     }
 
     interface ILoginViewModel {
@@ -304,7 +304,7 @@ package "Especificacion de Interfaces" {
         + borrarIngrediente(Long idIngrediente, Long idComida) : Boolean
     }
 
-    interface IAutentificationRepository {
+    interface IAuthenticationRepository {
         + registrarUsuario(RegistroDTO registroDTO) : UsuarioDTO
         + iniciarSesion(InicioSesionDTO inicioSesionDTO) : UsuarioDTO
     }

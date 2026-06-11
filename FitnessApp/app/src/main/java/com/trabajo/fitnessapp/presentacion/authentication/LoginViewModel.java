@@ -1,4 +1,4 @@
-package com.trabajo.fitnessapp.presentacion.autentification;
+package com.trabajo.fitnessapp.presentacion.authentication;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -7,17 +7,17 @@ import androidx.lifecycle.ViewModel;
 import com.trabajo.fitnessapp.datos.Utils.Result;
 import com.trabajo.fitnessapp.datos.dto.InicioSesionDTO;
 import com.trabajo.fitnessapp.datos.dto.UsuarioDTO;
-import com.trabajo.fitnessapp.datos.repository.AutentificationRepository;
+import com.trabajo.fitnessapp.datos.repository.AuthenticationRepository;
 
 public class LoginViewModel extends ViewModel {
 
-    private final AutentificationRepository autentificationRepository;
+    private final AuthenticationRepository autentificationRepository;
 
     private final MutableLiveData<String> mensajeError = new MutableLiveData<>();
     private final MutableLiveData<UsuarioDTO> inicioSesionExito = new MutableLiveData<>();
 
     public LoginViewModel() {
-        this.autentificationRepository = new AutentificationRepository();
+        this.autentificationRepository = new AuthenticationRepository();
     }
     public LiveData<String> getMensajeError() {
         return mensajeError;

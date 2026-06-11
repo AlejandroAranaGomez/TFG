@@ -14,11 +14,11 @@ import trabajo.aplicacionSaludable.Servicios.UsuarioService;
 
 @RestController
 @RequestMapping("/api/usuarios")
-public class AutentificationController {
+public class AuthenticationController {
 
     private UsuarioService usuarioService;
 
-    public AutentificationController(UsuarioService usuarioService) {
+    public AuthenticationController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
 

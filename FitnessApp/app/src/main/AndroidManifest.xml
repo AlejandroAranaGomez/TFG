@@ -46,25 +46,25 @@
             android:name=".presentacion.menu.Dietas.MenuAlimentosActivity"
             android:exported="false" />
         <activity
-            android:name=".presentacion.autentification.NivelActividadActivity"
+            android:name=".presentacion.authentication.NivelActividadActivity"
             android:exported="false" />
         <activity
-            android:name=".presentacion.autentification.ObjetivosActivity"
+            android:name=".presentacion.authentication.ObjetivosActivity"
             android:exported="false" />
         <activity
-            android:name=".presentacion.autentification.BienvenidaRegisterActivity"
+            android:name=".presentacion.authentication.BienvenidaRegisterActivity"
             android:exported="false" />
         <activity
             android:name=".presentacion.menu.MenuPrincipalActivity"
             android:exported="false" />
         <activity
-            android:name=".presentacion.autentification.LoginActivity"
+            android:name=".presentacion.authentication.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".presentacion.autentification.RegisterActivity"
+            android:name=".presentacion.authentication.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".presentacion.autentification.MainActivity"
+            android:name=".presentacion.authentication.MainActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -17,11 +17,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 // Esta clase hace las llamadas a la api relativas al registro.
-public class AutentificationRepository {
+public class AuthenticationRepository {
 
     private final AutorizacionService autorizacionService;
 
-    public AutentificationRepository() {
+    public AuthenticationRepository() {
         this.autorizacionService = RetrofitClient.getClient().create(AutorizacionService.class);
     }
 

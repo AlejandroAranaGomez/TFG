@@ -1,4 +1,4 @@
-package com.trabajo.fitnessapp.presentacion.autentification;
+package com.trabajo.fitnessapp.presentacion.authentication;
 
 import android.util.Patterns;
 
@@ -10,11 +10,11 @@ import com.trabajo.fitnessapp.datos.Utils.Result;
 import com.trabajo.fitnessapp.datos.dto.UsuarioDTO;
 
 import com.trabajo.fitnessapp.datos.dto.RegistroDTO;
-import com.trabajo.fitnessapp.datos.repository.AutentificationRepository;
+import com.trabajo.fitnessapp.datos.repository.AuthenticationRepository;
 
 public class RegisterViewModel extends ViewModel {
 
-    private final AutentificationRepository autentificationRepository;
+    private final AuthenticationRepository autentificationRepository;
 
     // Variable si hay mensaje de error.
     private final MutableLiveData<String> mensajeError = new MutableLiveData<>();
@@ -24,7 +24,7 @@ public class RegisterViewModel extends ViewModel {
 
 
     public RegisterViewModel() {
-        this.autentificationRepository = new AutentificationRepository();
+        this.autentificationRepository = new AuthenticationRepository();
     }
 
     public LiveData<String> getMensajeError() {
