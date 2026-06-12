@@ -6,17 +6,22 @@
 
 enum Musculo  {
 CUELLO
-HOMBRO
+HOMBROS
+DORSALES
 PECHO
 BICEPS
 TRICEPS
 ANTEBRAZO
-ESPALDA
+ZONA_LUMBAR
+ESPALDA_MEDIA
+TRAPECIOS
+ADUCTORES
+ABDUCTORES
 ABDOMINALES
-GLUTEO
+GLUTEOS
 CUADRICEPS
-FEMORAL
-GEMELO 
+ISQUIOTIBIALES
+GEMELOS
 }
 
 enum DiaDeLaSemana  {
@@ -48,7 +53,7 @@ enum NivelDeActividad {
     EJERCICIO_INTENSO 
     ATLETA
 }
-
+ 
 ' ========================
 ' ======== CLASES ========
 ' ========================
@@ -57,36 +62,55 @@ class Usuario {
 - idUsuario : Long
 - nombre : String
 - apellido1 : String
-- apellido2 : String
+- apellido2 : String [0..1]
 - fechaNacimiento : LocalDate
 - genero: Genero
 - peso : float
 - altura : int
-- email : String
 - telefono : String
-- contrasenha : String
 - nivelDeActividad : NivelDeActividad
 - objetivo : Objetivo
 }
 
+class Credenciales {
+- idCredenciales : Long
+- email : String
+- contrasenha : String
+}
+
+class HistorialPeso {
+- idHistorialPeso : Long
+- peso : float
+- fecha : LocalDate
+}
+
+class RegistroComidaDiaria {
+- idRegistroComidaDiaria : Long
+- fecha : LocalDate
+- /caloriasTotales : float
+- /proteinas : float
+- /carbohidratos : float
+- /grasas : float
+}
+
 class DietaCompleta {
-- idDieta : Long
+- idDietaCompleta : Long
 - nombre : String
-- descripcion : String
-- caloriasTotales : float
-- proteinas : float
-- carbohidratos : float
-- grasas : float
+- descripcion : String [0..1]
+- /caloriasTotales : float
+- /proteinas : float
+- /carbohidratos : float
+- /grasas : float
 - activa : boolean
 }
 
 class DiaEnDieta {
 - idDiaEnDieta : Long
 - nombre : String
-- caloriasTotales : float
-- proteinas : float
-- carbohidratos : float
-- grasas : float
+- /caloriasTotales : float
+- /proteinas : float
+- /carbohidratos : float
+- /grasas : float
 - diaDeLaSemana : DiaDeLaSemana
 }
 
@@ -94,20 +118,19 @@ class DiaEnDieta {
 class Comida {
 - idComida : Long
 - nombre : String
-- caloriasTotales : float
-- proteinas : float
-- carbohidratos : float
-- grasas : float
+- /caloriasTotales : float
+- /proteinas : float
+- /carbohidratos : float
+- /grasas : float
 }
 
 class Ingrediente {
 - idIngrediente : Long
-- nombre : String
 - cantidadGramos : float
-- calorias : float
-- proteinas : float
-- carbohidratos : float
-- grasas : float
+- /calorias : float
+- /proteinas : float
+- /carbohidratos : float
+- /grasas : float
 }
 
 class Alimento {
@@ -120,53 +143,66 @@ class Alimento {
 }
 
 class RutinaCompleta {
-- idRutina : Long
+- idRutinaCompleta : Long
 - nombre : String
-- resumen : String
+- resumen : String [0..1]
 }
 
 class DiaEnRutina {
 - idDiaEnDieta : Long
 - nombre : String
-- resumen : String 
-- caloriasQuemadas : float
 - diaDeLaSemana : DiaDeLaSemana
 }
 
 class Ejercicio {
 - idEjercicio : Long
 - nombre : String
-- explicacion : String 
 - musculoEnfocado : Musculo
+}
+
+class EjercicioEnDiaRutina {
+- idEjercicioEnDiaRutina : Long
 }
 
 class Serie {
 - idSerie : Long
-- serieAnterior : String
+- serieAnterior : String [0..1]
 - repeticiones : int
-- peso : int
+- peso : int 
 }
 
 ' ========================
 ' ====== RELACIONES ======
 ' ========================
 
-Usuario "1"  -- "0..*" DietaCompleta
+Usuario *-- "0..*" DietaCompleta : dietas
 
-DietaCompleta "1" -- "1..*" DiaEnDieta
+Usuario *--  Credenciales : credenciales
 
-Usuario "1"  -- "0..*" RutinaCompleta
+Usuario *-- "1..*" HistorialPeso : historialPeso
 
-DiaEnDieta "1"  -- "1..*" Comida
+Usuario *-- "0..*" RegistroComidaDiaria : registrosComidaDiaria
 
-Comida "1"  -- "1..*" Ingrediente
+Comida "comida" --> "registros 0..*" RegistroComidaDiaria
 
-Usuario "1" -- "0..*" Alimento
+DietaCompleta "dieta" --> "diasDeDieta 1..*" DiaEnDieta
 
-RutinaCompleta "1"  -- "1..*" DiaEnRutina
+Usuario *-- "0..*" RutinaCompleta : rutinas
 
-DiaEnRutina "1..*" -- "1..*" Ejercicio
+DiaEnDieta "diaDeDieta"  --> "comidas 1..*" Comida
 
-Ejercicio "1"  -- "1..*" Serie
+Comida "comida"  --> "ingredientes 1..*" Ingrediente
 
-@enduml
+Ingrediente "ingredientes 0..*" --> "alimento 1" Alimento
+
+Usuario *-- "0..*" Alimento : alimentosPersonales
+
+RutinaCompleta "rutina"  --> "diasEnRutina 1..*" DiaEnRutina
+
+DiaEnRutina "diaEnRutina" --> "ejerciciosAsignados 1..*" EjercicioEnDiaRutina
+
+EjercicioEnDiaRutina "ejercicioUsuario 0..*" --> Ejercicio : ejercicio
+
+EjercicioEnDiaRutina "ejercicioAsignado" --> "series 0..*" Serie
+
+@enduml 

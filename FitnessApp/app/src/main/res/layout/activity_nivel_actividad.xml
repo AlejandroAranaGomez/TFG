@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fondoPantalla"
-    tools:context=".presentacion.autentification.NivelActividadActivity">
+    tools:context=".presentacion.authentication.NivelActividadActivity">
 
     <include
         android:id="@+id/barraProgreso"
@@ -138,7 +138,7 @@
         android:id="@+id/botonSiguiente"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/BotonesImagenes"
+        android:backgroundTint="@color/colorImparcial"
         android:text="Siguiente"
         android:textColor="@color/black"
         android:textSize="18dp"

@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fondoPantalla"
-    tools:context=".presentacion.autentification.BienvenidaRegisterActivity">
+    tools:context=".presentacion.authentication.BienvenidaRegisterActivity">
 
 
     <include
@@ -79,7 +79,7 @@
         android:id="@+id/botonComenzar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/BotonesImagenes"
+        android:backgroundTint="@color/colorImparcial"
         android:text="Comenzar"
         android:textColor="@color/black"
         android:textSize="18dp"

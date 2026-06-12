@@ -2,14 +2,18 @@ package trabajo.aplicacionSaludable.Dominio;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
 @Setter
+
+@NoArgsConstructor
 
 @Entity
 @Table(name = "usuario")
@@ -18,7 +22,6 @@ public class Usuario {
     // Clave Primaria BBDD
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idUsuario")
     private Long idUsuario;
 
     @Column(nullable = false)
@@ -36,16 +39,16 @@ public class Usuario {
     private float peso;
     @Column(nullable = false)
     private int altura;
-    @Column(nullable = false, unique = true)
-    private String email;
     @Column(nullable = false)
     private String telefono;
     @Column(nullable = false)
-    private String contrasenha;
     @Enumerated(EnumType.STRING)
     private Objetivo objetivo;
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private NivelDeActividad nivelDeActividad;
+    @Column(nullable = false)
+    private int caloriasObjetivo;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,  orphanRemoval = true)
     private Set<DietaCompleta> dietas = new HashSet<>();
@@ -53,16 +56,15 @@ public class Usuario {
     private Set<RutinaCompleta> rutinas = new HashSet<>();
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,  orphanRemoval = true)
     private Set<Alimento> alimentosPersonales = new HashSet<>();
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HistorialPeso> historialPeso = new ArrayList<>();
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RegistroComidaDiaria> registrosComidaDiaria = new ArrayList<>();
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Credenciales credenciales;
 
-
-    // Necesario para JPA
-    public Usuario() {
-
-    }
-
-    public Usuario(String nombre, String apellido1, String apellido2, LocalDate fechaNacimiento,
-                   Genero genero, float peso, int altura, String email, String telefono, String contrasenha,
-                   Objetivo objetivo, NivelDeActividad nivelDeActividad) {
+    public Usuario(String nombre, String apellido1, String apellido2, LocalDate fechaNacimiento, Genero genero, float peso, int altura, String telefono,
+                   Objetivo objetivo, NivelDeActividad nivelDeActividad, int caloriasObjetivo) {
         this.nombre = nombre;
         this.apellido1 = apellido1;
         this.apellido2 = apellido2;
@@ -70,11 +72,9 @@ public class Usuario {
         this.genero = genero;
         this.peso = peso;
         this.altura = altura;
-        this.email = email;
         this.telefono = telefono;
-        this.contrasenha = contrasenha;
         this.objetivo = objetivo;
         this.nivelDeActividad = nivelDeActividad;
+        this.caloriasObjetivo = caloriasObjetivo;
     }
-
 }

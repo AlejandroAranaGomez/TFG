@@ -1,6 +1,7 @@
 package com.trabajo.fitnessapp.datos.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,8 @@ public class DietaCompletaDTO implements Serializable {
     private float carbohidratos;
     private float grasas;
     private boolean activa;
+
+    private List<DiaEnDietaDTO> dias;
 
     public DietaCompletaDTO() {
 

@@ -8,6 +8,7 @@ import lombok.Setter;
 public class AlimentoDTO {
 
     private Long idAlimento;
+    private String idApi;
 
     private String nombre;
 
@@ -16,16 +17,18 @@ public class AlimentoDTO {
     private float carbohidratos;
     private float grasas;
 
+
     public AlimentoDTO() {
 
     }
 
-    public AlimentoDTO(Long idAlimento, String nombre, float calorias,  float proteinas, float carbohidratos, float grasas) {
+    public AlimentoDTO(Long idAlimento, String nombre, float calorias,  float proteinas, float carbohidratos, float grasas, String idApi) {
         this.idAlimento = idAlimento;
         this.nombre = nombre;
         this.calorias = calorias;
         this.proteinas = proteinas;
         this.carbohidratos = carbohidratos;
         this.grasas = grasas;
+        this.idApi = idApi;
     }
 }

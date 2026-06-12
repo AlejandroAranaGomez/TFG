@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentacion.menu.MenuAlimentosActivity"
+    tools:context=".presentacion.menu.Dietas.MenuAlimentosActivity"
     android:background="@color/fondoPantalla">
 
     <TextView
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:text=" ▼ Mis Alimentos Personalizados"
         android:textColor="@color/white"
-        android:backgroundTint="@color/fondoContenedor"
+        android:backgroundTint="@color/fondoContenedorDietas"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:gravity="start|center_vertical"

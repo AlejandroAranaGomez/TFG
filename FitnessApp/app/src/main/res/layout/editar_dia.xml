@@ -28,7 +28,7 @@
         <TextView
             android:id="@+id/textoNombreEditarDia"
             android:text="Nombre"
-            android:textColor="@color/BotonesImagenes"
+            android:textColor="@color/BotonesImagenesDietas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18dp"/>
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:text="Guardar"
                 android:textColor="@color/black"
-                android:backgroundTint="@color/BotonesImagenes"/>
+                android:backgroundTint="@color/BotonesImagenesDietas"/>
         </LinearLayout>
 
     </LinearLayout>

@@ -162,7 +162,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:backgroundTint="@color/BotonesImagenes"
+                android:backgroundTint="@color/colorImparcial"
                 android:text="Confirmar Registro"
                 android:textColor="@color/black"
                 android:textSize="18dp" />

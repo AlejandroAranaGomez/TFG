@@ -22,7 +22,7 @@ public class RegistroDTO {
     private String email;
     private String telefono;
     private String contrasenha;
-    private Objetivo objetivos;
+    private Objetivo objetivo;
     private NivelDeActividad nivelDeActividad;
 
 }

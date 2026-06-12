@@ -1,10 +1,8 @@
 package trabajo.aplicacionSaludable.Controladores;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import trabajo.aplicacionSaludable.Dtos.ComidaDTO;
 import trabajo.aplicacionSaludable.Dtos.IngredienteDTO;
 import trabajo.aplicacionSaludable.Excepciones.ExcepcionesIngredientes.CantidadNegativaException;
 import trabajo.aplicacionSaludable.Excepciones.ExcepcionesIngredientes.IngredienteDuplicadoException;
@@ -14,13 +12,16 @@ import trabajo.aplicacionSaludable.Servicios.IngredienteService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/ingredientes")
+@RequestMapping("/api/usuarios/{idUsuario}/dietas/{idDieta}/{diaDeLaSemana}/comidas/{idComida}/ingredientes")
 public class IngredienteController {
 
-    @Autowired
     private IngredienteService ingredienteService;
 
-    @PostMapping("/comidas/{idComida}")
+    public IngredienteController(IngredienteService ingredienteService) {
+        this.ingredienteService = ingredienteService;
+    }
+
+    @PostMapping
     public ResponseEntity<?> crearIngrediente(@PathVariable Long idComida, @RequestBody IngredienteDTO ingredienteDTO) {
         try {
             IngredienteDTO ingredienteNuevo = ingredienteService.crearIngrediente(idComida, ingredienteDTO);
@@ -35,18 +36,17 @@ public class IngredienteController {
         }
     }
 
-    @GetMapping("/comidas/{idComida}")
+    @GetMapping
     public ResponseEntity<?> obtenerIngredientes(@PathVariable Long idComida) {
 
         List<IngredienteDTO> ingredientes = ingredienteService.listaIngredientes(idComida);
         if (ingredientes == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comida no encontrada");
         }
-
         return ResponseEntity.ok(ingredientes);
     }
 
-    @PutMapping("/{idIngrediente}/comidas/{idComida}")
+    @PutMapping("/{idIngrediente}")
     public ResponseEntity<?> editarIngrediente(@PathVariable Long idIngrediente, @PathVariable Long idComida, @RequestBody IngredienteDTO ingredienteDTO) {
         try {
             IngredienteDTO ingredienteEditado = ingredienteService.editarIngrediente(idComida, idIngrediente, ingredienteDTO);
@@ -61,7 +61,7 @@ public class IngredienteController {
         }
     }
 
-    @DeleteMapping("/{idIngrediente}/comidas/{idComida}")
+    @DeleteMapping("/{idIngrediente}")
     public ResponseEntity<?> borrarIngrediente(@PathVariable Long idIngrediente, @PathVariable Long idComida) {
         try {
             boolean eliminado = ingredienteService.borrarIngrediente(idIngrediente, idComida);

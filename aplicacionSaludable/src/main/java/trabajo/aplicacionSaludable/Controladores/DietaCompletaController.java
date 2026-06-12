@@ -1,6 +1,5 @@
 package trabajo.aplicacionSaludable.Controladores;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +12,16 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/dietasCompletas")
+@RequestMapping("/api/usuarios/{idUsuario}/dietas")
 public class DietaCompletaController {
 
-    @Autowired
     private DietaCompletaService dietaCompletaService;
 
-    @PostMapping("/usuarios/{idUsuario}")
+    public DietaCompletaController(DietaCompletaService dietaCompletaService) {
+        this.dietaCompletaService = dietaCompletaService;
+    }
+
+    @PostMapping
     public ResponseEntity<?> crearDietasCompletas(@PathVariable Long idUsuario, @RequestBody DietaCompletaDTO dietaCompletaDTO) {
         try {
             DietaCompletaDTO nuevaDieta = dietaCompletaService.creaDietaCompleta(idUsuario, dietaCompletaDTO);
@@ -32,7 +34,7 @@ public class DietaCompletaController {
         }
     }
 
-    @GetMapping("/usuarios/{idUsuario}")
+    @GetMapping
     public ResponseEntity<?> obtenerDietasCompletas(@PathVariable Long idUsuario) {
         List<DietaCompletaDTO> dietas = dietaCompletaService.listaDietaCompletaUsuario(idUsuario);
         if (dietas == null) {
@@ -41,10 +43,10 @@ public class DietaCompletaController {
         return ResponseEntity.ok(dietas);
     }
 
-    @PutMapping("/{idDietaCompleta}/usuarios/{idUsuario}")
-    public ResponseEntity<?> actualizarDieta(@PathVariable Long idDietaCompleta, @PathVariable Long idUsuario, @RequestBody DietaCompletaDTO dietaCompletaDTO) {
+    @PutMapping("/{idDieta}")
+    public ResponseEntity<?> actualizarDieta(@PathVariable Long idDieta, @PathVariable Long idUsuario, @RequestBody DietaCompletaDTO dietaCompletaDTO) {
         try {
-            DietaCompletaDTO dietaActualizada = dietaCompletaService.actualizaDietaCompleta(dietaCompletaDTO, idUsuario, idDietaCompleta);
+            DietaCompletaDTO dietaActualizada = dietaCompletaService.actualizaDietaCompleta(dietaCompletaDTO, idUsuario, idDieta);
             if (dietaActualizada == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dieta no encontrada");
             }
@@ -56,10 +58,10 @@ public class DietaCompletaController {
         }
     }
 
-    @DeleteMapping("/{idDietaCompleta}/usuarios/{idUsuario}")
-    public ResponseEntity<?> borrarDietaCompleta(@PathVariable Long idDietaCompleta, @PathVariable Long idUsuario) {
+    @DeleteMapping("/{idDieta}")
+    public ResponseEntity<?> borrarDietaCompleta(@PathVariable Long idDieta, @PathVariable Long idUsuario) {
         try {
-            boolean eliminada = dietaCompletaService.borraDietaCompleta(idUsuario, idDietaCompleta);
+            boolean eliminada = dietaCompletaService.borraDietaCompleta(idUsuario, idDieta);
             if (!eliminada) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dieta no encontrada");
             }
@@ -69,5 +71,32 @@ public class DietaCompletaController {
         }
     }
 
+    @GetMapping("/{idDieta}")
+    public ResponseEntity<?> obtenerDieta(@PathVariable Long idDieta, @PathVariable Long idUsuario) {
+        try {
+            DietaCompletaDTO dieta = dietaCompletaService.obtenerDieta(idUsuario, idDieta);
+            if (dieta == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dieta no encontrada");
+            }
+            return ResponseEntity.ok(dieta);
+        } catch (DietaDeOtroUsuarioException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{idDieta}/estado")
+    public ResponseEntity<?> activarDieta(@PathVariable Long idUsuario, @PathVariable Long idDieta) {
+        try {
+            boolean activar = dietaCompletaService.activarDieta(idUsuario, idDieta);
+
+            if (!activar) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dieta no encontrada");
+            }
+
+            return ResponseEntity.ok("Dieta activada");
+        } catch (DietaDeOtroUsuarioException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
 
 }

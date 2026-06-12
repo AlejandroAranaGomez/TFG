@@ -2,15 +2,21 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="BotonesImagenes">#456731</color>
+    <color name="BotonesImagenesDietas">#456731</color>
+    <color name="BotonesImagenesRutinas">#B45C0A</color>
     <color name="textosExplicacion">#A0A49D</color>
     <color name="pistaEditables">#757474</color>
     <color name="fondoBarraMenu">#191d16</color>
     <color name="fondoPantalla">#11140e</color>
     <color name="editar">#E26417</color>
     <color name="borrar">#93000a</color>
-    <color name="fondoDias">#55624b</color>
+    <color name="fondoDiasDieta">#55624b</color>
+    <color name="fondoDiasRutina">#A85814</color>
     <color name="textos">#c6eeaa</color>
     <color name="activa">#5ABD19</color>
-    <color name="fondoContenedor">#3e4a35</color>
+    <color name="fondoContenedorDietas">#3e4a35</color>
+    <color name="fondoContenedorRutinas">#6e390d</color>
+    <color name="fondoPopUp">#1E1E1E</color>
+
+    <color name="colorImparcial">#509F90</color>
 </resources>

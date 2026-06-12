@@ -2,10 +2,17 @@ package trabajo.aplicacionSaludable.Dominio;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+<<<<<<< HEAD
+=======
+
+@NoArgsConstructor
+
+>>>>>>> feature/rutinas
 @Entity
 @Table(name = "alimento")
 public class Alimento {
@@ -13,7 +20,6 @@ public class Alimento {
     // Clave Primaria BBDD
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idAlimento")
     private Long idAlimento;
 
     @Column(nullable = false)
@@ -26,16 +32,12 @@ public class Alimento {
     private float carbohidratos;
     @Column(nullable = false)
     private float grasas;
+    @Column(unique = true)
+    private String idApi;
 
-    // Existen alientos globales que todo el mundo tiene y alimentos personales creado por usuarios que son unicamente suyos
-    // si un alimento tiene a null el usuario significa que es global no lo ha creado nadie.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idUsuario", nullable = true)
     private Usuario usuario;
-
-    public Alimento() {
-
-    }
 
     public Alimento(String nombre, float calorias,float proteinas, float carbohidratos, float grasas,  Usuario usuario) {
         this.nombre = nombre;

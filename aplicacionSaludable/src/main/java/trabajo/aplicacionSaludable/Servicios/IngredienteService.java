@@ -1,19 +1,16 @@
 package trabajo.aplicacionSaludable.Servicios;
 
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import trabajo.aplicacionSaludable.Dominio.Comida;
-import trabajo.aplicacionSaludable.Dominio.DiaEnDieta;
-import trabajo.aplicacionSaludable.Dominio.DietaCompleta;
-import trabajo.aplicacionSaludable.Dominio.Ingrediente;
+import trabajo.aplicacionSaludable.Assemblers.IngredienteAssembler;
+import trabajo.aplicacionSaludable.Dominio.*;
 import trabajo.aplicacionSaludable.Dtos.IngredienteDTO;
 import trabajo.aplicacionSaludable.Excepciones.ExcepcionesIngredientes.CantidadNegativaException;
 import trabajo.aplicacionSaludable.Excepciones.ExcepcionesIngredientes.IngredienteDuplicadoException;
 import trabajo.aplicacionSaludable.Excepciones.ExcepcionesIngredientes.IngredienteNoPerteneceADietaException;
+import trabajo.aplicacionSaludable.Repositorios.AlimentoRepository;
 import trabajo.aplicacionSaludable.Repositorios.ComidaRepository;
 import trabajo.aplicacionSaludable.Repositorios.IngredienteRepository;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,36 +20,16 @@ public class IngredienteService {
 
     private final ComidaRepository comidaRepository;
     private final IngredienteRepository ingredienteRepository;
+    private final AlimentoRepository alimentoRepository;
+    private final IngredienteAssembler ingredienteAssembler;
 
-    @Autowired
-    public IngredienteService(ComidaRepository comidaRepository, IngredienteRepository ingredienteRepository) {
+    public IngredienteService(ComidaRepository comidaRepository, IngredienteRepository ingredienteRepository, AlimentoRepository alimentoRepository, IngredienteAssembler ingredienteAssembler) {
         this.comidaRepository = comidaRepository;
         this.ingredienteRepository = ingredienteRepository;
+        this.alimentoRepository = alimentoRepository;
+        this.ingredienteAssembler = ingredienteAssembler;
     }
 
-    private Ingrediente DTOaEntidad(IngredienteDTO dto, Comida comida) {
-        return new Ingrediente(
-                dto.getCantidadEnGramos(),
-                dto.getNombre(),
-                dto.getCaloriasTotales(),
-                dto.getProteinas(),
-                dto.getCarbohidratos(),
-                dto.getGrasas(),
-                comida
-        );
-    }
-
-    private IngredienteDTO EntidadaDTO(Ingrediente ingrediente) {
-        IngredienteDTO ingredienteDTO = new IngredienteDTO();
-        ingredienteDTO.setIdIngrediente(ingrediente.getIdIngrediente());
-        ingredienteDTO.setCantidadEnGramos(ingrediente.getCantidadEnGramos());
-        ingredienteDTO.setNombre(ingrediente.getNombre());
-        ingredienteDTO.setCaloriasTotales(ingrediente.getCaloriasTotales());
-        ingredienteDTO.setProteinas(ingrediente.getProteinas());
-        ingredienteDTO.setCarbohidratos(ingrediente.getCarbohidratos());
-        ingredienteDTO.setGrasas(ingrediente.getGrasas());
-        return ingredienteDTO;
-    }
 
     private void recalcularTotales(Comida comida) {
 
@@ -112,7 +89,7 @@ public class IngredienteService {
             return null;
         }
 
-        return comida.getIngredientes().stream().map(this::EntidadaDTO).collect(Collectors.toList());
+        return comida.getIngredientes().stream().map(ingredienteAssembler::entidadADTO).collect(Collectors.toList());
     }
 
     public IngredienteDTO crearIngrediente(Long idComida, IngredienteDTO ingredienteDTO) {
@@ -126,14 +103,53 @@ public class IngredienteService {
             throw new CantidadNegativaException();
         }
 
-        if (ingredienteRepository.findByNombreAndComida(ingredienteDTO.getNombre(), comida).isPresent()) {
+        Alimento alimento = null;
+
+        if (ingredienteDTO.getIdAlimento() != null) {
+
+            alimento = alimentoRepository.findById(ingredienteDTO.getIdAlimento()).orElse(null);
+
+        } else if (ingredienteDTO.getIdAlimentoApi() != null) {
+
+            alimento = alimentoRepository.findByIdApi(ingredienteDTO.getIdAlimentoApi()).orElse(null);
+
+            System.out.println("ID API recibido: " + ingredienteDTO.getIdAlimentoApi());
+
+            if (alimento != null) {
+                System.out.println("ALIMENTO ENCONTRADO -> ID: " + alimento.getIdAlimento() + " NOMBRE: " + alimento.getNombre());
+            }
+
+            // Si no existe le creo
+            if (alimento == null) {
+
+                alimento = new Alimento();
+
+                alimento.setNombre(ingredienteDTO.getNombre());
+                alimento.setCalorias(ingredienteDTO.getCaloriasTotales());
+                alimento.setProteinas(ingredienteDTO.getProteinas());
+                alimento.setCarbohidratos(ingredienteDTO.getCarbohidratos());
+                alimento.setGrasas(ingredienteDTO.getGrasas());
+
+                alimento.setIdApi(ingredienteDTO.getIdAlimentoApi());
+
+                alimento = alimentoRepository.save(alimento);
+            }
+        } else {
+            return null;
+        }
+
+
+        if (ingredienteRepository.findByAlimentoAndComida(alimento, comida).isPresent()) {
             throw new IngredienteDuplicadoException();
         }
 
-        Ingrediente nuevoIngrediente = DTOaEntidad(ingredienteDTO, comida);
-        Ingrediente ingredienteGuardado = ingredienteRepository.save(nuevoIngrediente);
+        Ingrediente ingrediente = ingredienteAssembler.dtoAEntidad(ingredienteDTO, comida, alimento);
+
+        Ingrediente ingredienteGuardado = ingredienteRepository.save(ingrediente);
+
         recalcularTotales(comida);
-        return EntidadaDTO(ingredienteGuardado);
+
+        return ingredienteAssembler.entidadADTO(ingredienteGuardado);
 
     }
 
@@ -159,7 +175,7 @@ public class IngredienteService {
 
         Ingrediente ingredienteActualizado = ingredienteRepository.save(ingrediente);
         recalcularTotales(ingrediente.getComida());
-        return EntidadaDTO(ingredienteActualizado);
+        return ingredienteAssembler.entidadADTO(ingredienteActualizado);
     }
 
     public boolean borrarIngrediente(Long idIngrediente, Long idComida) {

@@ -3,10 +3,11 @@ package com.trabajo.fitnessapp.datos.repository;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.trabajo.fitnessapp.datos.GestionMensajes.Result;
+import com.trabajo.fitnessapp.datos.Utils.Result;
 import com.trabajo.fitnessapp.datos.api.ComidaService;
 import com.trabajo.fitnessapp.datos.api.RetrofitClient;
 import com.trabajo.fitnessapp.datos.dto.ComidaDTO;
+import com.trabajo.fitnessapp.dominio.DiaDeLaSemana;
 
 import java.io.IOException;
 import java.util.List;
@@ -24,10 +25,10 @@ public class ComidasRepository {
         this.comidaService = RetrofitClient.getClient().create(ComidaService.class);
     }
 
-    public LiveData<Result<List<ComidaDTO>>> obtenerComidas(Long idDiaEnDieta) {
+    public LiveData<Result<List<ComidaDTO>>> obtenerComidas(Long idDieta, DiaDeLaSemana diaDeLaSemana) {
         MutableLiveData<Result<List<ComidaDTO>>> comidas = new MutableLiveData<>();
 
-        comidaService.obtenerComidas(idDiaEnDieta).enqueue(new Callback<List<ComidaDTO>>() {
+        comidaService.obtenerComidas(idDieta, diaDeLaSemana).enqueue(new Callback<List<ComidaDTO>>() {
 
             @Override
             public void onResponse(Call<List<ComidaDTO>> call, Response<List<ComidaDTO>> response) {
@@ -54,10 +55,10 @@ public class ComidasRepository {
         return comidas;
     }
 
-    public LiveData<Result<ComidaDTO>> crearComida(Long idDiaEnDieta, ComidaDTO comidaDTO) {
+    public LiveData<Result<ComidaDTO>> crearComida(Long idDieta, DiaDeLaSemana diaDeLaSemana, ComidaDTO comidaDTO) {
         MutableLiveData<Result<ComidaDTO>> resultado = new MutableLiveData<>();
 
-        comidaService.crearComida(idDiaEnDieta, comidaDTO).enqueue(new Callback<ComidaDTO>() {
+        comidaService.crearComida(idDieta, diaDeLaSemana, comidaDTO).enqueue(new Callback<ComidaDTO>() {
 
             @Override
             public void onResponse(Call<ComidaDTO> call, Response<ComidaDTO> response) {
@@ -84,10 +85,10 @@ public class ComidasRepository {
         return resultado;
     }
 
-    public LiveData<Result<ComidaDTO>> editarComida(Long idComida, Long idDiaEnDieta, ComidaDTO comidaDTO) {
+    public LiveData<Result<ComidaDTO>> editarComida(Long idDieta, Long idComida, DiaDeLaSemana diaDeLaSemana, ComidaDTO comidaDTO) {
         MutableLiveData<Result<ComidaDTO>> resultado = new MutableLiveData<>();
 
-        comidaService.editarComida(idComida, idDiaEnDieta, comidaDTO).enqueue(new Callback<ComidaDTO>() {
+        comidaService.editarComida(idDieta, idComida, diaDeLaSemana, comidaDTO).enqueue(new Callback<ComidaDTO>() {
 
 
             @Override
@@ -95,7 +96,7 @@ public class ComidasRepository {
                 if (response.isSuccessful() && response.body() != null) {
                     resultado.setValue(new Result.Success<>(response.body()));
                 } else {
-                    String error = "Error al edtar el dia";
+                    String error = "Error al editar el dia";
                     try {
                         if (response.errorBody() != null) {
                             error = response.errorBody().string();
@@ -115,10 +116,10 @@ public class ComidasRepository {
         return resultado;
     }
 
-    public LiveData<Result<Boolean>> borrarComida(Long idComida, Long idDiaEnDieta) {
+    public LiveData<Result<Boolean>> borrarComida(Long idDieta, Long idComida, DiaDeLaSemana diaDeLaSemana) {
         MutableLiveData<Result<Boolean>> resultado = new MutableLiveData<>();
 
-        comidaService.borrarComida(idComida, idDiaEnDieta).enqueue(new Callback<Void>() {
+        comidaService.borrarComida(idDieta, idComida, diaDeLaSemana).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {

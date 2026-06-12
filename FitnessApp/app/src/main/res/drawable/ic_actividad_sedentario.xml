@@ -8,7 +8,7 @@
       android:pathData="M6,20L6, 18"
       android:strokeLineJoin="round"
       android:strokeWidth="3.5"
-      android:strokeColor="@color/BotonesImagenes"
+      android:strokeColor="@color/colorImparcial"
       android:strokeLineCap="round"/>
 
   <path

@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:text="Modificar Comida"
             android:textColor="@color/black"
-            android:backgroundTint="@color/BotonesImagenes"
+            android:backgroundTint="@color/BotonesImagenesDietas"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tituloIngredientes"
             app:layout_constraintBottom_toBottomOf="@id/tituloIngredientes"/>
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:text="Cerrar"
         android:textColor="@color/black"
-        android:backgroundTint="@color/BotonesImagenes"
+        android:backgroundTint="@color/BotonesImagenesDietas"
         android:layout_marginTop="10dp" />
 
 </LinearLayout>
