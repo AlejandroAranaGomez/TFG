@@ -7,12 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-<<<<<<< HEAD
-=======
 
 @NoArgsConstructor
 
->>>>>>> feature/rutinas
 @Entity
 @Table(name = "alimento")
 public class Alimento {
